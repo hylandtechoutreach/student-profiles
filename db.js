@@ -7,7 +7,8 @@ module.exports = {
       last_name: studentObj.last_name,
       grade: studentObj.grade,
       school: studentObj.school,
-      id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`
+      email: studentObj.email,
+      id_number: `${studentObj.last_name}.${await module.exports.getLastNameCount(studentObj.last_name)}`
     });
 
     await newStudent.save();
