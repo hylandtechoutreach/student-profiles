@@ -26,11 +26,14 @@ const StudentSchema = new Schema({
   email: {
     type: String,
     required: true
+<<<<<<< HEAD
   },
   status: {
     type: String,
     enum: ["active", "inactive"],
     required: true
+=======
+>>>>>>> 8a74fdb (email added and id starts at 1)
   }
 });
 
