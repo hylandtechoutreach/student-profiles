@@ -27,6 +27,14 @@ module.exports = {
 
 		response.render('edit-student', renderData);
 	},
+	getProfile: async function(request, response) {
+		let studentId = request.params.id;
+		let studentObj = await db.getstudentById(studentId);
+		// await db.editstudentById(studentId, request.body);
+		let renderData = new Object();
+		renderData.student = studentObj;
+		response.render('profile', renderData);
+	},
 
 	editStudent: async function (request, response) {
 		let studentId = request.params.id;
