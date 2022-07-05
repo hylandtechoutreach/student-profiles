@@ -33,6 +33,7 @@ app.get('/edit/:id', student.editStudentPage);
 app.get('/delete/:id', student.deleteStudent);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+app.get('/profile/:id', student.getProfile);
 
 function listenCallback() {
 	console.log(`Server Running on http://${hostname}:${port}`);
