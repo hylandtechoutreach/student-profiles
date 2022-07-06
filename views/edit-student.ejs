@@ -17,7 +17,7 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="email">Email</label>
-				<input type="email" class="form-control" name="email" value="<%=student.email%>" required>
+				<input type="text" class="form-control" name="email" value="<%=student.email%>" required>
 			</div>
 		</div>
 		<div class="form-row">
@@ -39,10 +39,14 @@
 					<% } %>
 				</select>
 			</div>
+			<P>school is set to: </P>
+			<p><%=student.school%></p>
+			<% if (student.school == "Other") {%>
 			<div class="form-group col-md-6">
 				<label for="first-name">School (if other)</label>
-				<input type="text" class="form-control" name="other_school" value="<%=student.other_school%>" required>
+				<input type="text" class="form-control" name="Other_school" value="<%=student.other_school%>" required>
 			</div>
+			<% } %>
 	</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 	</form>
