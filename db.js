@@ -2,11 +2,15 @@ const Student = require("./models/Student");
 
 module.exports = {
 	addStudent: async function(studentObj) {
+    let studentSchool = studentObj.school
+    if (studentObj.school == "other"){
+      studentSchool = studentObj.other_school
+    }
     const newStudent = new Student({
       first_name: studentObj.first_name,
       last_name: studentObj.last_name,
       grade: studentObj.grade,
-      school: studentObj.school,
+      school: studentSchool,
       id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`
     });
 
