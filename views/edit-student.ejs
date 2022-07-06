@@ -11,18 +11,13 @@
 				<label for="last-name">Last Name</label>
 				<input type="text" class="form-control" name="last_name" value="<%=student.last_name%>" required>
 			</div>
-<<<<<<< HEAD
-			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%>>
-				<label for="id-number">Student ID</label>
-=======
 			<div class="form-group col-md-6">
 				<label for="id_number">Student ID</label>
->>>>>>> 959a506 (email added and id starts at 1)
 				<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="email">Email</label>
-				<input type="email" class="form-control" name="email" value="<%=student.email%>" required>
+				<input type="text" class="form-control" name="email" value="<%=student.email%>" required>
 			</div>
 		</div>
 		<div class="form-row">
@@ -47,7 +42,7 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="school">School</label>
-				<select name="school" class="form-control" required>
+				<select name="school" class="form-control" id="school" required>
 				<% if (!add) { %>
 					<option selected><%= student.school %></option>
 				<% } %>
@@ -55,13 +50,17 @@
 					<option>Solon High School</option>
 					<option>Lakewood High School</option>
 					<option>Westlake High School</option>
-					<option>other</option>
+					<option>Other</option>
 				</select>
 			</div>
+			<P>school is set to: </P>
+			<p><%=student.school%></p>
+			<% if (student.school == "Other") {%>
 			<div class="form-group col-md-6">
 				<label for="first-name">School (if other)</label>
-				<input type="text" class="form-control" name="other_school" value="<%=student.other_school%>" required>
+				<input type="text" class="form-control" name="Other_school" value="<%=student.other_school%>" required>
 			</div>
+			<% } %>
 	</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 	</form>
