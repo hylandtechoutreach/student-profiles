@@ -3,7 +3,7 @@ const Student = require("./models/Student");
 module.exports = {
 	addStudent: async function(studentObj) {
     let studentSchool = studentObj.school
-    if (studentObj.school == "other"){
+    if (studentObj.school == "Other"){
       studentSchool = studentObj.other_school
     }
     const newStudent = new Student({
@@ -44,7 +44,7 @@ module.exports = {
 
 	editStudentById: async function(studentId, newStudentObj) {
     let studentSchool = studentObj.school
-    if (studentObj.school == "other"){
+    if (studentObj.school == "Other"){
       studentSchool = studentObj.other_school
     }
     await Student.findOneAndUpdate({
