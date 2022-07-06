@@ -2,6 +2,10 @@ const Student = require("./models/Student");
 
 module.exports = {
 	addStudent: async function(studentObj) {
+    let studentSchool = studentObj.school
+    if (studentObj.school == "other"){
+      studentSchool = studentObj.other_school
+    }
     const newStudent = new Student({
       first_name: studentObj.first_name,
       last_name: studentObj.last_name,

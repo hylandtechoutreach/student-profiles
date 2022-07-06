@@ -39,6 +39,10 @@
 					<% } %>
 				</select>
 			</div>
+			<div class="form-group col-md-6">
+				<label for="first-name">School (if other)</label>
+				<input type="text" class="form-control" name="other_school" value="<%=student.other_school%>" required>
+			</div>
 	</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 	</form>
