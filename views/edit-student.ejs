@@ -55,9 +55,11 @@
 	</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 	</form>
-	<a href="/profile/<%= student.id %>" class="btn btn-info">View Profile</a>
 <% } else { %>
 	<p class="text-center">Student Not Found.</p>
+	<% } %>
+<% if (!add) { %>
+	<a href="/profile/<%=student.id%>" class="btn btn-info">View Profile</a>
 <% } %>
 </div>
 </div>
