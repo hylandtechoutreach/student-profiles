@@ -1,4 +1,20 @@
 <%- include('partials/header') %>
+<script>
+	function checkValue(val) {
+		let otherSchoolInput = document.getElementById('other-school-input');
+		let otherSchoolLabel = document.getElementById('other-school-label');
+		
+    	if(val==="other") {
+       		otherSchoolInput.style.display='block';
+	   		otherSchoolLabel.style.display='block';
+	   		otherSchoolInput.setAttribute('required', '');
+		} else {
+			otherSchoolInput.style.display='none';
+	   		otherSchoolLabel.style.display='none';
+	   		otherSchoolInput.removeAttribute('required');
+		}
+	}
+</script>
 <div class="container">
 <% if (add || student) { %>
 	<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>">
@@ -26,22 +42,23 @@
 				<select name="grade" class="form-control" required>
 					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 					<% for (let i = 0; i < grades.length; i++) { %>
-						<option <% if (student.grade == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
+						<option value="<%= grades[i] %>" <% if (student.grade == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
 				</select>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="school">School</label>
-				<select name="school" class="form-control" required>
+				<select name="school" class="form-control" onchange="checkValue(this.value)" required>
 					<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
 					<% for (let i = 0; i < schools.length; i++) { %>
-						<option <% if (student.school == schools[i]) { %> selected <% } %>><%= schools[i] %></option>
+						<option value="<%= schools[i] %>" <% if (student.school == schools[i]) { %> selected <% } %>><%= schools[i] %></option>
 					<% } %>
+					<option value="other">Other</option>
 				</select>
 			</div>
 			<div class="form-group col-md-6">
-				<label for="first-name">School (if other)</label>
-				<input type="text" class="form-control" name="other_school" value="<%=student.other_school%>" required>
+				<label for="first-name" style="display:none" id="other-school-label">School (if other)</label>
+				<input type="text" class="form-control" name="other_school" value="<%=student.other_school%>" style="display:none" id="other-school-input">
 			</div>
 	</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
