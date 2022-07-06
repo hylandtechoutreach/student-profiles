@@ -10,7 +10,7 @@ module.exports = {
       first_name: studentObj.first_name,
       last_name: studentObj.last_name,
       grade: studentObj.grade,
-      school: studentObj.school,
+      school: studentSchool,
       email: studentObj.email,
       id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
       status: "active"
