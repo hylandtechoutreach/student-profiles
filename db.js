@@ -16,6 +16,7 @@ module.exports = {
 >>>>>>> 4cc9b3b (added and linked other school option and other school field to db)
       email: studentObj.email,
       school: studentSchool,
+      email: studentObj.email,
       id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`
     });
 
