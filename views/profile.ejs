@@ -18,11 +18,10 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-bar-block w3-white w3-animate-left w3-text-grey w3-collapse w3-top w3-center" style="z-index:3;width:300px;font-weight:bold" id="mySidebar"><br>
   <h3 class="w3-padding-64 w3-center"><b><%= student.first_name %> <%= student.last_name %></b> <br> <a href="/">Students</a></h3>
-		
   <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-hide-large">CLOSE</a>
-  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">PORTFOLIO</a> 
+  <a href="#" onclick="w3_close()" class="w3-bar-item w3-button">$$$</a> 
   <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">Blah Blah Blah</a> 
-  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
+  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">***</a>
 </nav>
 
 <!-- Top menu on small screens -->
@@ -36,8 +35,6 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px">
-
-  
   <!-- Modal for full size images on click-->
   <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
     <span class="w3-button w3-black w3-xlarge w3-display-topright">×</span>
@@ -58,48 +55,22 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <h4><%= student.first_name %> <%= student.last_name %></h4>
       <p>Some text about <%= student.first_name %>. blah blah blah
       </p>
-      <p>mail:<%= student.email %></p>
+      <p>email:<%= student.email %></p>
       <hr class="w3-opacity">
-     
-      
-      
       <hr class="w3-opacity">
-
-       
       </div>
     </div>
   </div>
-
 
   <!-- Footer -->
   <footer class="w3-container w3-padding-32 w3-grey">  
     <div class="w3-row-padding">
       <div class="w3-third">
-
-       
       </div>
-    
-      <div class="w3-third">
-        <h3>BLOG POSTS</h3>
-        <ul class="w3-ul">
-          <li class="w3-padding-16 w3-hover-black">
-            <img src="/w3images/workshop.jpg" class="w3-left w3-margin-right" style="width:50px">
-            <span class="w3-large">Lorem</span><br>
-            <span>Sed mattis nunc</span>
-          </li>
-          <li class="w3-padding-16 w3-hover-black">
-            <img src="/w3images/gondol.jpg" class="w3-left w3-margin-right" style="width:50px">
-            <span class="w3-large">Ipsum</span><br>
-            <span>Praes tinci sed</span>
-          </li> 
-        </ul>
-      </div>
-
     </div>
   </footer>
   
   <div class="w3-black w3-center w3-padding-24">Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-opacity">w3.css</a></div>
-
 <!-- End page content -->
 </div>
 
@@ -122,9 +93,6 @@ function onClick(element) {
   var captionText = document.getElementById("caption");
   captionText.innerHTML = element.alt;
 }
-
 </script>
-
-
 </body>
 </html>
