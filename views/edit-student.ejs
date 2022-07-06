@@ -33,11 +33,15 @@
 			<div class="form-group col-md-6">
 				<label for="school">School</label>
 				<select name="school" class="form-control" required>
-					<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
+					<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School","other"]; %>
 					<% for (let i = 0; i < schools.length; i++) { %>
 						<option <% if (student.school == schools[i]) { %> selected <% } %>><%= schools[i] %></option>
 					<% } %>
 				</select>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="first-name">School (if other)</label>
+				<input type="text" class="form-control" name="other_school" value="<%=student.other_school%>" required>
 			</div>
 	</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
