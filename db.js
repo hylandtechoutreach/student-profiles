@@ -15,7 +15,14 @@ module.exports = {
       id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
       status: "active",
       school: studentSchool,
+<<<<<<< HEAD
     })
+=======
+      email: studentObj.email,
+      id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`
+    });
+
+>>>>>>> 8ac69ba (updated db.js to include email)
     await newStudent.save();
 	},
   getLastNameCount: async function(lastName) {
