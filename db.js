@@ -10,7 +10,7 @@ module.exports = {
       email: studentObj.email,
       id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
       status: "active",
-      avatar: studentObj.img
+      img: studentObj.img
     });
 
     await newStudent.save();
