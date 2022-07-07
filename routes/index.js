@@ -17,10 +17,24 @@ module.exports = {
 		response.render('index', renderData);
 		
 	},
-	sortAll: async function(request, response) {
-		let result = await db.sortList();
-		let renderData = new Object();
-		renderData = result;
+
+	sortFirstNames: async function(request, response) {
+		let studentList = await db.getStudentsList();
+		let activeStudents = [];
+		for (let i = 0; i < studentList.length; i++) {
+			if (studentList[i].status == "active") {
+				activeStudents.push(studentList[i]);
+			}
+		}
+
+		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'fr', {
+			ignorePunctuation: true
+		}));
+
+		let renderData = {
+			students: activeStudents
+		}
+		
 		response.render('index', renderData);
 	},
 };
