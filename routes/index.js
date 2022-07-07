@@ -1,7 +1,7 @@
 const db = require("../database/db");
 
 module.exports = {
-	getHomePage: async function (request, response) {
+	getStudentPage: async function (request, response) {
 		let studentList = await db.getStudentsList();
 		let activeStudents = [];
 		for (let i = 0; i < studentList.length; i++) {

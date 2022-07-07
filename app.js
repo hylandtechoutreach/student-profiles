@@ -29,6 +29,7 @@ mongoose.connect(dbStr, dbSettings)
   .then(() => console.log("MongoDB successfully connected"))
   .catch(err => console.log(err));
 
+app.get('/student', index.getStudentPage);
 app.get('/', index.getHomePage);
 app.get('/sort', index.sortFirstNames);
 app.get('/unsort', index.getHomePage);
