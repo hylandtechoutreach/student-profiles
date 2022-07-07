@@ -43,14 +43,17 @@ module.exports = {
     });
 	},
   sortList: async function() {
-    let student = await this.getStudentsList;
-    for(let x =0; x<student.length; x++) {
-      let temp = student[x+1].first_name;
-    if (student[x].first_name.localeCompare(temp) == 1) {
-      student[x+1].first_name = student[x].first_name;
-      student[x].first_name = temp
-      x=0;
-    }
-    }
-    }
-	}
+		let students = await Student.getCollections();
+	
+		//sort
+		// console.log(students[0].first_name);
+		return sortPeople(students);
+	},
+
+}
+
+function sortPeople(list) {
+	list.sort((a, b) => (a.first_name > b.first_name) ? 1 : -1)
+
+	return list;
+}
