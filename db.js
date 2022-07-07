@@ -41,19 +41,5 @@ module.exports = {
     await Student.findOneAndRemove({
       _id: studentId
     });
-	},
-  sortList: async function() {
-		let students = await Student.getCollections();
-	
-		//sort
-		// console.log(students[0].first_name);
-		return sortPeople(students);
-	},
-
-}
-
-function sortPeople(list) {
-	list.sort((a, b) => (a.first_name > b.first_name) ? 1 : -1)
-
-	return list;
+	}
 }

@@ -28,11 +28,7 @@ mongoose.connect(dbStr, dbSettings)
   .catch(err => console.log(err));
 
 app.get('/', index.getHomePage);
-<<<<<<< HEAD
 app.get('/sort', index.sortFirstNames);
-=======
-app.get('/sort', index.sortAll);
->>>>>>> 94408b7 (non working sort)
 app.get('/unsort', index.getHomePage);
 app.get('/add', student.addStudentPage);
 app.get('/edit/:id', student.editStudentPage);
