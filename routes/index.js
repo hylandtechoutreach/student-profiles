@@ -20,7 +20,7 @@ module.exports = {
 	sortAll: async function(request, response) {
 		let result = await db.sortList();
 		let renderData = new Object();
-		renderData.students = result;
+		renderData = result;
 		response.render('index', renderData);
 	},
 };
