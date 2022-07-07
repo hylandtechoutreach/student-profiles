@@ -44,7 +44,7 @@
 	</div>
 	<br><br>
 		<div class="ui-container">
-			<form action="/addImage" class ="ui-form" method = "POST">
+			<form action="/<%= add ? "/addImage" : `edit/${student.id}` %>" class ="ui-form" method = "POST">
 				<div class="ui-field">
 					<label for="img">Upload Image Of Yourself</label>
 					<br><br>

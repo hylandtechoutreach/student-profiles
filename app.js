@@ -46,22 +46,22 @@ app.post('/edit/:id', student.editStudent);
 app.post('/addImage',async(req, res, next) => {
   const {img} = req.body;
   const Student = new Student();
-  saveImage(Student,img);
+  saveImage(Student, img);
   try{
     const newStudent = await Student.save();
-    res.redirect(req.path)
-  }catch(err){
+    res.redirect('/')
+  } catch(err) {
     console.log(err);
   }
 });
 
 function saveImage(Student, imgEncoded) {
-  if(imgEncoded == null) return;
+  if (imgEncoded == null) return;
 
   const img = JSON.parse(imgEncoded);
 
-  if (im != null&&imageMimeTypes.includes(img.type)){
-    Student.img = new Buffer.from(img.data,'base64');
+  if (img != null && imageMimeTypes.includes(img.type)) {
+    Student.img = new Buffer.from(img.data, 'base64');
     Student.imgType = img.type;
   }
 }
