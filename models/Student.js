@@ -31,6 +31,10 @@ const StudentSchema = new Schema({
     type: String,
     enum: ["active", "inactive"],
     required: true
+  },
+  img: {
+    type:Buffer,
+    required: false
   }
 });
 

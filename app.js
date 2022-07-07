@@ -1,18 +1,22 @@
 const express = require('express');
 const mongoose = require("mongoose");
 const configKeys = require("./config/keys");
+const bodyParser = require('body-parser');
 
 const hostname = 'localhost';
 const port = 8080;
 
 const index = require('./routes/index');
 const student = require('./routes/student');
+const imageMimeTypes = ['image/jpeg','image/png','image/gif'];
 
 let app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 const dbStr = configKeys.mongoURI;
 const dbSettings = {
@@ -38,6 +42,16 @@ app.get('/next-grade', student.increaseStudentGrades);
 app.get('/filter/:grade', index.filter);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+function saveImage(Student, imgEncoded) {
+  if(imgEncoded == null) return;
+
+  const img = JSON.parse(imgEncoded);
+
+  if (im != null&&imageMimeTypes.includes(img.type)){
+    Student.img = new Buffer.from(img.data,'base64');
+    Student.imgType = img.type;
+  }
+}
 
 function listenCallback() {
 	console.log(`Server Running on http://${hostname}:${port}`);
