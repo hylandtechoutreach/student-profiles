@@ -30,7 +30,11 @@ mongoose.connect(dbStr, dbSettings)
   .catch(err => console.log(err));
 
 app.get('/', index.getHomePage);
+<<<<<<< HEAD
 app.get('/sort', index.sortAll);
+=======
+app.get('/sort', index.sortFirstNames);
+>>>>>>> 20294cd (added button that sorts index by first names)
 app.get('/unsort', index.getHomePage);
 app.get('/add', student.addStudentPage);
 app.get('/edit/:id', student.editStudentPage);
