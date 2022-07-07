@@ -31,10 +31,14 @@ mongoose.connect(dbStr, dbSettings)
 
 app.get('/', index.getHomePage);
 <<<<<<< HEAD
+<<<<<<< HEAD
 app.get('/sort', index.sortFirstNames);
 =======
 app.get('/sort', index.sortAll);
 >>>>>>> 5a32afd (non working sort)
+=======
+app.get('/sort', index.sortFirstNames);
+>>>>>>> b3e4248 (added button that sorts index by first names)
 app.get('/unsort', index.getHomePage);
 app.get('/add', student.addStudentPage);
 app.get('/edit/:id', student.editStudentPage);
