@@ -13,7 +13,7 @@ module.exports = {
 	addStudent: async function (request, response) {
 		await db.addStudent(request.body);
 
-		response.redirect('/')
+		response.redirect('/student')
 	},
 
 	editStudentPage: async function (request, response) {
@@ -32,7 +32,7 @@ module.exports = {
 		let studentId = request.params.id;
 		await db.editStudentById(studentId, request.body);
 
-		response.redirect('/');
+		response.redirect('/student');
 	},
 
 	deleteStudent: async function (request, response) {
@@ -42,7 +42,7 @@ module.exports = {
 		studentObj['status'] = 'inactive';
 		await db.editStudentById(studentId, studentObj);
 
-		response.redirect('/');
+		response.redirect('/student');
 	},
 
 	reactivateStudent: async function (request, response) {
@@ -52,6 +52,6 @@ module.exports = {
 		studentObj['status'] = 'active';
 		await db.editStudentById(studentId, studentObj);
 
-		response.redirect('/');
+		response.redirect('/student');
 	}
 };

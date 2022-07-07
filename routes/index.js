@@ -1,7 +1,7 @@
 const db = require("../db");
 
 module.exports = {
-	getHomePage: async function (request, response) {
+	getStudentPage: async function (request, response) {
 		let studentList = await db.getStudentsList();
 		let result = [];
 		for (let i = 0; i < studentList.length; i++) {
@@ -14,6 +14,9 @@ module.exports = {
 			students: result
 		}
 
-		response.render('index', renderData);
-	}
+		response.render('student', renderData);
+	},
+	getHomePage: function (request, response) {
+		response.render('index');
+	},
 };
