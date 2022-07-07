@@ -13,7 +13,7 @@ module.exports = {
 		let renderData = {
 			students: result
 		}
-
+		console.log(renderData);
 		response.render('index', renderData);
 	}
 };
