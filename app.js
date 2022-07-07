@@ -42,6 +42,19 @@ app.get('/next-grade', student.increaseStudentGrades);
 app.get('/filter/:grade', index.filter);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+
+app.post('/addImage',async(req, res, next) => {
+  const {img} = req.body;
+  const Student = new Student();
+  saveImage(Student,img);
+  try{
+    const newStudent = await Student.save();
+    res.redirect(req.path)
+  }catch(err){
+    console.log(err);
+  }
+});
+
 function saveImage(Student, imgEncoded) {
   if(imgEncoded == null) return;
 
