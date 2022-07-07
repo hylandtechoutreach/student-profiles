@@ -1,5 +1,7 @@
 <%- include('partials/header') %>
 <div class="container">
+<title>Edit Student</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 <% if (add || student) { %>
 	<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>">
 		<div class="form-row">
@@ -53,6 +55,21 @@
 				</select>
 			</div>
 	</div>
+	<br><br>
+		<div class="ui container">
+			<form action="/addImage" class ="ui form" method = "POST">
+				<div class="ui field">
+					<label for="img">Upload Image Of Yourself</label>
+					<br><br>
+					<input type="file"name="img"id="">
+				</div>
+				<div class="ui field">
+				</div>
+			</form>
+		</div>	
+		</form>
+		</div>
+	  </div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 	</form>
 	<% if (student.status == "inactive") { %>
