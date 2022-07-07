@@ -41,5 +41,16 @@ module.exports = {
     await Student.findOneAndRemove({
       _id: studentId
     });
+	},
+  sortList: async function() {
+    let student = await this.getStudentsList;
+    for(let x =0; x<student.length; x++) {
+      let temp = student[x+1].first_name;
+    if (student[x].first_name.localeCompare(temp) == 1) {
+      student[x+1].first_name = student[x].first_name;
+      student[x].first_name = temp
+      x=0;
+    }
+    }
+    }
 	}
-}

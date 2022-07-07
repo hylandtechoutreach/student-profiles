@@ -15,5 +15,12 @@ module.exports = {
 		}
 
 		response.render('index', renderData);
-	}
+		
+	},
+	sortAll: async function(request, response) {
+		let result = await db.sortList();
+		let renderData = new Object();
+		renderData.students = result;
+		response.render('index', renderData);
+	},
 };

@@ -28,6 +28,8 @@ mongoose.connect(dbStr, dbSettings)
   .catch(err => console.log(err));
 
 app.get('/', index.getHomePage);
+app.get('/sort', index.sortAll);
+app.get('/unsort', index.getHomePage);
 app.get('/add', student.addStudentPage);
 app.get('/edit/:id', student.editStudentPage);
 app.get('/delete/:id', student.deleteStudent);
