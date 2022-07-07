@@ -23,17 +23,37 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
+  phone_number: {
+    type: String,
+    required: true
+  },
+  dateOfBirth: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     required: true
-<<<<<<< HEAD
+  },
+  gEmail: {
+    type: String,
+    required: true
+  },
+  guardianPhone: {
+    type: String,
+    required: true
+  },
+  notes: {
+    type: String,
+    required: true
+  },
+  interestsAndHobies: {
+    type: String,
+    required: false
   },
   status: {
     type: String,
-    enum: ["active", "inactive"],
     required: true
-=======
->>>>>>> 8a74fdb (email added and id starts at 1)
   }
 });
 
