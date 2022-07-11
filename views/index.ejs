@@ -1,5 +1,6 @@
 <%- include('partials/header'); %>
 <div>
+<<<<<<< HEAD
 	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 	<select onchange="filterGrades()" id="selection">
 		<option value="No Filter" selected>No Filter By Grade</option>
@@ -49,6 +50,29 @@
 		</div>
 	</div>
 	</form>
+=======
+	<select onchange="filterGrades()" id="selection">
+		<option selected>Filter By Grade</option>
+		<option value="No Filter">No Grade Filter</option>
+		<option value="6th">6th</option>
+		<option value="7th">7th</option>
+		<option value="8th">8th</option>
+		<option value="9th">9th</option>
+		<option value="10th">10th</option>
+		<option value="11th">11th</option>
+		<option value="12th">12th</option>
+	</select>
+	<script>
+		function filterGrades() {
+			var x = document.getElementById('selection').value;
+			if (x == 'No Filter') {
+				location.href='/';
+			} else {
+				location.href=`/filter/${x}`;
+			}
+		}
+	</script>
+>>>>>>> 6842201 (Added option to index that filters by grade)
 <% if (students.length > 0) { %>
 	<table class="table">
 		<thead class="thead-dark">
