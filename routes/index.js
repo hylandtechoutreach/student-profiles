@@ -37,4 +37,21 @@ module.exports = {
 		
 		response.render('index', renderData);
 	},
+
+	filter: async function (request, response) {
+		let studentList = await db.getStudentsList();
+		let filteredGrade = request.params.grade;
+		let array = [];
+		for (let i = 0; i < studentList.length; i++) {
+			if (studentList[i].grade == filteredGrade) {
+				array.push(studentList[i]);
+			}
+		}
+
+		let renderData = {
+			students: array
+		}
+
+		response.render('index', renderData);
+	}
 };
