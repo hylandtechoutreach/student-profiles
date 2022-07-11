@@ -43,16 +43,24 @@ module.exports = {
 	filter: async function (request, response) {
 		let studentList = await db.getStudentsList();
 		let filteredGrade = request.params.grade;
-		let array = [];
+
+		let activeStudents = [];
 		for (let i = 0; i < studentList.length; i++) {
-			if (studentList[i].grade == filteredGrade) {
-				array.push(studentList[i]);
+			if (studentList[i].status == "active") {
+				activeStudents.push(studentList[i]);
+			}
+		}
+
+		let filteredStudents = [];
+		for (let i = 0; i < activeStudents.length; i++) {
+			if (activeStudents[i].grade == filteredGrade) {
+				filteredStudents.push(activeStudents[i]);
 			}
 		}
 
 		let renderData = {
 			path: filteredGrade,
-			students: array
+			students: filteredStudents
 		}
 
 		response.render('index', renderData);
