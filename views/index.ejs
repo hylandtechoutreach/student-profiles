@@ -1,5 +1,15 @@
 <%- include('partials/header'); %>
 <div>
+<<<<<<< HEAD
+=======
+	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+	<select onchange="filterGrades()" id="selection">
+		<option value="No Filter" selected>No Filter By Grade</option>
+		<% for (let i = 0; i < grades.length; i++) { %>
+			<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
+		<% } %>
+	</select>
+>>>>>>> e2f9c64 (Filter selection has current filter as selected)
 	<script>
 		function filterGrades() {
 			let filter = document.getElementById('grade-filter').value;
