@@ -29,14 +29,14 @@
 			}
 		}
 	</script>
-	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"]; %>
 	<form>
 	<div class="row">
 		<div class="col-md-2">
 			<input type="text" id="student-filter" oninput="filterStudents()" class="float-right form-control" placeholder="Filter by name">
 		</div>
 		<div class="col-md-2">
-			<select onchange="filterGrades()" id="grade-filter">
+			<select onchange="filterGrades()" id="grade-filter" class="btn btn-secondary dropdown-toggle">
 				<option value="No Filter" selected>No Filter By Grade</option>
 				<% for (let i = 0; i < grades.length; i++) { %>
 					<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
