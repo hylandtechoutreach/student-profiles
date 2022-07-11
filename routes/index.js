@@ -147,6 +147,7 @@ module.exports = {
 		}));
 
 		let renderData = {
+			path: 'none',
 			students: activeStudents
 		}
 		
@@ -164,6 +165,7 @@ module.exports = {
 		}
 
 		let renderData = {
+			path: filteredGrade,
 			students: array
 		}
 
