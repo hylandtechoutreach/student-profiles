@@ -24,6 +24,7 @@ module.exports = {
 		let renderData = {
 			path: 'none',
 			students: activeStudents
+<<<<<<< HEAD
 		}
 
 		response.render('index', renderData);
@@ -76,6 +77,8 @@ module.exports = {
 		let renderData = {
 			path: filteredGrade,
 			students: filteredStudents
+=======
+>>>>>>> 611cb12 (Now always alphabetical, can now search for name)
 		}
 
 		response.render('index', renderData);
@@ -120,6 +123,10 @@ module.exports = {
 				filteredStudents.push(activeStudents[i]);
 			}
 		}
+
+		filteredStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'fr', {
+			ignorePunctuation: true
+		}));
 
 		let renderData = {
 			path: filteredGrade,
