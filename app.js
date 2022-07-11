@@ -36,7 +36,10 @@ app.get('/add', student.addStudentPage);
 app.get('/edit/:id', student.editStudentPage);
 app.get('/delete/:id', student.deleteStudent);
 app.get('/reactivate/:id', student.reactivateStudent);
+<<<<<<< HEAD
 app.get('/next-grade', student.increaseStudentGrades);
+=======
+>>>>>>> 7ad4896 (Added option to index that filters by grade)
 app.get('/filter/:grade', index.filter);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
