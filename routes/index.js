@@ -3,16 +3,20 @@ const db = require("../db");
 module.exports = {
 	getHomePage: async function (request, response) {
 		let studentList = await db.getStudentsList();
-		let result = [];
+		let activeStudents = [];
 		for (let i = 0; i < studentList.length; i++) {
 			if (studentList[i].status == "active") {
-				result.push(studentList[i]);
+				activeStudents.push(studentList[i]);
 			}
 		}
 
+		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'fr', {
+			ignorePunctuation: true
+		}));
+
 		let renderData = {
 			path: 'none',
-			students: result
+			students: activeStudents
 		}
 
 		response.render('index', renderData);
@@ -57,6 +61,10 @@ module.exports = {
 				filteredStudents.push(activeStudents[i]);
 			}
 		}
+
+		filteredStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'fr', {
+			ignorePunctuation: true
+		}));
 
 		let renderData = {
 			path: filteredGrade,
