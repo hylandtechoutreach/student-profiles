@@ -2,6 +2,7 @@
 <div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 	<select onchange="filterGrades()" id="selection">
 		<option value="No Filter" selected>No Filter By Grade</option>
@@ -9,10 +10,13 @@
 			<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
 		<% } %>
 	</select>
+=======
+>>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
 	<script>
 		function filterGrades() {
 			let filter = document.getElementById('grade-filter').value;
 			if (filter == 'No Filter') {
+<<<<<<< HEAD
 				location.href='/';
 			} else {
 				location.href=`/filter/${filter}`;
@@ -65,13 +69,50 @@
 		function filterGrades() {
 			var x = document.getElementById('selection').value;
 			if (x == 'No Filter') {
+=======
+>>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
 				location.href='/';
 			} else {
-				location.href=`/filter/${x}`;
+				location.href=`/filter/${filter}`;
+			}
+		}
+
+		function filterStudents() {
+			let filter = document.getElementById('student-filter').value;
+			let studentRows = document.getElementsByTagName('tr');
+
+			for (let i = 1; i < studentRows.length; i++) {
+				let studentNameNotSeparated = studentRows[i].id.toLowerCase();
+				let studentName = studentNameNotSeparated.split('-')[0] + ' ' + studentNameNotSeparated.split('-')[1]; //Formats name as "first_name last_name", instead of "first_name-last_name"
+				
+				if (studentName.includes(filter.toLowerCase())) {
+					document.getElementById(studentRows[i].id).hidden = false;
+				} else {
+					document.getElementById(studentRows[i].id).hidden = true;
+				}
 			}
 		}
 	</script>
+<<<<<<< HEAD
 >>>>>>> 6842201 (Added option to index that filters by grade)
+=======
+	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+	<form>
+	<div class="row">
+		<div class="col-md-2">
+			<input type="text" id="student-filter" oninput="filterStudents()" class="float-right form-control" placeholder="Filter by name">
+		</div>
+		<div class="col-md-2">
+			<select onchange="filterGrades()" id="grade-filter">
+				<option value="No Filter" selected>No Filter By Grade</option>
+				<% for (let i = 0; i < grades.length; i++) { %>
+					<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
+				<% } %>
+			</select>
+		</div>
+	</div>
+	</form>
+>>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
 <% if (students.length > 0) { %>
 	<table class="table">
 		<thead class="thead-dark">
