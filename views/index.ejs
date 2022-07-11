@@ -1,6 +1,7 @@
 <%- include('partials/header'); %>
 <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 	<select onchange="filterGrades()" id="selection">
@@ -10,6 +11,8 @@
 		<% } %>
 	</select>
 >>>>>>> e2f9c64 (Filter selection has current filter as selected)
+=======
+>>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
 	<script>
 		function filterGrades() {
 			let filter = document.getElementById('grade-filter').value;
@@ -36,15 +39,24 @@
 			}
 		}
 	</script>
+<<<<<<< HEAD
 	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"]; %>
+=======
+	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+>>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
 	<form>
 	<div class="row">
 		<div class="col-md-2">
 			<input type="text" id="student-filter" oninput="filterStudents()" class="float-right form-control" placeholder="Filter by name">
 		</div>
 		<div class="col-md-2">
+<<<<<<< HEAD
 			<select onchange="filterGrades()" id="grade-filter" class="btn btn-secondary dropdown-toggle">
 				<option value="No Filter" selected>Filter By Grade</option>
+=======
+			<select onchange="filterGrades()" id="grade-filter">
+				<option value="No Filter" selected>No Filter By Grade</option>
+>>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
 				<% for (let i = 0; i < grades.length; i++) { %>
 					<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
 				<% } %>
