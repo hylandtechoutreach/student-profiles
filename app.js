@@ -1,6 +1,10 @@
 const express = require('express');
 const mongoose = require("mongoose");
 const configKeys = require("./config/keys");
+const cors = require('cors');
+var corsOptions = {
+  origin: 'http://localhost:8081'
+}
 
 const hostname = 'localhost';
 const port = 8080;
@@ -15,6 +19,7 @@ let app = express();
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors(corsOptions));
 
 const dbStr = configKeys.mongoURI;
 const dbSettings = {
@@ -25,9 +30,25 @@ const dbSettings = {
 }
 
 // connect to mongodb
-mongoose.connect(dbStr, dbSettings)
+/*mongoose.connect(dbStr, dbSettings)
   .then(() => console.log("MongoDB successfully connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.log(err));*/
+
+const db = require('./app/models');
+const Role = db.role;
+db.mongoose
+.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => {
+  console.log('Successfully connected to MongoDB');
+  initial();
+})
+.catch(err => {
+  console.error('Connection Error', err);
+  process.exit();
+});
 
 app.get('/', index.getHomePage);
 app.get('/sort', index.sortFirstNames);
