@@ -67,6 +67,7 @@
 <<<<<<< HEAD
 			<select onchange="filterGrades()" id="grade-filter" class="btn btn-secondary dropdown-toggle">
 				<option value="No Filter" selected>Filter By Grade</option>
+<<<<<<< HEAD
 =======
 			<select onchange="filterGrades()" id="grade-filter">
 =======
@@ -74,6 +75,8 @@
 >>>>>>> 1346c72 (Changed how grade filter button looks)
 				<option value="No Filter" selected>No Filter By Grade</option>
 >>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
+=======
+>>>>>>> a4ca657 (Changed "No Filter By Grade" to "Filter By Grade")
 				<% for (let i = 0; i < grades.length; i++) { %>
 					<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
 				<% } %>
