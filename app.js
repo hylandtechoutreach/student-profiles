@@ -26,6 +26,7 @@ const dbSettings = {
   dbName: "student_profiles",
   useFindAndModify: false
 }
+//const dbConfig = require('./app/config/db.config');
 
 // connect to mongodb
 /*mongoose.connect(dbStr, dbSettings)
@@ -56,6 +57,9 @@ app.get('/reactivate/:id', student.reactivateStudent);
 app.get('/next-grade', student.increaseStudentGrades);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+require('./app/routes/auth.routes')(app);
+require('./app/routes/user.routes')(app);
+
 
 function listenCallback() {
 	console.log(`Server Running on http://${hostname}:${port}`);
