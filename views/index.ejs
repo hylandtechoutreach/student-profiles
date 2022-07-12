@@ -37,7 +37,7 @@
 		</div>
 		<div class="col-md-2">
 			<select onchange="filterGrades()" id="grade-filter" class="btn btn-secondary dropdown-toggle">
-				<option value="No Filter" selected>No Filter By Grade</option>
+				<option value="No Filter" selected>Filter By Grade</option>
 				<% for (let i = 0; i < grades.length; i++) { %>
 					<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
 				<% } %>
