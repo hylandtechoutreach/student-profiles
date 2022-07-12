@@ -30,6 +30,7 @@ const dbSettings = {
   dbName: "student_profiles",
   useFindAndModify: false
 }
+//const dbConfig = require('./app/config/db.config');
 
 // connect to mongodb
 mongoose.connect(dbStr, dbSettings)
