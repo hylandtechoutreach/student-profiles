@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<form method="post" action="/api/auth/signup">
+    <input type="text" name="username" placeholder="Username">
+    <input type="text" name="password" placeholder="Password">
+    <input type="text" name="email" placeholder="Email">
+    <select name="roles" multiple>
+        <option value="user">User</option>
+        <option value="moderator">Moderator</option>
+        <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
+</div>
+</body>
+</html>
