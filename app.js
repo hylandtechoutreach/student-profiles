@@ -49,9 +49,15 @@ app.get('/filter/:grade', index.filter);
 app.get('/view/:id', student.viewStudentPage);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
-
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
+app.get('/signin', (req, res) => {
+  res.render('signin');
+});
 
 require('./auth/routes/auth.routes')(app);
 require('./auth/routes/user.routes')(app);
