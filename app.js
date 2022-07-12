@@ -31,13 +31,16 @@ const dbSettings = {
 //const dbConfig = require('./app/config/db.config');
 
 // connect to mongodb
-/*mongoose.connect(dbStr, dbSettings)
-  .then(() => console.log("MongoDB successfully connected"))
-  .catch(err => console.log(err));*/
+mongoose.connect(dbStr, dbSettings)
+  .then(() => {
+    console.log("MongoDB successfully connected");
+    initial();
+  })
+  .catch(err => console.log(err));
 
 const db = require('./app/models');
 const Role = db.role;
-db.mongoose
+/*db.mongoose
 .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -49,7 +52,7 @@ db.mongoose
 .catch(err => {
   console.error('Connection Error', err);
   process.exit();
-});
+});*/
 
 app.get('/', index.getHomePage);
 app.get('/sort', index.sortFirstNames);
@@ -62,9 +65,15 @@ app.get('/next-grade', student.increaseStudentGrades);
 app.get('/filter/:grade', index.filter);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
-
+app.get('/signup', (req, res) => {
+  res.render('signup');
+});
+app.get('/signin', (req, res) => {
+  res.render('signin');
+});
 
 app.get('/program_delete/:id', program.deleteProgram);
 app.get('/program_reactivate/:id', program.reactivateProgram);
