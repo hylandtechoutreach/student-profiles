@@ -51,10 +51,10 @@ app.post('/edit/:id', student.editStudent);
 
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
-app.get('/signup', (req, res) => {
+app.get('/api/auth/signup', (req, res) => {
   res.render('signup');
 });
-app.get('/signin', (req, res) => {
+app.get('/api/auth/signin', (req, res) => {
   res.render('signin');
 });
 
