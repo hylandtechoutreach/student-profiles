@@ -33,12 +33,8 @@ const dbSettings = {
 mongoose.connect(dbStr, dbSettings)
   .then(() => {
     console.log("MongoDB successfully connected");
-    initial();
   })
   .catch(err => console.log(err));
-
-const db = require('./auth/models');
-const Role = db.role;
 
 app.get('/', index.getHomePage);
 app.get('/sort', index.sortFirstNames);
