@@ -89,8 +89,8 @@ exports.signin = (req, res) => {
         });
       }
 
-      var token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: 86400 // 24 hours
+      let token = jwt.sign({ id: user.id }, config.secret, {
+        expiresIn: '1h'   //12:25
       });
 
       var authorities = [];
@@ -98,6 +98,12 @@ exports.signin = (req, res) => {
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
       }
+
+      //res.render('user-content', { token: token });
+      res.cookie('token', token, {
+        httpOnly: true
+      });
+      
       res.status(200).send({
         id: user._id,
         username: user.username,
