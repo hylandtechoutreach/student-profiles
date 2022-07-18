@@ -28,7 +28,6 @@ const dbSettings = {
   dbName: "student_profiles",
   useFindAndModify: false
 }
-//const dbConfig = require('./app/config/db.config');
 
 // connect to mongodb
 mongoose.connect(dbStr, dbSettings)
@@ -49,8 +48,8 @@ app.get('/filter/:grade', index.filter);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
 
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./auth/routes/auth.routes')(app);
+require('./auth/routes/user.routes')(app);
 app.get('/api/auth/signup', (req, res) => {
   res.render('signup');
 });
