@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.user;
-const Role = db.role;
 
 verifyToken = (req, res, next) => {
   //console.log(req.headers);
@@ -27,70 +26,44 @@ verifyToken = (req, res, next) => {
 };
 
 isAdmin = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
+  let user = User.findById(req.userId).exec((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
-    Role.find(
-      {
-        _id: { $in: user.roles }
-      },
-      (err, roles) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === "admin") {
-            next();
-            return;
-          }
-        }
-
-        res.status(403).send({ message: "Require Admin Role!" });
-        return;
-      }
-    );
+    if (user.userType == 'admin') {
+      next();
+      return;
+    } else {
+      res.status(403).send({ message: 'Admin role required!' });
+      return;
+    }
   });
 };
 
-isModerator = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
+isStudentOrAdmin = (req, res, next) => {
+  let user = User.findById(req.userId).exec((err, user) => {
     if (err) {
       res.status(500).send({ message: err });
       return;
     }
 
-    Role.find(
-      {
-        _id: { $in: user.roles }
-      },
-      (err, roles) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === "moderator") {
-            next();
-            return;
-          }
-        }
-
-        res.status(403).send({ message: "Require Moderator Role!" });
-        return;
-      }
-    );
+    if (user.userType == 'admin' || user.userType == 'student') {
+      next();
+      return;
+    } else {
+      res.status(403).send({ message: 'Student role required!' });
+      return;
+    }
   });
 };
+
+//Can probably make one function that takes an array of authorized roles as an argument
 
 const authJwt = {
   verifyToken,
   isAdmin,
-  isModerator
+  isStudentOrAdmin
 };
 module.exports = authJwt;
