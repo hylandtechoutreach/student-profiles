@@ -28,7 +28,6 @@ const dbSettings = {
   dbName: "student_profiles",
   useFindAndModify: false
 }
-//const dbConfig = require('./app/config/db.config');
 
 // connect to mongodb
 mongoose.connect(dbStr, dbSettings)
@@ -38,21 +37,8 @@ mongoose.connect(dbStr, dbSettings)
   })
   .catch(err => console.log(err));
 
-const db = require('./app/models');
+const db = require('./auth/models');
 const Role = db.role;
-/*db.mongoose
-.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => {
-  console.log('Successfully connected to MongoDB');
-  initial();
-})
-.catch(err => {
-  console.error('Connection Error', err);
-  process.exit();
-});*/
 
 app.get('/', index.getHomePage);
 app.get('/sort', index.sortFirstNames);
@@ -66,8 +52,8 @@ app.get('/filter/:grade', index.filter);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
 
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./auth/routes/auth.routes')(app);
+require('./auth/routes/user.routes')(app);
 app.get('/api/auth/signup', (req, res) => {
   res.render('signup');
 });
