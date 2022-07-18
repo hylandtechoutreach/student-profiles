@@ -103,13 +103,15 @@ exports.signin = (req, res) => {
       res.cookie('token', token, {
         httpOnly: true
       });
+
+      res.redirect('/');
       
-      res.status(200).send({
+      /*res.status(200).send({
         id: user._id,
         username: user.username,
         email: user.email,
         roles: authorities,
         accessToken: token
-      });
+      });*/
     });
 };
