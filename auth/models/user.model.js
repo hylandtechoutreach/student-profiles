@@ -14,14 +14,11 @@ const User = mongoose.model(
             type: String,
             required: true
         },
-        roles: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Role"
-            }
-        ]
+        userType: {
+            type: String,
+            enum: ['unregistered', 'student', 'admin'],
+            default: 'unregistered'
+        }
     })
 );
 module.exports = User;
-
-//I feel like this will eventually be merged w/ student.js model
