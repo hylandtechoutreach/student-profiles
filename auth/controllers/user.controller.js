@@ -1,15 +1,11 @@
 exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
+    res.render('unregistered-content');
   };
   
-  exports.userBoard = (req, res) => {
-    res.render('user-content');
+  exports.studentBoard = (req, res) => {
+    res.render('student-content');
   };
   
   exports.adminBoard = (req, res) => {
     res.render('admin-content');
-  };
-  
-  exports.moderatorBoard = (req, res) => {
-    res.render('mod-content');
   };
