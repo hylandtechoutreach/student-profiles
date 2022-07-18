@@ -10,14 +10,12 @@ module.exports = function(app) {
     next();
   });
 
-  app.get("/api/test/all", controller.allAccess);
-
-  app.get("/content/user", [authJwt.verifyToken], controller.userBoard);
+  app.get("/content/all", [authJwt.verifyToken], controller.allAccess);
 
   app.get(
-    "/content/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
+    "/content/student",
+    [authJwt.verifyToken, authJwt.isStudentOrAdmin],
+    controller.studentBoard
   );
 
   app.get(
