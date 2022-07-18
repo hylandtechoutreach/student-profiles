@@ -20,6 +20,15 @@ exports.signup = (req, res) => {
       return;
     }
 
+    //Automatically signs user in after signup
+    let token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: '1h'
+    });
+
+    res.cookie('token', token, {
+      httpOnly: true
+    });
+
     if (req.body.userType) {
       res.send({ message: "User was registered successfully!" });
     }
@@ -52,7 +61,7 @@ exports.signin = (req, res) => {
       }
 
       let token = jwt.sign({ id: user.id }, config.secret, {
-        expiresIn: '1h'   //12:25
+        expiresIn: '1h'
       });
 
       res.cookie('token', token, {
