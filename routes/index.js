@@ -44,6 +44,9 @@ module.exports = {
 			path: 'none',
 			students: activeStudents
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> baf592c (rebased)
 		}
 
 		response.render('index', renderData);
@@ -96,6 +99,7 @@ module.exports = {
 		let renderData = {
 			path: filteredGrade,
 			students: filteredStudents
+<<<<<<< HEAD
 =======
 >>>>>>> 611cb12 (Now always alphabetical, can now search for name)
 		}
@@ -130,6 +134,8 @@ module.exports = {
 			students: filteredStudents
 =======
 >>>>>>> 4f81e27 (Now always alphabetical, can now search for name)
+=======
+>>>>>>> baf592c (rebased)
 		}
 
 		response.render('index', renderData);
