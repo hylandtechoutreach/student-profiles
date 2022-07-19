@@ -70,7 +70,14 @@
 					<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="password">Password</label>
+				<input type="text" name="password" class="form-control">
+			</div>
+		</div>
+		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 	</form>
 	<% if (student.status == "inactive") { %>
 		<a href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
