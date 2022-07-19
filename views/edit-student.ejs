@@ -49,6 +49,7 @@
 				<label for="grade">Grade</label>
 				<select name="grade" class="form-control" required>
 <<<<<<< HEAD
+<<<<<<< HEAD
 					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 =======
 <<<<<<< HEAD
@@ -57,6 +58,9 @@
 					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 >>>>>>> 8f2ee19 (Made grades and schools into arrays that were iterated through to make them options)
 >>>>>>> 0f4135c (Made grades and schools into arrays that were iterated through to make them options)
+=======
+					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+>>>>>>> 4374056 (rebased)
 					<% for (let i = 0; i < grades.length; i++) { %>
 						<option <% if (student.grade == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
