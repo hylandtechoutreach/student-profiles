@@ -1,4 +1,8 @@
 const db = require("../database/db");
+const jwt = require('jsonwebtoken');
+const userDb = require("../auth/models");
+const User = userDb.user;
+const config = require('../auth/config/auth.config');
 
 module.exports = {
 	getHomePage: async function (request, response) {
@@ -13,12 +17,44 @@ module.exports = {
 			ignorePunctuation: true
 		}));
 
-		let renderData = {
-			path: 'none',
-			students: activeStudents
-		}
-
-		response.render('index', renderData);
+		let token = request.headers['cookie'].substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			console.log(':)');
+			if (err) {
+				console.log(':(');
+			  return res.redirect('/api/auth/signin');
+			}
+			let user = User.findById(decoded.id).exec((err, user) => {
+				console.log(decoded.id)
+				if (user.userType == 'admin') {
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						isAdmin: true,
+						isStudent: false
+					}
+			
+					return response.render('index', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId
+					}
+			
+					return response.render('index', renderData);
+				} else {
+					let renderData = {
+						path: 'none',
+						student: activeStudents,
+						isAdmin: false,
+						isStudent: false
+					}
+				}
+			});
+		});
 		
 	},
 
