@@ -17,8 +17,6 @@ module.exports = {
 		let renderData = {
 			path: 'none',
 			students: activeStudents
-<<<<<<< HEAD
-<<<<<<< HEAD
 		}
 
 		response.render('index', renderData);
@@ -71,10 +69,6 @@ module.exports = {
 		let renderData = {
 			path: filteredGrade,
 			students: filteredStudents
-=======
->>>>>>> 611cb12 (Now always alphabetical, can now search for name)
-=======
->>>>>>> 391f3da33f534b9399e12b867851703f532e2fb0
 		}
 
 		response.render('index', renderData);
