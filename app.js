@@ -65,6 +65,7 @@ function saveImage(Student, imgEncoded) {
   }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 app.post('/addImage',async(req, res, next) => {
   const {img} = req.body;
@@ -98,6 +99,8 @@ app.post('/program_add', program.addProgram);
 app.post('/program_edit/:id', program.editProgram);
 =======
 >>>>>>> 459cd9c (not working, something in index ??)
+=======
+>>>>>>> 7efe7b299ce90de1ca7c0dcc551898078e005053
 
 function listenCallback() {
 	console.log(`Server Running on http://${hostname}:${port}`);
