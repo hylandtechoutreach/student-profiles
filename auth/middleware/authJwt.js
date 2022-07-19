@@ -4,12 +4,10 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  //console.log(req.headers);
-  let token = req.headers['cookie'] || req.headers["x-access-token"] || req.headers['authorization'] || req.query.token || req.body.token;
-  //console.log(token);
+  let token = req.headers['cookie'] //|| req.headers["x-access-token"] || req.headers['authorization'] || req.query.token || req.body.token;
 
   if (!token) {
-    return res.status(401).send({ message: "No token provided!" });
+    return res.redirect('/api/auth/signin');
   }
   
   if (token.substring(0, 6) == 'token=') {
