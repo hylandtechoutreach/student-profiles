@@ -17,7 +17,12 @@ const User = mongoose.model(
         userType: {
             type: String,
             enum: ['unregistered', 'student', 'admin'],
-            default: 'unregistered'
+            default: 'unregistered',
+            required: true
+        },
+        studentId: {
+            type: String,
+            required: false
         }
     })
 );

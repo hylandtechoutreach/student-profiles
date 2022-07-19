@@ -1,4 +1,10 @@
 const Student = require("../models/Student");
+const userDb = require('../auth/models');
+const User = userDb.user;
+
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+const config = require("../auth/config/auth.config");
 
 module.exports = {
 	addStudent: async function(studentObj) {
@@ -18,14 +24,30 @@ module.exports = {
         interestsAndHobies: studentObj.interestsAndHobies,
         id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
         program_list: studentObj.program_list,
-        status: "active",
+        status: "active"
+      });
+      await newStudent.save();
+
+      const user = new User({
+        username: newStudent.first_name,
+        email: newStudent.email,
+        password: bcrypt.hashSync(studentObj.password, 8),
+        userType: 'student',
+        studentId: newStudent.id
+        });
       
-    });
-    await newStudent.save();
-	}},
+        user.save((err, user) => {
+        if (err) {
+          return;
+        }
+      });
+  }
+	},
+
   getLastNameCount: async function(lastName) {
     return await Student.find({last_name : lastName}).countDocuments() + 1 
 	},
+
 	getStudentsList: async function() {
 	  return await Student.find({});
 	},
