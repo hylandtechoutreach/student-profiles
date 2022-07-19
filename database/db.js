@@ -6,6 +6,7 @@ module.exports = {
     .match(
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     )) {
+<<<<<<< HEAD:database/db.js
     const newStudent = new Student({
       first_name: studentObj.first_name,
       last_name: studentObj.last_name,
@@ -23,6 +24,19 @@ module.exports = {
       
     });
     await newStudent.save();
+=======
+      const newStudent = new Student({
+        first_name: studentObj.first_name,
+        last_name: studentObj.last_name,
+        grade: studentObj.grade,
+        school: studentObj.school,
+        email: studentObj.email,
+        id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
+        status: "active"
+      });
+
+      await newStudent.save();
+>>>>>>> 93a84c8 (backend email validation):db.js
   }
 	},
   getLastNameCount: async function(lastName) {
