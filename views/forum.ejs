@@ -1,0 +1,24 @@
+<%- include('partials/header'); %>
+<div>
+<% if (messages.length > 0) { %>
+	<table class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th>message</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% for (let i = 0; i < messages.length; i++) { %>
+			<tr>
+				<td><%= messages[i].messages %></td>
+			</tr>
+		<% } %>
+		</tbody>
+	</table>
+<% } else { %>
+	<p class="text-center">No messages found.</p>
+<% } %>
+</div>
+</div>
+</body>
+</html>
