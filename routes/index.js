@@ -17,15 +17,19 @@ module.exports = {
 			ignorePunctuation: true
 		}));
 
-		let token = request.headers['cookie'].substring(6);
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
+
+		if (!token) {
+			response.redirect('./api/auth/signin');
+		}
+
+		token = token.substring(6);
 		jwt.verify(token, config.secret, (err, decoded) => {
-			console.log(':)');
 			if (err) {
-				console.log(':(');
-			  return res.redirect('/api/auth/signin');
+			  return response.redirect('/api/auth/signin');
 			}
 			let user = User.findById(decoded.id).exec((err, user) => {
-				console.log(decoded.id)
 				if (user.userType == 'admin') {
 					let renderData = {
 						path: 'none',
@@ -48,35 +52,16 @@ module.exports = {
 				} else {
 					let renderData = {
 						path: 'none',
-						student: activeStudents,
+						students: activeStudents,
 						isAdmin: false,
 						isStudent: false
 					}
+
+					response.render('index', renderData);
 				}
 			});
 		});
 		
-	},
-
-	sortFirstNames: async function(request, response) {
-		let studentList = await db.getStudentsList();
-		let activeStudents = [];
-		for (let i = 0; i < studentList.length; i++) {
-			if (studentList[i].status == "active") {
-				activeStudents.push(studentList[i]);
-			}
-		}
-
-		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'fr', {
-			ignorePunctuation: true
-		}));
-
-		let renderData = {
-			path: 'none',
-			students: activeStudents
-		}
-		
-		response.render('index', renderData);
 	},
 
 	filter: async function (request, response) {
