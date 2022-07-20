@@ -42,7 +42,7 @@ require('./auth/routes/auth.routes')(app);
 app.get('/api/auth/signup', auth.getSignupPage);
 app.get('/api/auth/signin', auth.getSigninPage);
 
-app.get('/', [authJwt.verifyToken] ,index.getHomePage);
+app.get('/', [authJwt.verifyToken, authJwt.isStudentOrAdmin] ,index.getHomePage);
 app.get('/add', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.addStudentPage);
 app.get('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudentPage);
 app.get('/delete/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.deleteStudent);
