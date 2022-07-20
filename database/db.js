@@ -28,19 +28,19 @@ module.exports = {
       });
       await newStudent.save();
 
-      const user = new User({
-        username: newStudent.first_name,
-        email: newStudent.email,
-        password: bcrypt.hashSync(studentObj.password, 8),
-        userType: 'student',
-        studentId: newStudent.id
-        });
-      
-        user.save((err, user) => {
-        if (err) {
-          return;
-        }
-      });
+    const newUser = new User({
+			username: newStudent.first_name,
+			email: newStudent.email,
+			password: bcrypt.hashSync(studentObj.password, 8),
+			userType: 'student',
+      studentId: newStudent.id
+		  });
+		
+		  newUser.save((err, user) => {
+			if (err) {
+			  return;
+			}
+    });
   }
 	},
 
