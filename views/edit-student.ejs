@@ -1,7 +1,5 @@
 <%- include('partials/header') %>
 <div class="container">
-<title>Edit Student</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
 <% if (add || student) { %>
 	<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>">
 		<div class="form-row">
@@ -72,79 +70,36 @@
 					<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
 				</div>
 			</div>
-<<<<<<< HEAD
 			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
-=======
-	</div>
-	<br><br>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7efe7b299ce90de1ca7c0dcc551898078e005053
 		<div class="ui-container">
 			<form action="/<%= add ? "/addImage" : `edit/${student.id}` %>" class ="ui-form" method = "POST">
 				<div class="ui-field">
 					<label for="img">Upload Image Of Yourself</label>
 					<br><br>
 					<input type="file" name="img">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 7efe7b299ce90de1ca7c0dcc551898078e005053
 				</div>
 				<div class="ui-field">
 				</div>
 				<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 459cd9c (not working, something in index ??)
 		<div class="ui container">
 			<form action="/addImage" class ="ui form" method = "POST">
 				<div class="ui field">
-=======
 		<div class="ui-container">
 			<form action="/<%= add ? "/addImage" : `edit/${student.id}` %>" class ="ui-form" method = "POST">
 				<div class="ui-field">
->>>>>>> a67bb90 (Fixed bug where students wasn't defined in index.ejs)
 					<label for="img">Upload Image Of Yourself</label>
 					<br><br>
 					<input type="file" name="img" value="<%= student.img %>">
-=======
->>>>>>> 82f6303 (Now saves previous img when editing student)
 				</div>
 				<div class="ui-field">
 				</div>
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> a833067 (not working, something in index ??)
-=======
->>>>>>> 459cd9c (not working, something in index ??)
-=======
 				<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
->>>>>>> a67bb90 (Fixed bug where students wasn't defined in index.ejs)
-=======
->>>>>>> 7efe7b299ce90de1ca7c0dcc551898078e005053
 			</form>
 		</div>	
 		</form>
 		</div>
 	  </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 459cd9c (not working, something in index ??)
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
->>>>>>> a833067 (not working, something in index ??)
-=======
->>>>>>> a67bb90 (Fixed bug where students wasn't defined in index.ejs)
-=======
->>>>>>> 7efe7b299ce90de1ca7c0dcc551898078e005053
 	</form>
 	<% if (student.status == "inactive") { %>
 		<a href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>

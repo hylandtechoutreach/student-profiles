@@ -31,14 +31,7 @@ module.exports = {
 
 	editStudent: async function (request, response) {
 		let studentId = request.params.id;
-		let studentObj = request.body;
-
-		if (studentObj.img == '') {
-			let student = await db.getStudentById(studentId);
-			studentObj['img'] = student.img;
-		}
-		
-		await db.editStudentById(studentId, studentObj);
+		await db.editStudentById(studentId, request.body);
 
 		response.redirect('/');
 	},
