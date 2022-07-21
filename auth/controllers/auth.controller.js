@@ -30,9 +30,11 @@ exports.signup = (req, res) => {
     });
 
     if (req.body.userType) {
-      res.send({ message: "User was registered successfully!" });
+      res.redirect('/api/auth/signin')
+      // res.send({ message: "User was registered successfully!" });
     }
   });
+    
 };
 
 exports.signin = (req, res) => {
