@@ -7,7 +7,10 @@ verifyToken = (req, res, next) => {
   let token = req.headers['cookie'] //|| req.headers["x-access-token"] || req.headers['authorization'] || req.query.token || req.body.token;
 
   if (!token) {
-    return res.redirect('/api/auth/signin');
+    let renderData = {
+      message: ""
+    }
+    return res.render('signin', renderData)
   }
   
   if (token.substring(0, 6) == 'token=') {
@@ -16,7 +19,10 @@ verifyToken = (req, res, next) => {
 
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
-      return res.status(401).send({ message: "Unauthorized!" });
+      let renderData = {
+        message: "Unauthorized!"
+      }
+       return res.render('signin', renderData)
     }
     req.userId = decoded.id;
     next();
@@ -26,16 +32,20 @@ verifyToken = (req, res, next) => {
 isAdmin = (req, res, next) => {
   let user = User.findById(req.userId).exec((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      let renderData = {
+        message: err
+      }
+      return res.render('signin', renderData)
     }
 
     if (user.userType == 'admin') {
       next();
       return;
     } else {
-      res.status(403).send({ message: 'Admin role required!' });
-      return;
+      let renderData = {
+        message: 'Admin role required!'
+      }
+      return res.render('signin', renderData)
     }
   });
 };
@@ -43,16 +53,20 @@ isAdmin = (req, res, next) => {
 isStudentOrAdmin = (req, res, next) => {
   let user = User.findById(req.userId).exec((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      let renderData = {
+        message: err
+      }
+      return res.render('signin', renderData)
     }
 
     if (user.userType == 'admin' || user.userType == 'student') {
       next();
       return;
     } else {
-      res.status(403).send({ message: 'Student role required!' });
-      return;
+      let renderData = {
+        message: 'Student role required!'
+      }
+      return res.render('signin', renderData)
     }
   });
 };
