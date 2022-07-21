@@ -1,7 +1,10 @@
 
 module.exports = {
     getSigninPage: function (request, response) {
-        response.render('signin');
+        let renderData = {
+            message: ""
+        }
+        response.render('signin', renderData);
     },
 
     getSignupPage: function (request, response) {
