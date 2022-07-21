@@ -21,13 +21,19 @@ module.exports = {
 		let token = request.headers['cookie'];
 
 		if (!token) {
-			response.redirect('./api/auth/signin');
+			let renderData = {
+				message: ""
+			  }
+			return res.render('signin', renderData)
 		}
 
 		token = token.substring(6);
 		jwt.verify(token, config.secret, (err, decoded) => {
 			if (err) {
-			  return response.redirect('/api/auth/signin');
+				let renderData = {
+					message: ""
+				  }
+				return res.render('signin', renderData)
 			}
 			let user = User.findById(decoded.id).exec((err, user) => {
 				if (user.userType == 'admin') {

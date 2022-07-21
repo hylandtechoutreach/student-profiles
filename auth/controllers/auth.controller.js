@@ -16,8 +16,10 @@ exports.signup = (req, res) => {
 
   user.save((err, user) => {
     if (err) {
-      res.status(500).send({ message: err });
-      return;
+      let renderData = {
+        message: err
+      }
+      return res.render('signin', renderData)
     }
 
     //Automatically signs user in after signup
@@ -30,8 +32,10 @@ exports.signup = (req, res) => {
     });
 
     if (req.body.userType) {
-      res.redirect('/api/auth/signin')
-      // res.send({ message: "User was registered successfully!" });
+      let renderData = {
+        message: "User was registered successfully!"
+      }
+      return res.render('signin', renderData)
     }
   });
     
@@ -42,12 +46,17 @@ exports.signin = (req, res) => {
     username: req.body.username
   }).exec((err, user) => {
       if (err) {
-        res.status(500).send({ message: err });
-        return;
+        let renderData = {
+          message: err
+        }
+        return res.render('signin', renderData)
       }
 
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        let renderData = {
+          message: "User Not found."
+        }
+        return res.render('signin', renderData)
       }
 
       var passwordIsValid = bcrypt.compareSync(
@@ -56,10 +65,10 @@ exports.signin = (req, res) => {
       );
 
       if (!passwordIsValid) {
-        return res.status(401).send({
-          accessToken: null,
+        let renderData = {
           message: "Invalid Password!"
-        });
+        }
+        return res.render('signin', renderData)
       }
 
       let token = jwt.sign({ id: user.id }, config.secret, {

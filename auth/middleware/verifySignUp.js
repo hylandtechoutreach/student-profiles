@@ -7,11 +7,16 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
         username: req.body.username
     }).exec((err, user) => {
         if (err) {
-            res.status(500).send({message: err});
-            return;
+            let renderData = {
+                message: err
+              }
+            return res.render('signin', renderData)
         }
         if (user) {
-            res.status(400).send({message: "Failed! Username is already in use!"});
+            let renderData = {
+                message: "Failed! Username is already in use!"
+              }
+            return res.render('signin', renderData)
             return;
         }
         //Email
@@ -19,12 +24,16 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
             email: req.body.email
         }).exec((err, user) => {
             if (err) {
-                res.status(500).send({message: err});
-                return;
+                let renderData = {
+                    message: err
+                  }
+                return res.render('signin', renderData)
             }
             if (user) {
-                res.status(400).send({message: "Failed! Email is already in use!"});
-                return;
+                let renderData = {
+                    message: "Failed! Email is already in use!"
+                  }
+                return res.render('signin', renderData)
             }
             next();
         });
@@ -34,10 +43,10 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
 checkRolesExisted = (req, res, next) => {
     if (req.body.userType) {
         if (req.body.userType != 'unregistered' && req.body.userType != 'student' && req.body.userType != 'admin') {
-            res.status(400).send({
+            let renderData = {
                 message: `Failed! Role ${req.body.userType} does not exist!`
-            });
-            return;
+              }
+            return res.render('signin', renderData)
         }
     }
     next();
