@@ -54,7 +54,7 @@ isAdmin = (req, res, next) => {
 
 isStudentOrAdmin = (req, res, next) => {
   let user = User.findById(req.userId).exec((err, user) => {
-    if (err || user == isNullOrUndefined) {
+    if (err || user == null) {
       let renderData = {
         message: err
       }
