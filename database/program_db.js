@@ -4,7 +4,7 @@ const grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High
 module.exports = {
 	addProgram: async function(programObj) {
     if (grades.indexOf(programObj.min_grade_level) <= grades.indexOf(programObj.max_grade_level)) {
-      const newprogram = new Program({
+      const newProgram = new Program({
         title: programObj.title,
         description: programObj.description,
         location: programObj.location,
@@ -16,7 +16,7 @@ module.exports = {
         status: "active"
       });
 
-      await newprogram.save()
+      await newProgram.save()
     }
 	},
   getTitleCount: async function(currentTitle) {

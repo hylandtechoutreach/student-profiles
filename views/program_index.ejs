@@ -25,6 +25,9 @@
                 <td><%= programs[i].min_grade_level %></td>
                 <td><%= programs[i].max_grade_level %></td>
 				<td>
+					<% if (isStudent) { %>
+						<a href="/application_apply/<%= studentId %>/<%= programs[i].id %>" class="btn btn-sm btn-info">Apply</a>
+						<% } %>	
 					<a href="/program_edit/<%= programs[i].id %>" class="btn btn-sm btn-success">Edit</a>
 					<a href="/program_delete/<%= programs[i].id %>" class="btn btn-sm btn-danger">Delete</a>
 				</td>

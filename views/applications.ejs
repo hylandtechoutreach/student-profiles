@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<div class="container">
+    <% for (let i = 0; i < applications.length; i++) { %>
+        <tr>
+            <td><%= applications[i].program %></td>
+            <td><%= applications[i].student %></td>
+        </tr>
+    <% } %>
+</div>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { isNullOrUndefined } = require("mongoose/lib/utils.js");
 const config = require("../config/auth.config.js");
 const db = require("../models");
 const User = db.user;
@@ -20,7 +21,8 @@ verifyToken = (req, res, next) => {
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       let renderData = {
-        message: "Unauthorized!"
+        // message: "Unauthorized"
+        message: ""
       }
        return res.render('signin', renderData)
     }
@@ -52,7 +54,7 @@ isAdmin = (req, res, next) => {
 
 isStudentOrAdmin = (req, res, next) => {
   let user = User.findById(req.userId).exec((err, user) => {
-    if (err) {
+    if (err || user == isNullOrUndefined) {
       let renderData = {
         message: err
       }
