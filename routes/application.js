@@ -6,12 +6,11 @@ module.exports = {
     addApplication: async function (request, response) {
         let studentId = request.params.id;
         let programId = request.params.program_id;
-        
         let studentObj = await student_db.getStudentById(studentId);
         let programObj = await program_db.getProgramById(programId);
 
         await application_db.addApplication(studentObj, programObj);
-        
+
         response.redirect('/program')
             
     },
