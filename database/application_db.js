@@ -4,6 +4,7 @@ module.exports = {
         const newApplication = new Application({
             student: studentObj, 
             program: programObj,
+            status: "new",
         })
 
       await newApplication.save()
@@ -12,4 +13,18 @@ module.exports = {
     getApplicationsList: async function() {
         return await Application.find({});
     },
+    editApplicationById: async function(applicationId, newApplicationObj) {
+        await Application.findOneAndUpdate({
+          _id: applicationId
+        },
+        newApplicationObj,
+        {
+          runValidators: true
+        });
+        },
+        getApplicationById: async function(applicationId) {
+            return await Application.findOne({
+              _id: applicationId
+            });
+        },
 }

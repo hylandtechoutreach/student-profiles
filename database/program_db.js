@@ -12,7 +12,7 @@ module.exports = {
         end_date: programObj.end_date,
         min_grade_level: programObj.min_grade_level,
         max_grade_level: programObj.max_grade_level,
-        program_id_number: `${programObj.title}.${ await module.exports.getTitleCount(programObj.title)}`,
+        program_id: `${programObj.title}.${ await module.exports.getTitleCount(programObj.title)}`,
         status: "active"
       });
 

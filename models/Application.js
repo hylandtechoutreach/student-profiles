@@ -10,6 +10,12 @@ const ApplicationSchema = new Schema({
     type: Object,
     required: true
   },
+  status: {
+    type: String,
+    enum: ['new', 'accept', 'deny'],
+    default: 'new',
+    required: true
+  },
  
 });
 

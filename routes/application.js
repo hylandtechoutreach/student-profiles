@@ -22,4 +22,22 @@ module.exports = {
 
         return response.render('applications', renderData);
     },
+    acceptApplication: async function (request, response) {
+		let applicationId = request.params.id;
+		let applicationObj = await application_db.getApplicationById(applicationId);
+
+		applicationObj['status'] = 'accept';
+		await application_db.editApplicationById(applicationId, applicationObj);
+
+		response.redirect('/applications');
+	},
+    denyApplication: async function (request, response) {
+		let applicationId = request.params.id;
+		let applicationObj = await application_db.getApplicationById(applicationId);
+
+		applicationObj['status'] = 'deny';
+		await application_db.editApplicationById(applicationId, applicationObj);
+
+		response.redirect('/applications');
+	},
 }

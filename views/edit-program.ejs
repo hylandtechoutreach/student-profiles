@@ -62,8 +62,8 @@
 				</select>
 			</div>
 			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%> >
-				<label for="program_id_number">Program ID</label>
-				<input type="text" class="form-control" name="program_id_number" value="<%=program.program_id_number%>" readonly required>
+				<label for="program_id">Program ID</label>
+				<input type="text" class="form-control" name="program_id" value="<%=program.program_id%>" readonly required>
 			</div>
 		</div>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> program</button>

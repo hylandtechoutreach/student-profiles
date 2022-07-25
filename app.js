@@ -62,6 +62,8 @@ app.post('/program_add', [authJwt.verifyToken, authJwt.isAdmin], program.addProg
 app.post('/program_edit/:id', [authJwt.verifyToken, authJwt.isAdmin], program.editProgram);
 
 app.get('/applications', [authJwt.verifyToken, authJwt.isAdmin], application.getApplications);
+app.get('/application/accept/:id', [authJwt.verifyToken, authJwt.isAdmin], application.acceptApplication);
+app.get('/application/deny/:id', [authJwt.verifyToken, authJwt.isAdmin], application.denyApplication);
 app.get('/application_apply/:id/:program_id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], application.addApplication);
 
 function listenCallback() {
