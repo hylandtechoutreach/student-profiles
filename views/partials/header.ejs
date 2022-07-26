@@ -2,13 +2,128 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+		<style>
+			body {
+			  font-family: "Lato", sans-serif;
+			}
+			
+			.sidenav {
+			  height: 100%;
+			  width: 0;
+			  position: fixed;
+			  z-index: 2;
+			  top: 0;
+			  left: 0;
+			  background-color: #111;
+			  overflow-x: hidden;
+			  transition: 0.5s;
+			  padding-top: 60px;
+			}
+			
+			.sidenav a {
+			  padding: 8px 8px 8px 32px;
+			  text-decoration: none;
+			  font-size: 25px;
+			  color: #818181;
+			  display: block;
+			  transition: 0.3s;
+			}
+			
+			.sidenav a:hover {
+			  color: #f1f1f1;
+			}
+			
+			.sidenav .closebtn {
+			  position: absolute;
+			  top: 0;
+			  right: 200px;
+			  font-size: 36px;
+			  margin-left: 50px;
+			}
+
+			#main {
+  				transition: margin-left .5s;
+			}
+
+			#btn-sidenav:hover {
+				background-color: rgb(230, 230, 230);
+				transition: 0.5s;
+				border-radius: 5px;
+				width: 400px;
+			}
+
+			#btn-sidenav {
+				font-size: 30px;
+				margin-left: 20px;
+				cursor: pointer;
+			}
+			
+			@media screen and (max-height: 450px) {
+			  .sidenav {padding-top: 15px;}
+			  .sidenav a {font-size: 18px;}
+			}
+
+			.big-box {
+				height: 100%;
+			  	width: 100%;
+			  	position: fixed;
+			  	z-index: 1;
+			  	top: 0;
+			  	left: 0;
+			  	background-color: rgb(0,0,0);
+			  	overflow-x: hidden;
+			  	transition: 0.5s;
+			  	padding-top: 60px;
+				opacity: 0;
+				pointer-events: none;
+			}
+
+			#smaller-box {
+				height: 100%;
+				width: 0;
+				position: fixed;
+				z-index: 1;
+			  	top: 0;
+			  	left: 0;
+			  	background-color: rgb(168, 161, 161);
+			  	overflow-x: hidden;
+			  	transition: 0.5s;
+			  	padding-top: 60px;
+				opacity: 0;
+				pointer-events: visible;
+				margin-left: 250px;
+			}
+			</style>
 	</head>
 	<body>
 		<div class="page-wrapper">
-			<nav class="navbar">
-				<span class="navbar-brand mb-0 h1" ><a href="/">Tech Outreach Students</a></span>
-				<!-- <span class="btn btn-outline-success" id="sort"><a href="/sort"g> Sort</a></span> -->
-				<a class="float-right" href="/add">Add a Student%></a>
-				<a class="float-right" href="/program_add">Add a Program%></a>				
-				<a class="float-right" href="/program">Programs</a>
-			</nav>
+			<div class="big-box" id="big-box" onmousedown="exitNav(event)">
+				<div id="smaller-box" onclick="closeNav()"></div>
+			</div>
+			<div id="mySidenav" class="sidenav">
+				<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+				<a href="/">Students List</a>
+				<a href="/api/auth/signin">Log in</a>
+				<a href="/api/auth/signup">Sign up</a>
+				<a href="/add">Add a Student</a>
+				<a href="/program">Programs</a>
+				<a href="/program_add">Add a Program</a>
+			  </div>
+
+			  <span onclick="openNav()" id="btn-sidenav">&#9776;</span>
+			  
+			  <script>
+			  function openNav() {
+				document.getElementById('mySidenav').style.width = "250px";
+				document.getElementById('big-box').style.opacity = "50%";
+				document.getElementById('smaller-box').style.width = "100%";
+			  }
+			  
+			  function closeNav() {
+				document.getElementById('mySidenav').style.width = "0";
+				document.getElementById('big-box').style.opacity = "0";
+				document.getElementById('smaller-box').style.width = "0";
+			  }
+
+
+			  </script>

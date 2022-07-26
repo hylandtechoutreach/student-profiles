@@ -1,7 +1,21 @@
 <%- include('partials/header') %>
 <div class="container">
+	<script>
+		function validateForm() {
+			const grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"];
+			let min_grade_level = document.getElementById('min_grade_level').value;
+			let max_grade_level = document.getElementById('max_grade_level').value;
+
+			if (grades.indexOf(min_grade_level) <= grades.indexOf(max_grade_level)) {
+				return true;
+			} else {
+				alert('Minimum grade must be lower than maximum grade');
+				return false;
+			}
+		}
+	</script>
 <% if (add || program) { %>
-	<form method="post" action="/<%=add ? 'program_add' : `program_edit/${program.id}`%>">
+	<form method="post" action="/<%=add ? 'program_add' : `program_edit/${program.id}`%>" onsubmit="return validateForm()">
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="title">Title</label>
@@ -25,10 +39,10 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="min_grade_level">Minimum Grade Level</label>
-				<select name="min_grade_level" class="form-control" required>
+				<select name="min_grade_level" class="form-control" id="min_grade_level" required>
 					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
 					<% for (let i = 0; i < min_grade_levels.length; i++) { %>
-						<option <% if (program.min_grade_level == min_grade_levels[i]) { %> selected <% } %>><%= min_grade_levels[i] %></option>
+						<option value="<%= min_grade_levels[i] %>" <% if (program.min_grade_level == min_grade_levels[i]) { %> selected <% } %>><%= min_grade_levels[i] %></option>
 					<% } %>
 				</select>
 			</div>
@@ -40,10 +54,10 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="max_grade_level">Maximum Grade Level</label>
-				<select name="max_grade_level" class="form-control" required>
+				<select name="max_grade_level" class="form-control" id="max_grade_level" required>
 					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
 					<% for (let i = 0; i < max_grade_levels.length; i++) { %>
-						<option <% if (program.max_grade_level == max_grade_levels[i]) { %> selected <% } %>><%= max_grade_levels[i] %></option>
+						<option value="<%= max_grade_levels[i] %>" <% if (program.max_grade_level == max_grade_levels[i]) { %> selected <% } %>><%= max_grade_levels[i] %></option>
 					<% } %>
 				</select>
 			</div>

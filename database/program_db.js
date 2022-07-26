@@ -1,8 +1,10 @@
 const Program = require("../models/Program");
+const grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"];
 
 module.exports = {
 	addProgram: async function(programObj) {
-    const newprogram = new Program({
+    if (grades.indexOf(programObj.min_grade_level) <= grades.indexOf(programObj.max_grade_level)) {
+      const newprogram = new Program({
         title: programObj.title,
         description: programObj.description,
         location: programObj.location,
@@ -13,7 +15,9 @@ module.exports = {
         program_id_number: `${programObj.title}.${ await module.exports.getTitleCount(programObj.title)}`,
         status: "active"
       });
-    await newprogram.save()
+
+      await newprogram.save()
+    }
 	},
   getTitleCount: async function(currentTitle) {
 	  return await Program.find({title : currentTitle}).countDocuments() + 1 
@@ -29,12 +33,14 @@ module.exports = {
 	},
 
 	editProgramById: async function(programId, newprogramObj) {
-    await Program.findOneAndUpdate({
-      _id: programId
-    },
-    newprogramObj,
-    {
-      runValidators: true
-    });
+    if (grades.indexOf(newprogramObj.min_grade_level) <= grades.indexOf(newprogramObj.max_grade_level)) {
+      await Program.findOneAndUpdate({
+        _id: programId
+      },
+      newprogramObj,
+      {
+        runValidators: true
+      });
+    }
 	},
 }
