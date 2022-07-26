@@ -15,7 +15,13 @@ module.exports = {
             
     },
     getApplications: async function (request, response) {
+        let status = {
+            'new': 1,
+            'accept': 2,
+            'deny': 3,
+        };
         let applicationList = await application_db.getApplicationsList();
+        applicationList.sort((a, b) => status[a.status] - status[b.status]);
         let renderData = {
             applications: applicationList,
         }
