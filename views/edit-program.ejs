@@ -1,0 +1,80 @@
+<%- include('partials/header') %>
+<div class="container">
+	<script>
+		function validateForm() {
+			const grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"];
+			let min_grade_level = document.getElementById('min_grade_level').value;
+			let max_grade_level = document.getElementById('max_grade_level').value;
+
+			if (grades.indexOf(min_grade_level) <= grades.indexOf(max_grade_level)) {
+				return true;
+			} else {
+				alert('Minimum grade must be lower than maximum grade');
+				return false;
+			}
+		}
+	</script>
+<% if (add || program) { %>
+	<form method="post" action="/<%=add ? 'program_add' : `program_edit/${program.id}`%>" onsubmit="return validateForm()">
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="title">Title</label>
+				<input type="text" class="form-control" name="title" value="<%=program.title%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="description">Description</label>
+				<input type="text" class="form-control" name="description" value="<%=program.description%>" required>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="start_date">Start Date</label>
+				<input type="date" class="form-control" name="start_date" value="<%=program.start_date%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="end_date">End Date</label>
+				<input type="date" class="form-control" name="end_date" value="<%=program.end_date%>" required>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="min_grade_level">Minimum Grade Level</label>
+				<select name="min_grade_level" class="form-control" id="min_grade_level" required>
+					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
+					<% for (let i = 0; i < min_grade_levels.length; i++) { %>
+						<option value="<%= min_grade_levels[i] %>" <% if (program.min_grade_level == min_grade_levels[i]) { %> selected <% } %>><%= min_grade_levels[i] %></option>
+					<% } %>
+				</select>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="location">Location</label>
+				<input type="text" class="form-control" name="location" value="<%=program.location%>" required>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="max_grade_level">Maximum Grade Level</label>
+				<select name="max_grade_level" class="form-control" id="max_grade_level" required>
+					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
+					<% for (let i = 0; i < max_grade_levels.length; i++) { %>
+						<option value="<%= max_grade_levels[i] %>" <% if (program.max_grade_level == max_grade_levels[i]) { %> selected <% } %>><%= max_grade_levels[i] %></option>
+					<% } %>
+				</select>
+			</div>
+			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%> >
+				<label for="program_id_number">Program ID</label>
+				<input type="text" class="form-control" name="program_id_number" value="<%=program.program_id_number%>" readonly required>
+			</div>
+		</div>
+		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> program</button>
+	</form>
+	<% if (program.status == "inactive") { %>
+		<a href="/program_reactivate/<%= program.id %>" class="btn btn-info float-left">Reactivate</a>
+	<% } %>
+<% } else { %>
+	<p class="text-center">Program Not Found.</p>
+<% } %>
+</div>
+</div>
+</body>
+</html>

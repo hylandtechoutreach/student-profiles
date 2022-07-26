@@ -1,5 +1,47 @@
 <%- include('partials/header'); %>
 <div>
+	<script>
+		function filterGrades() {
+			let filter = document.getElementById('grade-filter').value;
+			if (filter == 'No Filter') {
+				location.href='/';
+			} else {
+				location.href=`/filter/${filter}`;
+			}
+		}
+
+		function filterStudents() {
+			let filter = document.getElementById('student-filter').value;
+			let studentRows = document.getElementsByTagName('tr');
+
+			for (let i = 1; i < studentRows.length; i++) {
+				let studentNameNotSeparated = studentRows[i].id.toLowerCase();
+				let studentName = studentNameNotSeparated.split('-')[0] + ' ' + studentNameNotSeparated.split('-')[1]; //Formats name as "first_name last_name", instead of "first_name-last_name"
+				
+				if (studentName.includes(filter.toLowerCase())) {
+					document.getElementById(studentRows[i].id).hidden = false;
+				} else {
+					document.getElementById(studentRows[i].id).hidden = true;
+				}
+			}
+		}
+	</script>
+	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"]; %>
+	<form>
+	<div class="row">
+		<div class="col-md-2">
+			<input type="text" id="student-filter" oninput="filterStudents()" class="float-right form-control" placeholder="Filter by name">
+		</div>
+		<div class="col-md-2">
+			<select onchange="filterGrades()" id="grade-filter" class="btn btn-secondary dropdown-toggle">
+				<option value="No Filter" selected>Filter By Grade</option>
+				<% for (let i = 0; i < grades.length; i++) { %>
+					<option value="<%=grades[i]%>" <% if (path == grades[i]) {%> selected <% } %>><%=grades[i]%></option>
+				<% } %>
+			</select>
+		</div>
+	</div>
+	</form>
 <% if (students.length > 0) { %>
 	<table class="table">
 		<thead class="thead-dark">
@@ -15,7 +57,7 @@
 		</thead>
 		<tbody>
 		<% for (let i = 0; i < students.length; i++) { %>
-			<tr>
+			<tr id="<%= students[i].first_name %>-<%= students[i].id_number %>">
 				<td><%= students[i].first_name %></td>
 				<td><%= students[i].last_name %></td>
 				<td><%= students[i].school %></td>
@@ -30,6 +72,7 @@
 		<% } %>
 		</tbody>
 	</table>
+	<a href="/next-grade" class="btn btn-sm btn-info">Increment Grades</a>
 <% } else { %>
 	<p class="text-center">No students found.</p>
 <% } %>

@@ -31,11 +31,11 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
-  email: {
+  guardianEmail: {
     type: String,
-    required: true
+    required: false
   },
-  gEmail: {
+  email: {
     type: String,
     required: true
   },

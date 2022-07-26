@@ -31,16 +31,44 @@
 				<label for="id_number">Student ID</label>
 				<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
 			</div>
+		</div>
+		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="email">Email</label>
 				<input type="text" class="form-control" name="email" value="<%=student.email%>" required>
 			</div>
+			<div class="form-group col-md-6">
+				<label for="phone_number">Phone Number</label>
+				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="dateOfBirth">Date Of Birth</label>
+				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirth%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="guardianEmail">Guardian Email</label>
+				<input type="email" class="form-control" name="guardianEmail" value="<%=student.guardianEmail%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="guardianPhone">Guardian Phone Number</label>
+				<input type="tel" class="form-control" name="guardianPhone" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.guardianPhone%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="notes">Notes</label>
+				<input type="text" class="form-control" name="notes" value="<%=student.notes%>" required>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="interestsAndHobies">Hobbies/Interests.</label>
+				<input type="text" class="form-control" name="interestsAndHobies" value="<%=student.interestsAndHobies%>" >
+			</div>
+
+
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="grade">Grade</label>
 				<select name="grade" class="form-control" required>
-					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"]; %>
 					<% for (let i = 0; i < grades.length; i++) { %>
 						<option value="<%= grades[i] %>" <% if (student.grade == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
