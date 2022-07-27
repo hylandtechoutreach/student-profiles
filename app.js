@@ -1,10 +1,8 @@
 const express = require('express');
 const mongoose = require("mongoose");
 const configKeys = require("./config/keys");
-
 const hostname = 'localhost';
 const port = 8080;
-
 const index = require('./routes/index');
 const program_index = require('./routes/program_index');
 const student = require('./routes/student');
@@ -41,7 +39,48 @@ app.get('/filter/:grade', index.filter);
 app.get('/view/:id', student.viewStudentPage);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
+app.post('/addImage',async(req, res, next) => {
+  const {img} = req.body;
+  const Student = new Student();
+  saveImage(Student, img);
+  try{
+    const newStudent = await Student.save();
+    res.redirect('/')
+  } catch(err) {
+    console.log(err);
+  }
+});
+function saveImage(Student, imgEncoded) {
+  if (imgEncoded == null) return;
 
+  const img = JSON.parse(imgEncoded);
+
+  if (img != null && imageMimeTypes.includes(img.type)) {
+    Student.img = new Buffer.from(img.data, 'base64');
+    Student.imgType = img.type;
+  }
+}
+app.post('/addImage',async(req, res, next) => {
+  const {img} = req.body;
+  const Student = new Student();
+  saveImage(Student, img);
+  try{
+    const newStudent = await Student.save();
+    res.redirect('/')
+  } catch(err) {
+    console.log(err);
+  }
+});
+function saveImage(Student, imgEncoded) {
+  if (imgEncoded == null) return;
+
+  const img = JSON.parse(imgEncoded);
+
+  if (img != null && imageMimeTypes.includes(img.type)) {
+    Student.img = new Buffer.from(img.data, 'base64');
+    Student.imgType = img.type;
+  }
+}
 app.get('/program_delete/:id', program.deleteProgram);
 app.get('/program_reactivate/:id', program.reactivateProgram);
 app.get('/program', program_index.getProgramPage);
@@ -53,5 +92,4 @@ app.post('/program_edit/:id', program.editProgram);
 function listenCallback() {
 	console.log(`Server Running on http://${hostname}:${port}`);
 }
-
 app.listen(port, hostname, listenCallback);
