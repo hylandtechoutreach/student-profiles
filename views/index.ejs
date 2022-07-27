@@ -61,15 +61,16 @@
 		</thead>
 		<tbody>
 		<% for (let i = 0; i < students.length; i++) { %>
-			<tr ondblclick="window.location='/view/<%= students[i].id %>';">
-				
+			<% if (isAdmin || (isStudent && studentId == students[i].id)) { %>
+				<tr ondblclick="window.location='/view/<%= students[i].id %>';">
 					<td><%= students[i].first_name %></td>
 					<td><%= students[i].last_name %></td>
 					<td><%= students[i].school %></td>
 					<td><%= students[i].grade %></td>
 					<td><%= students[i].email %></td>
 					<td><%= students[i].id_number %></td>
-			</tr>
+				</tr>
+			<% } %>
 		<% } %>
 		</tbody>
 	</table>

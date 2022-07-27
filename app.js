@@ -43,12 +43,15 @@ app.get('/api/auth/signup', auth.getSignupPage);
 app.get('/api/auth/signin', auth.getSigninPage);
 
 app.get('/', [authJwt.verifyToken, authJwt.isStudentOrAdmin] ,index.getHomePage);
+app.get('/sort', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.sortFirstNames);
+app.get('/unsort', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.getHomePage);
 app.get('/add', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.addStudentPage);
 app.get('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudentPage);
 app.get('/delete/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.deleteStudent);
 app.get('/reactivate/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.reactivateStudent);
 app.get('/next-grade', [authJwt.verifyToken, authJwt.isAdmin], student.increaseStudentGrades);
 app.get('/filter/:grade', [authJwt.verifyToken], index.filter);
+app.get('/view/:id', [authJwt.verifyToken], student.viewStudentPage);
 app.post('/add', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.addStudent);
 app.post('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudent);
 

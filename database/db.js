@@ -43,7 +43,6 @@ module.exports = {
     });
   }
 	},
-
   getLastNameCount: async function(lastName) {
     return await Student.find({last_name : lastName}).countDocuments() + 1 
 	},
@@ -59,17 +58,37 @@ module.exports = {
 	},
 
 	editStudentById: async function(studentId, newStudentObj) {
-    let studentSchool = studentId.school
-    if (studentId.school == "other"){
-      studentSchool = studentId.other_school 
+    let format = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(newStudentObj.email.toLowerCase().match(format) && newStudentObj.guardianEmail.toLowerCase().match(format)) {
+      let studentSchool = studentId.school
+      if (studentId.school == "other"){
+        studentSchool = studentId.other_school 
+      }
+      await Student.findOneAndUpdate({
+        _id: studentId
+      },
+      newStudentObj,
+      {
+        runValidators: true
+      });
+
+      User.findOne({ studentId: studentId }).exec((err, user) => {
+        user['password'] = bcrypt.hashSync(newStudentObj.password, 8);
+        User.findOneAndUpdate({
+          _id: user.id
+        },
+        user,
+        {
+          runValidators: true
+        });
+  
+        user.save((err, user) => {
+          if (err) {
+            return;
+          }
+        })
+      });
     }
-    await Student.findOneAndUpdate({
-      _id: studentId
-    },
-    newStudentObj,
-    {
-      runValidators: true
-    });
 	},
 
 	deleteStudentById: async function(studentId) {
