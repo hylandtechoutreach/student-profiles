@@ -1,45 +1,49 @@
 <%- include('partials/header') %>
 <div class="container">
 <% if (add || student) { %>
+	<% if (view) { %>
+		<a href="/edit/<%= student.id %>" class="btn btn-sm btn-success float-center">Edit</a>
+		<a href="/delete/<%= student.id %>" class="btn btn-sm btn-danger float-center">Delete</a>
+	<% } %>
 	<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>">
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="first-name">First Name</label>
-				<input type="text" class="form-control" name="first_name" value="<%=student.first_name%>" required>
+				<input type="text" class="form-control" name="first_name" value="<%=student.first_name%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="last-name">Last Name</label>
-				<input type="text" class="form-control" name="last_name" value="<%=student.last_name%>" required>
+				<input type="text" class="form-control" name="last_name" value="<%=student.last_name%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="email">Email</label>
-				<input type="email" class="form-control" name="email" value="<%=student.email%>" required>
+				<input type="email" class="form-control" name="email" value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="phone_number">Phone Number</label>
-				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required>
+				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="dateOfBirth">Date Of Birth</label>
-				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirth%>" required>
+				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirth%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="guardianEmail">Guardian Email</label>
-				<input type="email" class="form-control" name="guardianEmail" value="<%=student.guardianEmail%>" required>
+				<input type="email" class="form-control" name="guardianEmail" value="<%=student.guardianEmail%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="guardianPhone">Guardian Phone Number</label>
-				<input type="tel" class="form-control" name="guardianPhone" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.guardianPhone%>" required>
+				<input type="tel" class="form-control" name="guardianPhone" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.guardianPhone%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="notes">Notes</label>
-				<input type="text" class="form-control" name="notes" value="<%=student.notes%>" required>
+				<input type="text" class="form-control" name="notes" value="<%=student.notes%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="interestsAndHobies">Hobbies/Interests.</label>
-				<input type="text" class="form-control" name="interestsAndHobies" value="<%=student.interestsAndHobies%>" >
+				<input type="text" class="form-control" name="interestsAndHobies" value="<%=student.interestsAndHobies%>" <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="password">Password</label>
@@ -51,34 +55,36 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="grade">Grade</label>
-				<select name="grade" class="form-control" required>
-					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"]; %>
+				<select name="grade" class="form-control" required <% if (view) { %> readonly <% } %>>
+					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
 					<% for (let i = 0; i < grades.length; i++) { %>
 						<option <% if (student.grade == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
 				</select>
 			</div>
 		</div>
-			<div class="form-row">
-				<div class="form-group col-md-6">
-					<label for="school">School</label>
-					<select name="school" class="form-control" required>
-						<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
-						<% for (let i = 0; i < schools.length; i++) { %>
-							<option <% if (student.school == schools[i]) { %> selected <% } %>><%= schools[i] %></option>
-						<% } %>
-					</select>
-				</div>
-				<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%>>
-					<label for="id_number">Student ID</label>
-					<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
-				</div>
+		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="school">School</label>
+				<select name="school" class="form-control" required <% if (view) { %> readonly <% } %>>
+					<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
+					<% for (let i = 0; i < schools.length; i++) { %>
+						<option <% if (student.school == schools[i]) { %> selected <% } %>><%= schools[i] %></option>
+					<% } %>
+				</select>
+			</div>
+			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%>>
+				<label for="id_number">Student ID</label>
+				<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
 			</div>
 		</div>
+	</div>
+	<% if (!view) { %>
 		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
+	<% } %>
 	</form>
 	<% if (student.status == "inactive") { %>
-		<a href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
+		<a class="float-right" href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
 	<% } %>
 <% } else { %>
 	<p class="text-center">Student Not Found.</p>
