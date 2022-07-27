@@ -1,4 +1,8 @@
 const db = require("../database/db");
+const jwt = require('jsonwebtoken');
+const userDb = require("../auth/models");
+const User = userDb.user;
+const config = require('../auth/config/auth.config');
 
 module.exports = {
 	getHomePage: async function (request, response) {
@@ -13,12 +17,56 @@ module.exports = {
 			ignorePunctuation: true
 		}));
 
-		let renderData = {
-			path: 'none',
-			students: activeStudents
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
+
+		if (!token) {
+			let renderData = {
+				message: ""
+			  }
+			return res.render('signin', renderData)
 		}
 
-		response.render('index', renderData);
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				  }
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec((err, user) => {
+				if (user.userType == 'admin') {
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						isAdmin: true,
+						isStudent: false
+					}
+			
+					return response.render('index', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId
+					}
+			
+					return response.render('index', renderData);
+				} else {
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						isAdmin: false,
+						isStudent: false
+					}
+
+					response.render('index', renderData);
+				}
+			});
+		});
 		
 	},
 

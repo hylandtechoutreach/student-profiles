@@ -32,7 +32,7 @@ const ProgramSchema = new Schema({
     enum: ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"],
     required: true
   },
-  program_id_number: {
+  program_id: {
     type: String,
     required: true
   },
