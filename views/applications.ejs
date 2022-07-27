@@ -13,8 +13,8 @@
 		<tbody>
 		<% for (let i = 0; i < applications.length; i++) { %>
                 <tr>
-                    <td><%= applications[i].program.title %></td>
-                    <td><%= applications[i].student.first_name %></td>
+                    <td><a href="/view_program/<%= applications[i].program._id %>"><%= applications[i].program.title %></a></td>
+                    <td><a href="/view/<%= applications[i].student._id %>"><%= applications[i].student.first_name %></a></td>
                     <td><%= applications[i].status %></td>
                     <td>
                         <a href="application/accept/<%= applications[i].id %>" class="btn btn-sm btn-success">Accept</a>
