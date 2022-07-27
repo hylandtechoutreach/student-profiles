@@ -27,6 +27,10 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
+  countryCode: {
+    type: String,
+    required: true
+  },
   dateOfBirth: {
     type: String,
     required: true
@@ -40,6 +44,10 @@ const StudentSchema = new Schema({
     required: true
   },
   guardianPhone: {
+    type: String,
+    required: true
+  },
+  countryCodeGuardian: {
     type: String,
     required: true
   },

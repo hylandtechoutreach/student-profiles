@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "countries-list": "^2.6.1",
     "dotenv": "^16.0.1",
     "ejs": "^3.0.1",
     "express": "^4.17.1",

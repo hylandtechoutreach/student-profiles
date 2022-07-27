@@ -1,3 +1,4 @@
+const countries = require("countries-list").countries;
 const { response } = require("express");
 const db = require("../database/db");
 
@@ -6,7 +7,8 @@ module.exports = {
 		let renderData = {
 			student: {},
 			add: true,
-			view: false
+			view: false,
+			countries: countries
 		};
 
 		response.render('edit-student', renderData);
@@ -18,7 +20,8 @@ module.exports = {
 		let renderData = {
 			student: studentObj,
 			add: false,
-			view: true
+			view: true,
+			countries: countries
 		};
 
 		response.render('edit-student', renderData);
@@ -37,7 +40,8 @@ module.exports = {
 		let renderData = {
 			student: studentObj,
 			add: false,
-			view: false
+			view: false,
+			countries: countries
 		};
 
 		response.render('edit-student', renderData);
