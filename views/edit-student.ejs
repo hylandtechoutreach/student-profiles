@@ -22,6 +22,10 @@
 				<input type="email" class="form-control" name="email" value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
+				<label for="password">Password</label>
+				<input type="text" name="password" class="form-control" <% if (view) { %> readonly <% } %>>
+			</div>
+			<div class="form-group col-md-6">
 				<label for="phone_number">Phone Number</label>
 				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required <% if (view) { %> readonly <% } %>>
 			</div>
@@ -55,8 +59,6 @@
 					<% } %>
 				</datalist>
 			</div>
-		</div>
-		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="grade">Grade</label>
 				<select name="grade" class="form-control" required <% if (view) { %> readonly <% } %>>
@@ -74,12 +76,6 @@
 			</div>
 		</div>
 	</div>
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="password">Password</label>
-				<input type="text" name="password" class="form-control">
-			</div>
-		</div>
 		<% if (!view) { %>
 			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
 		<% } %>
