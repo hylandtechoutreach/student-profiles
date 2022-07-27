@@ -21,8 +21,8 @@ verifyToken = (req, res, next) => {
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       let renderData = {
-        // message: "Unauthorized"
         message: ""
+        // "Unauthorized!"
       }
        return res.render('signin', renderData)
     }

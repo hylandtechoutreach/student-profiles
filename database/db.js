@@ -43,7 +43,6 @@ module.exports = {
     });
   }
 	},
-
   getLastNameCount: async function(lastName) {
     return await Student.find({last_name : lastName}).countDocuments() + 1 
 	},
@@ -63,13 +62,6 @@ module.exports = {
     if (studentId.school == "other"){
       studentSchool = studentId.other_school 
     }
-    await Student.findOneAndUpdate({
-      _id: studentId
-    },
-    newStudentObj,
-    {
-      runValidators: true
-    });
 	},
 
 	deleteStudentById: async function(studentId) {
