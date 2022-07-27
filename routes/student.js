@@ -5,7 +5,20 @@ module.exports = {
 	addStudentPage: function (request, response) {
 		let renderData = {
 			student: {},
-			add: true
+			add: true,
+			view: false
+		};
+
+		response.render('edit-student', renderData);
+	},
+	viewStudentPage: async function (request, response) {
+		let studentId = request.params.id;
+		let studentObj = await db.getStudentById(studentId);
+		
+		let renderData = {
+			student: studentObj,
+			add: false,
+			view: true
 		};
 
 		response.render('edit-student', renderData);
@@ -23,7 +36,8 @@ module.exports = {
 
 		let renderData = {
 			student: studentObj,
-			add: false
+			add: false,
+			view: false
 		};
 
 		response.render('edit-student', renderData);
@@ -32,8 +46,7 @@ module.exports = {
 	editStudent: async function (request, response) {
 		let studentId = request.params.id;
 		await db.editStudentById(studentId, request.body);
-
-		response.redirect('/');
+		await module.exports.viewStudentPage(request, response)
 	},
 
 	deleteStudent: async function (request, response) {
