@@ -22,20 +22,20 @@
 				<input type="email" class="form-control" name="email" value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
-				<label for="phone_number">Phone Number</label>
-				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="dateOfBirth">Date Of Birth</label>
-				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirth%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
 				<label for="guardianEmail">Guardian Email</label>
 				<input type="email" class="form-control" name="guardianEmail" value="<%=student.guardianEmail%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
+				<label for="phone_number">Phone Number</label>
+				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required <% if (view) { %> readonly <% } %>>
+			</div>
+			<div class="form-group col-md-6">
 				<label for="guardianPhone">Guardian Phone Number</label>
 				<input type="tel" class="form-control" name="guardianPhone" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.guardianPhone%>" required <% if (view) { %> readonly <% } %>>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="dateOfBirth">Date Of Birth</label>
+				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirth%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="notes">Notes</label>
