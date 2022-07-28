@@ -40,7 +40,7 @@
 			<div class="form-group col-md-6">
 				<label for="min_grade_level">Minimum Grade Level</label>
 				<select name="min_grade_level" class="form-control" id="min_grade_level" required>
-					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
+					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"] %>
 					<% for (let i = 0; i < min_grade_levels.length; i++) { %>
 						<option value="<%= min_grade_levels[i] %>" <% if (program.min_grade_level == min_grade_levels[i]) { %> selected <% } %>><%= min_grade_levels[i] %></option>
 					<% } %>
@@ -55,7 +55,7 @@
 			<div class="form-group col-md-6">
 				<label for="max_grade_level">Maximum Grade Level</label>
 				<select name="max_grade_level" class="form-control" id="max_grade_level" required>
-					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
+					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"] %>
 					<% for (let i = 0; i < max_grade_levels.length; i++) { %>
 						<option value="<%= max_grade_levels[i] %>" <% if (program.max_grade_level == max_grade_levels[i]) { %> selected <% } %>><%= max_grade_levels[i] %></option>
 					<% } %>
