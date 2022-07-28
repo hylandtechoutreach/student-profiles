@@ -1,5 +1,6 @@
 const { response } = require("express");
 const db = require("../database/db");
+const moment = require('moment');
 
 module.exports = {
 	addStudentPage: function (request, response) {
@@ -14,6 +15,9 @@ module.exports = {
 	viewStudentPage: async function (request, response) {
 		let studentId = request.params.id;
 		let studentObj = await db.getStudentById(studentId);
+
+		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
+		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
 		
 		let renderData = {
 			student: studentObj,
@@ -33,6 +37,9 @@ module.exports = {
 	editStudentPage: async function (request, response) {
 		let studentId = request.params.id;
 		let studentObj = await db.getStudentById(studentId);
+
+		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
+		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
 
 		let renderData = {
 			student: studentObj,

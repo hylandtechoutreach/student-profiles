@@ -29,11 +29,11 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="start_date">Start Date</label>
-				<input type="date" class="form-control" name="start_date" value="<%=program.start_date%>" required>
+				<input type="datetime-local" class="form-control" name="start_date" value="<%=program.start_date_formatted%>" required>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="end_date">End Date</label>
-				<input type="date" class="form-control" name="end_date" value="<%=program.end_date%>" required>
+				<input type="datetime-local" class="form-control" name="end_date" value="<%=program.end_date_formatted%>" required>
 			</div>
 		</div>
 		<div class="form-row">
