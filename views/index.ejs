@@ -61,7 +61,7 @@
 		</thead>
 		<tbody>
 		<% for (let i = 0; i < students.length; i++) { %>
-			<tr ondblclick="window.location='/view/<%= students[i].id %>';">
+			<tr ondblclick="window.location='/view/<%= students[i].id %>';" id="<%= students[i].first_name + '-' + students[i].last_name %>">
 				
 					<td><%= students[i].first_name %></td>
 					<td><%= students[i].last_name %></td>
