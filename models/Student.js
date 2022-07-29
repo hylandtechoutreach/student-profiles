@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Create Schema
 const StudentSchema = new Schema({
   first_name: {
     type: String,
@@ -28,7 +27,7 @@ const StudentSchema = new Schema({
     required: true
   },
   dateOfBirth: {
-    type: String,
+    type: Date,
     required: true
   },
   guardianEmail: {

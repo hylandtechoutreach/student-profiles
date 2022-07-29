@@ -1,4 +1,5 @@
 const Student = require("../models/Student");
+const application_db = require("../database/application_db")
 
 module.exports = {
 	addStudent: async function(studentObj) {
@@ -17,11 +18,15 @@ module.exports = {
         notes: studentObj.notes,
         interestsAndHobies: studentObj.interestsAndHobies,
         id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
-        program_list: studentObj.program_list,
         status: "active",
-      
     });
     await newStudent.save();
+      let program_list = studentObj.program_list
+      for(let i = 0; i < program_list.length; i++) {
+        application_db.addApplication(newStudent.id, program_list[i])
+      }
+      
+      
 	}},
   getLastNameCount: async function(lastName) {
     return await Student.find({last_name : lastName}).countDocuments() + 1 

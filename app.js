@@ -42,6 +42,7 @@ app.get('/view/:id', student.viewStudentPage);
 app.post('/add', student.addStudent);
 app.post('/edit/:id', student.editStudent);
 
+app.get('/view_program/:id', program.viewProgramPage);
 app.get('/program_delete/:id', program.deleteProgram);
 app.get('/program_reactivate/:id', program.reactivateProgram);
 app.get('/program', program_index.getProgramPage);
