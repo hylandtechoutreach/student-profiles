@@ -109,8 +109,8 @@
 				<a href="/api/auth/signin">Log in</a>
 				<a href="/api/auth/signup">Sign up</a>
 			  </div>
-			  <div id="dino">
-				<img src="config\importantPng.png" alt="dino"> 
+			  <div id="dino" style="display: none;">
+				<img src="../../config/importantPng.png" alt="dino"> 
 				</div>
 
 			  <span onclick="openNav()" id="btn-sidenav">&#9776;</span>
@@ -130,6 +130,6 @@
 			  function dino() {
 			  console.log("131")
 			  setTimeout(() => { console.log("132") }, 1000); // 1800000 document.getElementById("dino").display =  "none"
-			  setTimeout(() => {  document.getElementById("dino").display =  "block" }, 3000); // 1800050
+			  setTimeout(() => {  document.getElementById("dino").style =  "display: block"; }, 3000); // 1800050
 			  }
 			  </script>
