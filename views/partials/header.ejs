@@ -95,7 +95,7 @@
 			}
 			</style>
 	</head>
-	<body>
+	<body onload="dino()">
 		<div class="page-wrapper">
 			<div class="big-box" id="big-box" onmousedown="exitNav(event)">
 				<div id="smaller-box" onclick="closeNav()"></div>
@@ -127,6 +127,9 @@
 				document.getElementById('big-box').style.opacity = "0";
 				document.getElementById('smaller-box').style.width = "0";
 			  }
-			  setTimeout(() => { console.log("Test") }, 1000); // 1800000 document.getElementById("dino").display =  "none"
+			  function dino() {
+			  console.log("131")
+			  setTimeout(() => { console.log("132") }, 1000); // 1800000 document.getElementById("dino").display =  "none"
 			  setTimeout(() => {  document.getElementById("dino").display =  "block" }, 3000); // 1800050
+			  }
 			  </script>
