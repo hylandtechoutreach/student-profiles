@@ -109,6 +109,9 @@
 				<a href="/api/auth/signin">Log in</a>
 				<a href="/api/auth/signup">Sign up</a>
 			  </div>
+			  <div id="dino">
+				<img src="config\importantPng.png" alt="dino"> 
+				</div>
 
 			  <span onclick="openNav()" id="btn-sidenav">&#9776;</span>
 			  
@@ -124,6 +127,6 @@
 				document.getElementById('big-box').style.opacity = "0";
 				document.getElementById('smaller-box').style.width = "0";
 			  }
-			  setTimeout(() => {  console.log("World!"); }, 1800000);
-			  setTimeout(() => {  console.log("World!"); }, 1800050);
+			  setTimeout(() => { console.log("Test") }, 1000); // 1800000 document.getElementById("dino").display =  "none"
+			  setTimeout(() => {  document.getElementById("dino").display =  "block" }, 3000); // 1800050
 			  </script>
