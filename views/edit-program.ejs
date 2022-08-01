@@ -19,11 +19,11 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="title">Title</label>
-				<input type="text" class="form-control" name="title" value="<%=program.title%>" required>
+				<input type="text" class="form-control" name="title" maxlength = "50" value="<%=program.title%>" required>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="description">Description</label>
-				<input type="text" class="form-control" name="description" value="<%=program.description%>" required>
+				<input type="text" class="form-control" name="description"maxlength = "50" value="<%=program.description%>" required>
 			</div>
 		</div>
 		<div class="form-row">
@@ -58,7 +58,7 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="location">Location</label>
-				<input type="text" class="form-control" name="location" value="<%=program.location%>" required>
+				<input type="text" class="form-control" name="location" maxlength = "50" value="<%=program.location%>" required>
 			</div>
 		</div>
 			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%> >
