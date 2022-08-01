@@ -57,9 +57,11 @@
 				<th>Grade</th>
 				<th>Email</th>
 				<th>ID</th>
+				<th>Programs Involved</th>
 			</tr>
 		</thead>
 		<tbody>
+		<% let count = 0; %>
 		<% for (let i = 0; i < students.length; i++) { %>
 			<% if (isAdmin || (isStudent && studentId == students[i].id)) { %>
 				<tr ondblclick="window.location='/view/<%= students[i].id %>';">
@@ -69,8 +71,15 @@
 					<td><%= students[i].grade %></td>
 					<td><%= students[i].email %></td>
 					<td><%= students[i].id_number %></td>
-				</tr>
-			<% } %>
+				<td>
+					<% for (let j = 0; j < applications.length; j++) { %>
+						<% if (applications[j].student == students[i].id) { %>
+							<a href="/view/<%= applications[j].program %>"><%= titles[count] %> </a>
+							<% count++ %> 
+						<% } %>
+                    <% } %>
+				</td>
+			</tr>
 		<% } %>
 		</tbody>
 	</table>

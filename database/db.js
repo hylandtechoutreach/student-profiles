@@ -5,6 +5,7 @@ const User = userDb.user;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const config = require("../auth/config/auth.config");
+const application_db = require("../database/application_db")
 
 module.exports = {
 	addStudent: async function(studentObj) {
@@ -25,24 +26,27 @@ module.exports = {
         id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
         program_list: studentObj.program_list,
         status: "active"
-      });
-      await newStudent.save();
-
-    const newUser = new User({
-			username: newStudent.first_name,
-			email: newStudent.email,
-			password: bcrypt.hashSync(studentObj.password, 8),
-			userType: 'student',
-      studentId: newStudent.id
-		  });
-		
-		  newUser.save((err, user) => {
-			if (err) {
-			  return;
-			}
     });
-  }
-	},
+    await newStudent.save();
+      let program_list = studentObj.program_list
+      for(let i = 0; i < program_list.length; i++) {
+        application_db.addApplication(newStudent.id, program_list[i])
+      }
+      
+      const newUser = new User({
+        username: newStudent.first_name,
+        email: newStudent.email,
+        password: bcrypt.hashSync(studentObj.password, 8),
+        userType: 'student',
+        studentId: newStudent.id
+        });
+      
+        newUser.save((err, user) => {
+        if (err) {
+          return;
+        }
+      });
+	}},
   getLastNameCount: async function(lastName) {
     return await Student.find({last_name : lastName}).countDocuments() + 1 
 	},

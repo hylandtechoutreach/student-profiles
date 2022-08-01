@@ -15,8 +15,6 @@
 				<label for="last-name">Last Name</label>
 				<input type="text" class="form-control" name="last_name" value="<%=student.last_name%>" required <% if (view) { %> readonly <% } %>>
 			</div>
-		</div>
-		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="email">Email</label>
 				<input type="email" class="form-control" name="email" value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
@@ -50,16 +48,6 @@
 				<input type="text" class="form-control" name="interestsAndHobies" value="<%=student.interestsAndHobies%>" <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
-				<label for="school" class="form-label">School</label>
-				<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
-				<input id="school"  class="form-control" name="school" list="school_options" required <% if (!add) { %> value="<%= student.school %>" <% } %> <% if (view) { %> readonly <% } %>/>
-				<datalist id="school_options">
-					<% for (let i = 0; i < schools.length; i++) { %>
-						<option value="<%= schools[i] %>">
-					<% } %>
-				</datalist>
-			</div>
-			<div class="form-group col-md-6">
 				<label for="grade">Grade</label>
 				<select name="grade" class="form-control" required <% if (view) { %> readonly <% } %>>
 					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
@@ -68,25 +56,44 @@
 					<% } %>
 				</select>
 			</div>
-		</div>
-		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="school" class="form-label">School</label>
+				<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
+				<input id="school"  class="form-control" name="school" list="school_options" required <% if (!add) { %> value="<%= student.school %>" <% } %> <% if (view) { %> readonly <% } %>/>
+				<datalist id="school_options">
+					<% for (let i = 0; i < schools.length; i++) { %>
+							<option value="<%= schools[i] %>">
+					<% } %>
+				</datalist>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="program_list">Programs Involved In</label>
+				<select class="form-control" name="program_list" id="program_list" multiple <% if (view) { %> readonly <% } %>>
+					<% for (let i = 0; i < programs.length; i++) { %>
+						<% let match = false %>
+						<% for (let j = 0; j < applications.length; j++) { %>
+							<% if(applications[j].program == programs[i].id && applications[j].student == student.id) {match = true;}  %> 
+						<% } %>
+						<option value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
+					<% } %>
+				</select>
+			</div>
 			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%>>
 				<label for="id_number">Student ID</label>
-				<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
+				<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required >
 			</div>
-		</div>
+			</div>
+			<% if (!view) { %>
+				<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
+			<% } %>
+			</form>
+			<% if (student.status == "inactive") { %>
+				<a class="float-right" href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
+			<% } %>
+			<% } else { %>
+				<p class="text-center">Student Not Found.</p>
+			<% } %>
 	</div>
-		<% if (!view) { %>
-			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
-		<% } %>
-	</form>
-	<% if (student.status == "inactive") { %>
-		<a class="float-right" href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
-	<% } %>
-<% } else { %>
-	<p class="text-center">Student Not Found.</p>
-<% } %>
-</div>
 </div>
 </body>
 </html>

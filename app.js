@@ -63,11 +63,14 @@ app.get('/program_add', [authJwt.verifyToken, authJwt.isAdmin], program.addProgr
 app.get('/program_edit/:id', [authJwt.verifyToken, authJwt.isAdmin], program.editProgramPage);
 app.post('/program_add', [authJwt.verifyToken, authJwt.isAdmin], program.addProgram);
 app.post('/program_edit/:id', [authJwt.verifyToken, authJwt.isAdmin], program.editProgram);
+app.get('/view_program/:id', [authJwt.verifyToken], program.viewProgramPage);
 
 app.get('/applications', [authJwt.verifyToken, authJwt.isAdmin], application.getApplications);
 app.get('/application/accept/:id', [authJwt.verifyToken, authJwt.isAdmin], application.acceptApplication);
 app.get('/application/deny/:id', [authJwt.verifyToken, authJwt.isAdmin], application.denyApplication);
 app.get('/application_apply/:id/:program_id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], application.addApplication);
+
+
 
 function listenCallback() {
 	console.log(`Server Running on http://${hostname}:${port}`);
