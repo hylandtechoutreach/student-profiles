@@ -12,6 +12,7 @@
     "countries-list": "^2.6.1",
     "dotenv": "^16.0.1",
     "ejs": "^3.0.1",
+    "exists": "^1.0.1",
     "express": "^4.17.1",
     "global": "^4.4.0",
     "mongoose": "^5"
