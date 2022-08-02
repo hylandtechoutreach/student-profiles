@@ -25,26 +25,14 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="guardianEmail">Guardian Email</label>
+
 				<input type="email" class="form-control" name="guardianEmail" value="<%=student.guardianEmail%>" required <% if (view) { %> readonly <% } %>>
 			</div>
-			<div class="form-group col-md-2">
-				<label>Country</label>
-				<input name="countryCode" class="form-control" list="countryCodes" id="countryCode-phone" value="<%= student.countryCode %>" required <% if (view) { %> readonly <% } %> />
-				<datalist id="countryCodes">
-					<% for (const country in countries) { %>
-						<option value="+<%= countries[country].phone %>"><%= countries[country].name %></option>
-					<% } %>
-				</datalist>
-			</div>
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-6">
 				<label for="phone_number">Phone Number</label>
-				<input oninput="formatPhoneNumber(this)" id="phoneNumber" type="tel" class="form-control" name="phone_number" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="###-###-####" value="<% if (student.phone_number) { %>(<%=student.phone_number.substring(0, 3)%>) <%=student.phone_number.substring(3, 6)%>-<%=student.phone_number.substring(6)%><% } %>" maxlength="14" required <% if (view) { %> readonly <% } %>>
+				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required <% if (view) { %> readonly <% } %>>
 			</div>
-			<div class="form-group col-md-2">
-				<label>Country</label>
-				<input name="countryCodeGuardian" class="form-control" list="countryCodes" id="countryCode-guardianPhone" value="<%= student.countryCodeGuardian %>" required <% if (view) { %> readonly <% } %> />
-			</div>
-			<div class="form-group col-md-4">
+			<div class="form-group col-md-6">
 				<label for="guardianPhone">Guardian Phone Number</label>
 				<input oninput="formatPhoneNumber(this)" id="guardianPhoneNumber" type="tel" class="form-control" name="guardianPhone" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="###-###-####" value="<% if (student.guardianPhone) { %>(<%=student.guardianPhone.substring(0, 3)%>) <%=student.guardianPhone.substring(3, 6)%>-<%=student.guardianPhone.substring(6)%><% } %>" maxlength="14" required <% if (view) { %> readonly <% } %>>
 			</div>
