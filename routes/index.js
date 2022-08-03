@@ -147,6 +147,61 @@ module.exports = {
 			titles: programTitles,
 		}
 
-		response.render('index', renderData)
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
+
+		if (!token) {
+			let renderData = {
+				message: ""
+			  }
+			return res.render('signin', renderData)
+		}
+
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				  }
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec((err, user) => {
+				if (user.userType == 'admin') {
+					let renderData = {
+						path: filteredGrade,
+						students: filteredStudents,
+						isAdmin: true,
+						isStudent: false,
+						applications: applicationFile.activeApplications(),
+						titles: programTitles,
+					}
+			
+					return response.render('index', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						path: filteredGrade,
+						students: filteredStudents,
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+						applications: applicationFile.activeApplications(),
+						titles: programTitles,
+					}
+			
+					return response.render('index', renderData);
+				} else {
+					let renderData = {
+						path: filteredGrade,
+						students: filteredStudents,
+						isAdmin: false,
+						isStudent: false,
+						applications: applicationFile.activeApplications(),
+						titles: programTitles,
+					}
+
+					response.render('index', renderData);
+				}
+			});
+		});
 	}
 };
