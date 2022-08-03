@@ -43,20 +43,6 @@ module.exports = {
       
       });
       await newStudent.save();
-
-      const newUser = new User({
-        username: newStudent.first_name,
-        email: newStudent.email,
-        password: bcrypt.hashSync(studentObj.password, 8),
-        userType: 'student',
-        studentId: newStudent.id
-        });
-      
-        newUser.save((err, user) => {
-        if (err) {
-          return;
-        }
-      });
       
       let program_list = studentObj.program_list
       if(program_list !== undefined) {
@@ -68,6 +54,8 @@ module.exports = {
       }
     }
     }
+
+    return newStudent
     }
 	},
   getLastNameCount: async function(lastName) {
@@ -128,7 +116,7 @@ function validateStudent(student) {
   if (!student.email.toLowerCase().match(format) || !student.guardianEmail.toLowerCase().match(format)) {
     return false;
   }
-  if (!student.first_name || !student.last_name || !student.grade || !student.school || !student.email || !student.phone_number || !student.dateOfBirth || !student.guardianPhone || !student.notes) {
+  if (!student.first_name || !student.last_name || !student.grade || !student.school || !student.email || !student.phone_number || !student.dateOfBirth || !student.guardianPhone) {
     return false;
   }
 

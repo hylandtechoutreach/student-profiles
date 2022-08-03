@@ -1,3 +1,4 @@
+const countries = require("countries-list").countries
 
 module.exports = {
     getSigninPage: function (request, response) {
@@ -8,6 +9,10 @@ module.exports = {
     },
 
     getSignupPage: function (request, response) {
-        response.render('signup');
+        let renderData = {
+            countries: countries
+        }
+
+        response.render('signup', renderData);
     }
 }

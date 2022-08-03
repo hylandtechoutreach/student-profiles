@@ -6,6 +6,10 @@ const applicationFile = require("./application")
 var mongoose = require('mongoose');
 const countries = require("countries-list").countries;
 const moment = require('moment');
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const User = require('../auth/models/user.model')
+const config = require('../auth/config/auth.config')
 
 module.exports = {
 	addStudentPage: async function (request, response) {
@@ -63,9 +67,43 @@ module.exports = {
 	},
 
 	addStudent: async function (request, response) {
-		await db.addStudent(request.body)
-
-		response.redirect('/')
+		if (request.body.studentEmail) {
+			request.body['email'] = request.body.studentEmail
+		}
+		const newStudent = await db.addStudent(request.body)
+		
+		const user = new User({
+			username: request.body.studentUsername,
+			email: request.body.studentEmail,
+			password: bcrypt.hashSync(request.body.studentPassword, 8),
+			userType: 'student',
+			studentId: newStudent._id
+		  });
+	  
+		  user.save((err, user) => {
+			if (err) {
+			  let renderData = {
+				message: err
+			  }
+			  return response.render('signin', renderData)
+			} else {
+				//Automatically signs user in after signup
+				let token = jwt.sign({ id: user.id }, config.secret, {
+					expiresIn: '1h'
+				  });
+			  
+				  response.cookie('token', token, {
+					httpOnly: true
+				  });
+			  
+				  if (request.body.userType) {
+					let renderData = {
+					  message: "User was registered successfully!"
+					}
+					return response.render('signin', renderData)
+				  }
+				}
+			})
 	},
 	
 	editStudent: async function (request, response) {
