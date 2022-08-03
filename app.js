@@ -18,7 +18,7 @@ const application = require('./routes/application');
 const auth = require('./routes/auth');
 
 let app = express();
-
+app.use(express.static("config"))
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -31,7 +31,6 @@ const dbSettings = {
   dbName: "student_profiles",
   useFindAndModify: false
 }
-
 // connect to mongodb
 mongoose.connect(dbStr, dbSettings)
   .then(() => {
@@ -56,6 +55,7 @@ app.get('/view/:id', [authJwt.verifyToken], student.viewStudentPage);
 app.post('/add', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.addStudent);
 app.post('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudent);
 
+app.get('/view_program/:id', [authJwt.verifyToken],program.viewProgramPage);
 app.get('/program_delete/:id', [authJwt.verifyToken, authJwt.isAdmin], program.deleteProgram);
 app.get('/program_reactivate/:id', [authJwt.verifyToken, authJwt.isAdmin], program.reactivateProgram);
 app.get('/program', [authJwt.verifyToken], program_index.getProgramPage);

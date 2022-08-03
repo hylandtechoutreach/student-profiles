@@ -1,5 +1,10 @@
 <%- include('partials/header'); %>
 <div>
+	<style>
+		tr:hover { 
+   			background: rgb(250,250,250); 
+		}
+	</style>
 <% if (programs.length > 0) { %>
 	<table class="table">
 		<thead class="thead-dark">
@@ -11,25 +16,27 @@
                 <th>End Date</th>
                 <th>Minimum Grade Level</th>
 				<th>Maximum Grade Level</th>
-				<th>Action</th>
+				<th>Students Involved</th>
 			</tr>
 		</thead>
 		<tbody>
+		<% let count = 0; %> 
 		<% for (let i = 0; i < programs.length; i++) { %>
-			<tr>
+			<tr ondblclick="window.location='/view_program/<%= programs[i].id %>';">
 				<td><%= programs[i].title %></td>
                 <td><%= programs[i].description %></td>
                 <td><%= programs[i].location %></td>
-                <td><%= programs[i].start_date %></td>
-                <td><%= programs[i].end_date %></td>
+                <td><%= programs[i].start_date_formatted %></td>
+                <td><%= programs[i].end_date_formatted %></td>
                 <td><%= programs[i].min_grade_level %></td>
                 <td><%= programs[i].max_grade_level %></td>
 				<td>
-					<% if (isStudent) { %>
-						<a href="/application_apply/<%= studentId %>/<%= programs[i].id %>" class="btn btn-sm btn-info">Apply</a>
-					<% } %>	
-					<a href="/program_edit/<%= programs[i].id %>" class="btn btn-sm btn-success">Edit</a>
-					<a href="/program_delete/<%= programs[i].id %>" class="btn btn-sm btn-danger">Delete</a>
+					<% for (let j = 0; j < applications.length; j++) { %>
+						<% if (applications[j].program == programs[i].id) { %>
+							<a href="/view/<%= applications[j].student %>"><%= first_names[count] %> </a>
+							<% count++ %> 
+						<% } %>
+                    <% } %>
 				</td>
 			</tr>
 		<% } %>

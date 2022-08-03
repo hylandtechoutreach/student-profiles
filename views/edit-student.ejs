@@ -1,92 +1,159 @@
 <%- include('partials/header') %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <div class="container">
+	<!-- <script>
+		function noteReveal() {
+			var sel = document.getElementById('program_list')
+			var student_id_number = sel.options[sel.selectedIndex].text
+			document.getElementById('note').disabled = false
+			document.getElementById('note').style.display = "block"
+			document.getElementById('note_label').style.display = "block"
+        }
+    </script> -->
 <% if (add || student) { %>
 	<% if (view) { %>
 		<a href="/edit/<%= student.id %>" class="btn btn-sm btn-success float-center">Edit</a>
 		<a href="/delete/<%= student.id %>" class="btn btn-sm btn-danger float-center">Delete</a>
 	<% } %>
-	<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>">
+	<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>" onsubmit="return validateForm()">
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="first-name">First Name</label>
-				<input type="text" class="form-control" name="first_name" value="<%=student.first_name%>" required <% if (view) { %> readonly <% } %>>
+				<input type="text" class="form-control" name="first_name" maxlength = "50" value="<%=student.first_name%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="last-name">Last Name</label>
-				<input type="text" class="form-control" name="last_name" value="<%=student.last_name%>" required <% if (view) { %> readonly <% } %>>
+				<input type="text" class="form-control" name="last_name" maxlength = "50" value="<%=student.last_name%>" required <% if (view) { %> readonly <% } %>>
 			</div>
-		</div>
-		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="email">Email</label>
-				<input type="email" class="form-control" name="email" value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="password">Password</label>
-				<input type="text" name="password" class="form-control" <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="phone_number">Phone Number</label>
-				<input type="tel" class="form-control" name="phone_number" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.phone_number%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="dateOfBirth">Date Of Birth</label>
-				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirth%>" required <% if (view) { %> readonly <% } %>>
+				<input type="email" class="form-control" name="email" id="email" maxlength = "50" value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="guardianEmail">Guardian Email</label>
-				<input type="email" class="form-control" name="guardianEmail" value="<%=student.guardianEmail%>" required <% if (view) { %> readonly <% } %>>
+				<input type="email" class="form-control" name="guardianEmail" id="guardianEmail" maxlength = "50" value="<%=student.guardianEmail%>" required <% if (view) { %> readonly <% } %>>
 			</div>
-			<div class="form-group col-md-6">
+			<div class="form-group col-md-2">
+				<label>Country</label>
+				<input name="countryCode" class="form-control" list="countryCodes" id="countryCode-phone" value="<%= student.countryCode %>" required <% if (view) { %> readonly <% } %> />
+				<datalist id="countryCodes">
+					<% for (const country in countries) { %>
+						<option value="+<%= countries[country].phone %>"><%= countries[country].name %></option>
+					<% } %>
+				</datalist>
+			</div>
+			<div class="form-group col-md-4">
+				<label for="phone_number">Phone Number</label>
+				<input oninput="formatPhoneNumber(this)" id="phoneNumber" type="tel" class="form-control" name="phone_number" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="###-###-####" value="<% if (student.phone_number) { %>(<%=student.phone_number.substring(0, 3)%>) <%=student.phone_number.substring(3, 6)%>-<%=student.phone_number.substring(6)%><% } %>" maxlength="14" required <% if (view) { %> readonly <% } %>>
+			</div>
+			<div class="form-group col-md-2">
+				<label>Country</label>
+				<input name="countryCodeGuardian" class="form-control" list="countryCodes" id="countryCode-guardianPhone" value="<%= student.countryCodeGuardian %>" required <% if (view) { %> readonly <% } %> />
+			</div>
+			<div class="form-group col-md-4">
 				<label for="guardianPhone">Guardian Phone Number</label>
-				<input type="tel" class="form-control" name="guardianPhone" pattern ="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="###-###-####" value="<%=student.guardianPhone%>" required <% if (view) { %> readonly <% } %>>
+				<input oninput="formatPhoneNumber(this)" id="guardianPhoneNumber" type="tel" class="form-control" name="guardianPhone" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="###-###-####" value="<% if (student.guardianPhone) { %>(<%=student.guardianPhone.substring(0, 3)%>) <%=student.guardianPhone.substring(3, 6)%>-<%=student.guardianPhone.substring(6)%><% } %>" maxlength="14" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="notes">Notes</label>
-				<input type="text" class="form-control" name="notes" value="<%=student.notes%>" required <% if (view) { %> readonly <% } %>>
+				<input type="text" class="form-control" name="notes" maxlength = "50" value="<%=student.notes%>" <% if (view) { %> readonly <% } %>>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="dateOfBirth">Date Of Birth</label>
+				<input type="date" class="form-control" name="dateOfBirth" value="<%=student.dateOfBirthFormatted%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="interestsAndHobies">Hobbies/Interests.</label>
-				<input type="text" class="form-control" name="interestsAndHobies" value="<%=student.interestsAndHobies%>" <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="school" class="form-label">School</label>
-				<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
-				<input id="school"  class="form-control" name="school" list="school_options" required <% if (!add) { %> value="<%= student.school %>" <% } %> <% if (view) { %> readonly <% } %>/>
-				<datalist id="school_options">
-					<% for (let i = 0; i < schools.length; i++) { %>
-						<option value="<%= schools[i] %>">
-					<% } %>
-				</datalist>
+				<input type="text" class="form-control" name="interestsAndHobies" maxlength = "50" value="<%=student.interestsAndHobies%>" <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="grade">Grade</label>
 				<select name="grade" class="form-control" required <% if (view) { %> readonly <% } %>>
-					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"]; %>
+					<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"]; %>
 					<% for (let i = 0; i < grades.length; i++) { %>
 						<option <% if (student.grade == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
 				</select>
 			</div>
-		</div>
-		<div class="form-row">
+			<div class="form-group col-md-6">
+				<label for="school" class="form-label">School</label>
+				<% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
+				<input id="school" maxlength = "50" class="form-control" name="school" list="school_options" required <% if (!add) { %> value="<%= student.school %>" <% } %> <% if (view) { %> readonly <% } %>/>
+				<datalist id="school_options">
+					<% for (let i = 0; i < schools.length; i++) { %>
+							<option value="<%= schools[i] %>">
+					<% } %>
+				</datalist>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="program_list">Programs Involved In</label>
+				<select class="form-control" name="program_list" id="program_list" multiple <% if (view) { %> readonly <% } %>>
+					<% for (let i = 0; i < programs.length; i++) { %>
+						<% let match = false %>
+						<% for (let j = 0; j < applications.length; j++) { %>
+							<% if(applications[j].program == programs[i].id && applications[j].student == student.id) {match = true;}  %> 
+						<% } %>
+						<option value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
+					<% } %>
+				</select>
+			</div>
 			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%>>
 				<label for="id_number">Student ID</label>
-				<input type="text" class="form-control" name="id_number" value="<%=student.id_number%>" readonly required>
+				<input type="text" class="form-control" value="<%=student.id_number%>" readonly required>
 			</div>
-		</div>
+			</div>
+			<% if (!view) { %>
+				<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
+			<% } %>
+			</form>
+			<% if (student.status == "inactive") { %>
+				<a href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
+			<% } %>
+			<% } else { %>
+				<p class="text-center">Student Not Found.</p>
+			<% } %>
 	</div>
-		<% if (!view) { %>
-			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>
-		<% } %>
-	</form>
-	<% if (student.status == "inactive") { %>
-		<a class="float-right" href="/reactivate/<%= student.id %>" class="btn btn-info float-left">Reactivate</a>
-	<% } %>
-<% } else { %>
-	<p class="text-center">Student Not Found.</p>
-<% } %>
-</div>
+<script>
+	function formatPhoneNumber(element) {
+		let phoneNumber = element.value;
+
+		let nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+		let phoneNumberNums = '';
+		for (let i = 0; i < phoneNumber.length; i++) {
+			if (nums.includes(phoneNumber.charAt(i))) {
+				phoneNumberNums += phoneNumber.charAt(i);
+			}
+		}
+
+		let phoneNumberFormatted = phoneNumberNums;
+
+		if (phoneNumberNums.length >= 3) {
+			phoneNumberFormatted = '(' + phoneNumberNums.substring(0, 3) + ') ' + phoneNumberNums.substring(3);
+		}
+		if (phoneNumberNums.length >= 6) {
+			phoneNumberFormatted = "(" + phoneNumberNums.substring(0, 3) + ') ' + phoneNumberNums.substring(3, 6) + '-' + phoneNumberNusms.substring(6);
+		}
+
+		element.value = phoneNumberFormatted;
+	}
+
+	function validateForm() {
+		let format = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		let studentEmail = document.getElementById('email').value;
+		let guardianEmail = document.getElementById('guardianEmail').value;
+
+    	if (!studentEmail.toLowerCase().match(format) || !guardianEmail.toLowerCase().match(format)) {
+    		alert('Insert valid emails')
+			return false;
+		}
+		if (!student.first_name || !student.last_name || !student.grade || !student.school || !student.email || !student.phone_number || !student.dateOfBirth || !student.guardianPhone || !student.notes) {
+    		alert('Insert valid emails')
+			return false;
+		}
+		return true;
+	}
+</script>
 </div>
 </body>
 </html>

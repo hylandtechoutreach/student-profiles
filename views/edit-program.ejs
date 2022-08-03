@@ -13,34 +13,38 @@
 				return false;
 			}
 		}
-	</script>
+    </script>
 <% if (add || program) { %>
+	<% if (view) { %>
+		<a href="/program_edit/<%= program.id %>" class="btn btn-sm btn-success">Edit</a>
+		<a href="/program_delete/<%= program.id %>" class="btn btn-sm btn-danger">Delete</a>
+	<% } %>
 	<form method="post" action="/<%=add ? 'program_add' : `program_edit/${program.id}`%>" onsubmit="return validateForm()">
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="title">Title</label>
-				<input type="text" class="form-control" name="title" value="<%=program.title%>" required>
+				<input type="text" class="form-control" name="title" maxlength = "50" value="<%=program.title%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="description">Description</label>
-				<input type="text" class="form-control" name="description" value="<%=program.description%>" required>
+				<input type="text" class="form-control" name="description" maxlength = "50" value="<%=program.description%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="start_date">Start Date</label>
-				<input type="date" class="form-control" name="start_date" value="<%=program.start_date%>" required>
+				<input type="datetime-local" class="form-control" name="start_date" value="<%=program.start_date_formatted%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="end_date">End Date</label>
-				<input type="date" class="form-control" name="end_date" value="<%=program.end_date%>" required>
+				<input type="datetime-local" class="form-control" name="end_date" value="<%=program.end_date_formatted%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="min_grade_level">Minimum Grade Level</label>
-				<select name="min_grade_level" class="form-control" id="min_grade_level" required>
-					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
+				<select name="min_grade_level" class="form-control" id="min_grade_level" required <% if (view) { %> readonly <% } %>>
+					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"] %>
 					<% for (let i = 0; i < min_grade_levels.length; i++) { %>
 						<option value="<%= min_grade_levels[i] %>" <% if (program.min_grade_level == min_grade_levels[i]) { %> selected <% } %>><%= min_grade_levels[i] %></option>
 					<% } %>
@@ -48,25 +52,42 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="location">Location</label>
-				<input type="text" class="form-control" name="location" value="<%=program.location%>" required>
+				<input type="text" class="form-control" name="location" maxlength = "50" value="<%=program.location%>" required <% if (view) { %> readonly <% } %>>
 			</div>
 		</div>
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="max_grade_level">Maximum Grade Level</label>
-				<select name="max_grade_level" class="form-control" id="max_grade_level" required>
-					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior"] %>
+				<select name="max_grade_level" class="form-control" id="max_grade_level" required <% if (view) { %> readonly <% } %>>
+					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"] %>
 					<% for (let i = 0; i < max_grade_levels.length; i++) { %>
 						<option value="<%= max_grade_levels[i] %>" <% if (program.max_grade_level == max_grade_levels[i]) { %> selected <% } %>><%= max_grade_levels[i] %></option>
 					<% } %>
 				</select>
 			</div>
+			<div class="form-group col-md-6">
+				<label for="student_list">Students Involved</label>
+				<select class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
+					<% for (let i = 0; i < students.length; i++) { %>
+						<% let match = false %>
+						<% for (let j = 0; j < applications.length; j++) { %>
+							<% if(applications[j].student == students[i].id && applications[j].program == program.id) {match = true;}  %> 
+						<% } %>
+						<option value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %> ><%= students[i].first_name %></option>
+					<% } %>
+				</select>
+			</div>
+		</div>
+		<div class="form-row">
 			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%> >
 				<label for="program_id">Program ID</label>
 				<input type="text" class="form-control" name="program_id" value="<%=program.program_id%>" readonly required>
 			</div>
 		</div>
-		<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> program</button>
+		<% if (!view) { %>
+			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Program</button>
+		<% } %>
+		</div>
 	</form>
 	<% if (program.status == "inactive") { %>
 		<a href="/program_reactivate/<%= program.id %>" class="btn btn-info float-left">Reactivate</a>

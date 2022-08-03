@@ -1,18 +1,18 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
 
 const ApplicationSchema = new Schema({
   student: {
-    type: Object,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: 'Student'
   },
   program: {
-    type: Object,
-    required: true
+    type: Schema.Types.ObjectId,
+    ref: 'Program'
   },
   status: {
     type: String,
-    enum: ['new', 'accept', 'deny'],
+    enum: ['new', 'accept', 'deny', 'disabled'],
     default: 'new',
     required: true
   },
