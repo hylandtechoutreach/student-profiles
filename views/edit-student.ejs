@@ -94,10 +94,31 @@
 						<% for (let j = 0; j < applications.length; j++) { %>
 							<% if(applications[j].program == programs[i].id && applications[j].student == student.id) {match = true;}  %> 
 						<% } %>
-						<option value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
-					<% } %>
+						<option id="program-<%=programs[i].title%>" value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
+					<% } %> 
 				</select>
+				<input type="text" id="student-filter" oninput="filterPrograms(this)" class="float-right form-control" placeholder="Filter by name">
 			</div>
+			<script>
+				function filterPrograms(element) {
+					let filter = element.value;
+					let programRows = document.getElementsByTagName('option');
+		
+		
+					for (let i = 1; i < programRows.length; i++) {
+						if (console.log(programRows[i].value).substring(0,7)== "program-") {
+						let programNameNotSeparated = programRows[i].id.toLowerCase();
+						
+						if (programName.includes(filter.toLowerCase())) {
+							document.getElementById(programRows[i].id).hidden = false;
+						} else {
+							document.getElementById(programRows[i].id).hidden = true;
+						}
+					}
+					}
+				}
+				</script>
+			
 			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%>>
 				<label for="id_number">Student ID</label>
 				<input type="text" class="form-control" value="<%=student.id_number%>" readonly required>
