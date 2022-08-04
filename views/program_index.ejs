@@ -31,9 +31,9 @@
                 <td><%= programs[i].min_grade_level %></td>
                 <td><%= programs[i].max_grade_level %></td>
 				<td>
-					<% for (let j = 0; j < applications.length; j++) { %>
-						<% if (applications[j].program == programs[i].id) { %>
-							<a href="/view/<%= applications[j].student %>"><%= first_names[count] %> </a>
+					<% for (let j = 0; j < registrations.length; j++) { %>
+						<% if (registrations[j].program == programs[i].id) { %>
+							<a href="/view/<%= registrations[j].student %>"><%= first_names[count] %> </a>
 							<% count++ %> 
 						<% } %>
                     <% } %>

@@ -1,10 +1,12 @@
 const db = require("../database/program_db")
 const student_db = require("../database/db")
 const moment = require('moment');
-const application_db = require("../database/application_db")
-const applicationFile = require("./application")
+const registration_db = require("../database/registration_db")
+const registrationFile = require("./registration")
 var mongoose = require('mongoose');
-const application = require("./application");
+const registration = require("./registration");
+const constants = require("./constants")
+
 module.exports = {
 	addProgramPage: async function (request, response) {
 		let studentList = await student_db.getStudentsList()
@@ -13,7 +15,9 @@ module.exports = {
 			students: module.exports.activeStudents(studentList),
 			add: true,
 			view: false,
-			applications: await applicationFile.activeApplications(),
+			registrations: await registrationFile.activeRegistrations(),
+			grades: constants.getGradeLevels(),
+
 		}
 
 		response.render('edit-program', renderData)
@@ -33,40 +37,13 @@ module.exports = {
 		let renderData = {
 			program: programObj,
 			students: module.exports.activeStudents(studentList),
-			applications: await applicationFile.activeApplications(),
+			registrations: await registrationFile.activeRegistrations(),
 			add: false,
-			view: false
+			view: false,
+			grades: constants.getGradeLevels(),
 		};
 
 		response.render('edit-program', renderData);
-	},
-
-	addProgram: async function (request, response) {
-		await db.addProgram(request.body)
-
-		response.redirect('/program')
-	},
-
-	editProgram: async function (request, response) {
-		let programId = request.params.id
-		let studentIds = []
-		await application_db.deleteApplicationByProgramId(programId)
-
-		if(request.body.student_list !== undefined) {
-		for(let i = 0; i < request.body.student_list.length; i++) {
-			studentIds.push(request.body.student_list[i])
-		}
-		if(request.body.student_list.length == 24) {
-			await application_db.addApplication(mongoose.Types.ObjectId(request.body.student_list), programId)
-		}
-		else {
-			for(let i = 0; i < request.body.student_list.length; i++) {
-				await application_db.addApplication(mongoose.Types.ObjectId(studentIds[i]), programId)
-			}
-		}
-	}
-		await db.editProgramById(programId, request.body)
-		await module.exports.viewProgramPage(request, response)
 	},
 	viewProgramPage: async function (request, response) {
 		let programId = request.params.id
@@ -83,21 +60,50 @@ module.exports = {
 			program: programObj,
 			add: false,
 			view: true,
-			students: await applicationFile.getStudentListByProgramId(programId),
-			applications: await applicationFile.activeApplications(),
+			students: await registrationFile.getStudentListByProgramId(programId),
+			registrations: await registrationFile.activeRegistrations(),
+			grades: constants.getGradeLevels(),
 		}
 
 		response.render('edit-program', renderData);
 	},
 
+	addProgram: async function (request, response) {
+		await db.addProgram(request.body)
+
+		response.redirect('/program')
+	},
+
+	editProgram: async function (request, response) {
+		let programId = request.params.id
+		let studentIds = []
+		await registration_db.deleteRegistrationByProgramId(programId)
+
+		if(request.body.student_list !== undefined) {
+		for(let i = 0; i < request.body.student_list.length; i++) {
+			studentIds.push(request.body.student_list[i])
+		}
+		if(request.body.student_list.length == 24) {
+			await registration_db.addRegistration(mongoose.Types.ObjectId(request.body.student_list), programId)
+		}
+		else {
+			for(let i = 0; i < request.body.student_list.length; i++) {
+				await registration_db.addRegistration(mongoose.Types.ObjectId(studentIds[i]), programId)
+			}
+		}
+	}
+		await db.editProgramById(programId, request.body)
+		await module.exports.viewProgramPage(request, response)
+	},
+
 	deleteProgram: async function (request, response) {
 		let programId = request.params.id
 		let programObj = await db.getProgramById(programId)
-		let applicationList = await application_db.getApplicationsList()
-		for(let i = 0; i < applicationList.length; i++) {
-			if(applicationList[i].program == programId) {
-				applicationList[i]['status'] = 'disabled'
-				await application_db.editApplicationById(applicationList[i].id,applicationList[i])
+		let registrationList = await registration_db.getRegistrationsList()
+		for(let i = 0; i < registrationList.length; i++) {
+			if(registrationList[i].program == programId) {
+				registrationList[i]['status'] = 'disabled'
+				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i])
 			}
 		}
 		programObj['status'] = 'inactive'
@@ -109,11 +115,11 @@ module.exports = {
 	reactivateProgram: async function (request, response) {
 		let programId = request.params.id
 		let programObj = await db.getProgramById(programId)
-		let applicationList = await application_db.getApplicationsList();
-		for(let i = 0; i < applicationList.length; i++) {
-			if(applicationList[i].program == programId) {
-				applicationList[i]['status'] = 'new'
-				await application_db.editApplicationById(applicationList[i].id,applicationList[i])
+		let registrationList = await registration_db.getRegistrationsList();
+		for(let i = 0; i < registrationList.length; i++) {
+			if(registrationList[i].program == programId) {
+				registrationList[i]['status'] = 'active'
+				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i])
 			}
 		}
 		programObj['status'] = 'active'

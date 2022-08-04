@@ -2,9 +2,15 @@
 <div class="container">
 	<script>
 		function validateForm() {
-			const grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "Out of High School", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of College"];
 			let min_grade_level = document.getElementById('min_grade_level').value;
 			let max_grade_level = document.getElementById('max_grade_level').value;
+
+			let gradeElements = document.getElementById('min_grade_level').children;
+
+			let grades = []
+			for (let i = 0; i < gradeElements.length; i++) {
+				grades.push(gradeElements[i].value)
+			}
 
 			if (grades.indexOf(min_grade_level) <= grades.indexOf(max_grade_level)) {
 				return true;
@@ -44,9 +50,8 @@
 			<div class="form-group col-md-6">
 				<label for="min_grade_level">Minimum Grade Level</label>
 				<select name="min_grade_level" class="form-control" id="min_grade_level" required <% if (view) { %> readonly <% } %>>
-					<% let min_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"] %>
-					<% for (let i = 0; i < min_grade_levels.length; i++) { %>
-						<option value="<%= min_grade_levels[i] %>" <% if (program.min_grade_level == min_grade_levels[i]) { %> selected <% } %>><%= min_grade_levels[i] %></option>
+					<% for (let i = 0; i < grades.length; i++) { %>
+						<option value="<%= grades[i] %>" <% if (program.min_grade_level == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
 				</select>
 			</div>
@@ -59,9 +64,8 @@
 			<div class="form-group col-md-6">
 				<label for="max_grade_level">Maximum Grade Level</label>
 				<select name="max_grade_level" class="form-control" id="max_grade_level" required <% if (view) { %> readonly <% } %>>
-					<% let max_grade_levels = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"] %>
-					<% for (let i = 0; i < max_grade_levels.length; i++) { %>
-						<option value="<%= max_grade_levels[i] %>" <% if (program.max_grade_level == max_grade_levels[i]) { %> selected <% } %>><%= max_grade_levels[i] %></option>
+					<% for (let i = 0; i < grades.length; i++) { %>
+						<option value="<%= grades[i] %>" <% if (program.max_grade_level == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
 				</select>
 			</div>
@@ -70,8 +74,8 @@
 				<select class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < students.length; i++) { %>
 						<% let match = false %>
-						<% for (let j = 0; j < applications.length; j++) { %>
-							<% if(applications[j].student == students[i].id && applications[j].program == program.id) {match = true;}  %> 
+						<% for (let j = 0; j < registrations.length; j++) { %>
+							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
 						<% } %>
 						<option value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %> ><%= students[i].first_name %></option>
 					<% } %>

@@ -1,23 +1,20 @@
 const Student = require("../models/Student");
-const fs = require("fs");
-const application_db = require("../database/application_db")
-if ( fs.existsSync("config/importantPng.png")){
+const registration_db = require("./registration_db")
 module.exports = {
 	addStudent: async function(studentObj) {
     if (validateStudent(studentObj)) {
-        guardianPhoneDeformated = studentObj.guardianPhone.replaceAll('(',"");
-        guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(')',"");
-        guardianPhoneDeformated = guardianPhoneDeformated.replaceAll('-',"");
-        guardianPhoneDeformated = guardianPhoneDeformated.replaceAll('+',"");
-        guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(' ',"");
-        studentPhoneDeformated = studentObj.phone_number.replaceAll('(',"");
-        studentPhoneDeformated = studentPhoneDeformated.replaceAll(')',"");
-        studentPhoneDeformated = studentPhoneDeformated.replaceAll('-',"");
-        studentPhoneDeformated = studentPhoneDeformated.replaceAll('+',"");
-        studentPhoneDeformated = studentPhoneDeformated.replaceAll(' ',"");
+      guardianPhoneDeformated = studentObj.guardianPhone
+      studentPhoneDeformated = studentObj.phone_number
+      let replace_chars = ['(', ')', '-', '+', ' '];
+      for(let i = 0; i < replace_chars.length; i++) {
+        guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(replace_chars[i], "");
+        studentPhoneDeformated = studentPhoneDeformated.replaceAll(replace_chars[i], "");
+      }
+
         const newStudent = new Student({
           first_name: studentObj.first_name,
           last_name: studentObj.last_name,
+          guardian_Name: studentObj.guardian_Name,
           grade: studentObj.grade,
           school: studentObj.school,
           email: studentObj.email,
@@ -40,13 +37,13 @@ module.exports = {
       let program_list = studentObj.program_list
       if(program_list !== undefined) {
         if(program_list.length == 24) {
-          await application_db.addApplication(newStudent.id,program_list)
+          await registration_db.addRegistration(newStudent.id,program_list)
         } else {
-      for(let i = 0; i < program_list.length; i++) {
-        await application_db.addApplication(newStudent.id, program_list[i])
-      }
-    }
-    }
+          for(let i = 0; i < program_list.length; i++) {
+            await registration_db.addRegistration(newStudent.id, program_list[i])
+          }
+        }
+     }
     }
 	},
   getLastNameCount: async function(lastName) {
@@ -70,16 +67,13 @@ module.exports = {
       studentSchool = studentId.other_school 
     }
 
-    guardianPhoneDeformated = newStudentObj.guardianPhone.replaceAll('(',"");
-    guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(')',"");
-    guardianPhoneDeformated = guardianPhoneDeformated.replaceAll('-',"");
-    guardianPhoneDeformated = guardianPhoneDeformated.replaceAll('+',"");
-    guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(' ',"");
-    studentPhoneDeformated = newStudentObj.phone_number.replaceAll('(',"");
-    studentPhoneDeformated = studentPhoneDeformated.replaceAll(')',"");
-    studentPhoneDeformated = studentPhoneDeformated.replaceAll('-',"");
-    studentPhoneDeformated = studentPhoneDeformated.replaceAll('+',"");
-    studentPhoneDeformated = studentPhoneDeformated.replaceAll(' ',"");
+    guardianPhoneDeformated = newStudentObj.guardianPhone
+    studentPhoneDeformated = newStudentObj.phone_number
+    let replace_chars = ['(', ')', '-', '+', ' '];
+      for(let i = 0; i < replace_chars.length; i++) {
+        guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(replace_chars[i], "");
+        studentPhoneDeformated = studentPhoneDeformated.replaceAll(replace_chars[i], "");
+      }
 
     newStudentObj['guardianPhone'] = guardianPhoneDeformated;
     newStudentObj['phone_number'] = studentPhoneDeformated;
@@ -111,5 +105,4 @@ function validateStudent(student) {
   }
 
   return true;
-}
 }
