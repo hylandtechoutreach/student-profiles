@@ -97,7 +97,7 @@
 						<option id="program-<%=programs[i].title%>" value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
 					<% } %> 
 				</select>
-				<input type="text" id="student-filter" oninput="filterPrograms(this)" class="float-right form-control" placeholder="Filter by name">
+				<input type="text" id="student-filter" oninput="filterPrograms(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
 			</div>
 			<script>
 				function filterPrograms(element) {
@@ -105,16 +105,16 @@
 					let programRows = document.getElementsByTagName('option');
 		
 		
-					for (let i = 1; i < programRows.length; i++) {
-						if (console.log(programRows[i].value).substring(0,7)== "program-") {
-						let programNameNotSeparated = programRows[i].id.toLowerCase();
+					for (let i = 0; i < programRows.length; i++) {
+						if (programRows[i].id.substring(0, 8) == "program-") {
+							let programName = programRows[i].id.toLowerCase().substring(8);
 						
-						if (programName.includes(filter.toLowerCase())) {
-							document.getElementById(programRows[i].id).hidden = false;
-						} else {
-							document.getElementById(programRows[i].id).hidden = true;
+							if (programName.includes(filter.toLowerCase())) {
+								document.getElementById(programRows[i].id).hidden = false;
+							} else {
+								document.getElementById(programRows[i].id).hidden = true;
+							}
 						}
-					}
 					}
 				}
 				</script>
