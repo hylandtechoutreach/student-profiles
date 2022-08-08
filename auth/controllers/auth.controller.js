@@ -2,26 +2,31 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+const student_db = require('../../database/db')
+const student = require('../../routes/student')
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
-  const user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8),
-    userType: req.body.userType
-  });
+exports.signup = async (req, res) => {
+  const body = req.body
+  let user
 
-  user.save((err, user) => {
-    if (err) {
-      let renderData = {
-        message: err
+  if (body.userType == 'unregistered' || body.userType == 'admin') {
+    user = new User({
+      username: body.username,
+      email: body.email,
+      password: bcrypt.hashSync(body.password, 8),
+      userType: body.userType
+    });
+
+    user.save((err, user) => {
+      if (err) {
+        let renderData = {
+          message: err
+        }
+        return res.render('signin', renderData)
       }
-      return res.render('signin', renderData)
-    }
-
     //Automatically signs user in after signup
     let token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: '1h'
@@ -37,9 +42,11 @@ exports.signup = (req, res) => {
       }
       return res.render('signin', renderData)
     }
-  });
-    
-};
+  })
+  } else if (body.userType == 'student') {
+    student.addStudent(req, res)
+  }
+  }
 
 exports.signin = (req, res) => {
   User.findOne({
