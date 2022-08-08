@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 
-const ApplicationSchema = new Schema({
+const RegistrationSchema = new Schema({
   student: {
     type: Schema.Types.ObjectId,
     ref: 'Student'
@@ -12,11 +12,11 @@ const ApplicationSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['new', 'accept', 'deny', 'disabled'],
-    default: 'new',
+    enum: ['active', 'accept', 'deny', 'disabled'],
+    default: 'active',
     required: true
   },
  
 });
 
-module.exports = Application = mongoose.model("applications", ApplicationSchema);
+module.exports = Registration = mongoose.model("registrations", RegistrationSchema)
