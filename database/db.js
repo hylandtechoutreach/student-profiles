@@ -1,10 +1,11 @@
 const Student = require("../models/Student");
-const registration_db = require("./registration_db")
+const registration_db = require("./registration_db");
+
 module.exports = {
 	addStudent: async function(studentObj) {
     if (validateStudent(studentObj)) {
-      guardianPhoneDeformated = studentObj.guardianPhone
-      studentPhoneDeformated = studentObj.phone_number
+      guardianPhoneDeformated = studentObj.guardianPhone;
+      studentPhoneDeformated = studentObj.phone_number;
       let replace_chars = ['(', ')', '-', '+', ' '];
       for(let i = 0; i < replace_chars.length; i++) {
         guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(replace_chars[i], "");
@@ -29,8 +30,6 @@ module.exports = {
           id_number: `${studentObj.last_name}.${ await module.exports.getLastNameCount(studentObj.last_name)}`,
           program_list: studentObj.program_list,
           status: "active",
-
-      
       });
       await newStudent.save();
       
@@ -46,29 +45,30 @@ module.exports = {
      }
     }
 	},
+
   getLastNameCount: async function(lastName) {
-    return await Student.find({last_name : lastName}).countDocuments() + 1 
+    return await Student.find({last_name : lastName}).countDocuments() + 1;
 	},
+
 	getStudentsList: async function() {
-	  return await Student.find({})
+	  return await Student.find({});
 	},
 
 	getStudentById: async function(studentId) {
     return await Student.findOne({
       _id: studentId
-    })
+    });
 	},
 
 	editStudentById: async function(studentId, newStudentObj) {
     if (validateStudent(newStudentObj)) {
 
-    let studentSchool = studentId.school
+    let studentSchool = studentId.school;
     if (studentId.school == "other"){
-      studentSchool = studentId.other_school 
+      studentSchool = studentId.other_school
     }
-
-    guardianPhoneDeformated = newStudentObj.guardianPhone
-    studentPhoneDeformated = newStudentObj.phone_number
+    guardianPhoneDeformated = newStudentObj.guardianPhone;
+    studentPhoneDeformated = newStudentObj.phone_number;
     let replace_chars = ['(', ')', '-', '+', ' '];
       for(let i = 0; i < replace_chars.length; i++) {
         guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(replace_chars[i], "");
@@ -84,15 +84,19 @@ module.exports = {
     newStudentObj,
     {
       runValidators: true
-    })
+    });
 	}
 },
 
 	deleteStudentById: async function(studentId) {
     await Student.findOneAndRemove({
       _id: studentId
-    })
-	}
+    });
+	},
+
+  getStudentsByParams: async function(params) {
+    return await Student.find(params);
+  },
 }
 
 function validateStudent(student) {

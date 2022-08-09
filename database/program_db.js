@@ -1,9 +1,8 @@
 const { validate } = require("../models/Program");
 const Program = require("../models/Program");
 const registration_db = require("./registration_db");
-const constants = require("../routes/constants")
-const grades = constants.getGradeLevels()
-const d = new Date();
+const constants = require("../routes/constants");
+const grades = constants.getGradeLevels();
 
 module.exports = {
 	addProgram: async function(programObj) {
@@ -34,17 +33,21 @@ module.exports = {
       }
     }
 	},
+
   getTitleCount: async function(currentTitle) {
-	  return await Program.find({title : currentTitle}).countDocuments() + 1 
+	  return await Program.find({title : currentTitle}).countDocuments() + 1;
 	},
+
 	getProgramsList: async function() {
-	  return await Program.find({})
+	  return await Program.find({});
 	},
+
 	getProgramById: async function(programId) {
     return await Program.findOne({
       _id: programId
-    })
+    });
 	},
+  
 	editProgramById: async function(programId, newprogramObj) {
     if (validateProgram(newprogramObj)) {
 
@@ -55,13 +58,15 @@ module.exports = {
       newprogramObj,
       {
         runValidators: true
-      })
+      });
     }
 	},
+
   getProgramsByParams: async function(params) {
     return await Program.find(params);
   },
 }
+
 function validateProgram(program) {
   if (!(grades.indexOf(program.min_grade_level) <= grades.indexOf(program.max_grade_level))) {
     return false;

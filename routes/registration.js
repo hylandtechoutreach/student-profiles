@@ -24,6 +24,6 @@ module.exports = {
         return student_list
     },
     activeRegistrations: async function() {
-		return await registration_db.getActiveRegistrations()
+		return await registration_db.getActiveRegistrations();
 	}, 
 }

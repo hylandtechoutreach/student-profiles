@@ -1,24 +1,21 @@
-const db = require("../database/program_db")
 const studentFile = require("./student")
-const registration_db = require("../database/registration_db")
 const registrationFile = require("./registration")
 const student_db = require("../database/db")
 const moment = require('moment');
 
 module.exports = {
 	getProgramPage: async function (request, response) {
-		let programList = await db.getProgramsList()
-		let activePrograms = studentFile.activePrograms(programList)
-		activePrograms.sort( (a, b) => a.title.localeCompare(b.title, 'en', {
-			ignorePunctuation: true
+		let activePrograms = await studentFile.activePrograms();
+		activePrograms.sort((a, b) => a.title.localeCompare(b.title, 'en', {
+			ignorePunctuation: true,
 		}));
-		let activeRegistrations = await registrationFile.activeRegistrations()
-		let studentNames = []
+		let activeRegistrations = await registrationFile.activeRegistrations();
+		let studentNames = [];
 		for (let i = 0; i < activePrograms.length; i++) {
 			for (let j = 0; j < activeRegistrations.length; j++) { 
 				if (activeRegistrations[j].program == activePrograms[i].id) { 
-					let studentObj =  await student_db.getStudentById(activeRegistrations[j].student)
-					studentNames.push(studentObj.first_name)
+					let studentObj =  await student_db.getStudentById(activeRegistrations[j].student);
+					studentNames.push(studentObj.first_name);
 				} 
 			} 
 		}
@@ -35,8 +32,8 @@ module.exports = {
 			programs: activePrograms,
 			registrations: activeRegistrations,
 			first_names: studentNames,
-		}
-		response.render('program_index', renderData)
+		};
+		response.render('program_index', renderData);
 
 	},
 	
