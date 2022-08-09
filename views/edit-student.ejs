@@ -86,7 +86,7 @@
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].program == programs[i].id && registrations[j].student == student.id) {match = true;}  %> 
 						<% } %>
-						<option name="programOption" id="program-<%=programs[i].title%>" value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
+						<option name="programOption" id="program-<%=programs[i].title%>" value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= formatedProgramList[i] %></option>
 					<% } %> 
 				</select>
 				<input type="text" id="student-filter" oninput="filterPrograms(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
@@ -167,10 +167,6 @@
 		let guardianEmail = document.getElementById('guardianEmail').value;
 
     	if (!studentEmail.toLowerCase().match(format) || !guardianEmail.toLowerCase().match(format)) {
-    		alert('Insert valid emails')
-			return false;
-		}
-		if (!student.first_name || !student.last_name || !student.grade || !student.school || !student.email || !student.phone_number || !student.dateOfBirth || !student.guardianPhone || !student.notes) {
     		alert('Insert valid emails')
 			return false;
 		}
