@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-const Schema = mongoose.Schema
-const constants = require("../routes/constants")
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const constants = require("../routes/constants");
 
 const ProgramSchema = new Schema({
   title: {
@@ -45,7 +45,7 @@ const ProgramSchema = new Schema({
   isRegistrationRequired: {
     type: Boolean,
     required: true
-  }
-})
+  },
+});
 
-module.exports = Program = mongoose.model("programs", ProgramSchema)
+module.exports = Program = mongoose.model("programs", ProgramSchema);

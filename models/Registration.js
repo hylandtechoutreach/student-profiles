@@ -1,5 +1,5 @@
-const mongoose = require("mongoose")
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const RegistrationSchema = new Schema({
   student: {
@@ -17,6 +17,6 @@ const RegistrationSchema = new Schema({
     required: true
   },
  
-})
+});
 
-module.exports = Registration = mongoose.model("registrations", RegistrationSchema)
+module.exports = Registration = mongoose.model("registrations", RegistrationSchema);
