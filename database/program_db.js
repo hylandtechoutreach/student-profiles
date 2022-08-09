@@ -1,4 +1,3 @@
-const { validate } = require("../models/Program");
 const Program = require("../models/Program");
 const registration_db = require("./registration_db");
 const constants = require("../routes/constants");

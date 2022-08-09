@@ -1,4 +1,3 @@
-const { response } = require("express");
 const student_db = require("../database/db");
 const program_db = require("../database/program_db");
 const registration_db = require("../database/registration_db");
