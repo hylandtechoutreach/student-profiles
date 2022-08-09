@@ -10,7 +10,6 @@ module.exports = {
 		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
 		}));
-		let activeRegistrations = await registrationFile.activeRegistrations();
 		
 		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
@@ -19,8 +18,8 @@ module.exports = {
 		let renderData = {
 			path: 'none',
 			students: activeStudents,
-			registrations: activeRegistrations,
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
+			registrations: await registrationFile.activeRegistrations(),
+			titles: await module.exports.getProgramTitles(activeStudents),
 			grades: constants.getGradeLevels(),
 		};
 
@@ -30,7 +29,6 @@ module.exports = {
 
 	sortFirstNames: async function(request, response) {
 		let activeStudents = await programFile.activeStudents();
-		let activeRegistrations = await registrationFile.activeRegistrations();
 
 		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
@@ -40,7 +38,7 @@ module.exports = {
 			path: 'none',
 			students: activeStudents,
 			registrations: registrationFile.activeRegistrations(),
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
+			titles: await module.exports.getProgramTitles(activeStudents),
 		};
 		
 		response.render('index', renderData);
@@ -56,7 +54,6 @@ module.exports = {
 				filteredStudents.push(activeStudents[i]);
 			}
 		}
-		let activeRegistrations = await registrationFile.activeRegistrations();
 
 		filteredStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
@@ -66,13 +63,13 @@ module.exports = {
 			path: filteredGrade,
 			students: filteredStudents,
 			registrations: registrationFile.activeRegistrations(),
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
+			titles: await module.exports.getProgramTitles(activeStudents),
 		};
 
 		response.render('index', renderData);
 	},
-	
-	getProgramTitles: async function(activeStudents, activeRegistrations) {
+
+	getProgramTitles: async function(activeStudents) {
 		let programTitles = [];
 		for (let i = 0; i < activeStudents.length; i++) {
 			let registrations = await registration_db.getRegistrationsByParams({
