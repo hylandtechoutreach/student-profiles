@@ -10,7 +10,7 @@ const constants = require("./constants")
 
 module.exports = {
 	addStudentPage: async function (request, response) {
-		let programList = await program_db.getProgramsList()
+		let programList = module.exports.activePrograms(await program_db.getProgramsList());
 		let renderData = {
 			student: {},
 			add: true,
@@ -19,6 +19,8 @@ module.exports = {
 			programs: module.exports.activePrograms(programList),
 			registrations: await registrationFile.activeRegistrations(),
 			grades: constants.getGradeLevels(),
+			formatedProgramList: module.exports.getFormatedProgramList(programList),
+
 		}
 
 		response.render('edit-student', renderData)
@@ -27,11 +29,11 @@ module.exports = {
 	viewStudentPage: async function (request, response) {
 		let studentId = request.params.id;
 		let studentObj = await db.getStudentById(studentId);
+		let programList = await registrationFile.getProgramListByStudentId(studentId);
 
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
 		
-		let programList = await program_db.getProgramsList();
 		let renderData = {
 			student: studentObj,
 			add: false,
@@ -40,31 +42,32 @@ module.exports = {
 			registrations: await registrationFile.activeRegistrations(),
 			countries: countries,
 			grades: constants.getGradeLevels(),
+			formatedProgramList: module.exports.getFormatedProgramList(programList),
+
 		};
 
 		response.render('edit-student', renderData)
 	},
 
 	editStudentPage: async function (request, response) {
-		let studentId = request.params.id
-		let studentObj = await db.getStudentById(studentId)
-
-		let programList = await program_db.getProgramsList()
-		let registrationList = await registrationFile.activeRegistrations()
-
+		let studentId = request.params.id;
+		let studentObj = await db.getStudentById(studentId);
+		let programList = module.exports.activePrograms(await program_db.getProgramsList());
+		let registrationList = await registrationFile.activeRegistrations();
 
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
 		
-
+		
 		let renderData = {
 			student: studentObj,
 			view: false,
-			programs: module.exports.activePrograms(programList),
+			programs: programList,
 			registrations: registrationList,
 			add: false,
 			countries: countries,
 			grades: constants.getGradeLevels(),
+			formatedProgramList: module.exports.getFormatedProgramList(programList),
 		};
 		response.render('edit-student', renderData)
 	},
@@ -76,24 +79,20 @@ module.exports = {
 	},
 	
 	editStudent: async function (request, response) {
-		
-		let studentId = request.params.id
-		let programIds = []
-		await registration_db.deleteRegistrationByStudentId(studentId)
-		if(request.body.program_list !== undefined) {
-		for(let i = 0; i < request.body.program_list.length; i++) {
-			programIds.push(request.body.program_list)
-		}
-		if(request.body.program_list.length == 24) {
-			await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(request.body.program_list))
-		} else {
-			for(let i = 0; i < request.body.program_list.length; i++) {
-				await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(request.body.program_list[i]))
-			}	
-		}
+		let studentId = request.params.id;
+		await registration_db.deleteRegistrationByStudentId(studentId);
+		let program_list = request.body.program_list;
+		if(program_list !== undefined) {
+			if(program_list instanceof Array) {
+				for(let i = 0; i < program_list.length; i++) {
+					await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(program_list[i]));
+				}	
+			} else {
+				await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(program_list));
+			}
 		}
 		await db.editStudentById(studentId, request.body);
-		await module.exports.viewStudentPage(request, response)
+		await module.exports.viewStudentPage(request, response);
 	},
 
 	deleteStudent: async function (request, response) {
@@ -152,5 +151,17 @@ module.exports = {
 		}
 
 		response.redirect('/');
-	}
+	},
+	getFormatedProgramList:  function (programList) {
+		let formatedProgramList = [];
+		for (let i = 0; i < programList.length; i++) { 
+			let startDate = moment.utc(programList[i].start_date);
+			let shortMonth = new Date(startDate).toLocaleString('en-us', { month: 'short' });
+			let year = startDate.format('YYYY');
+			formatedProgramList.push(`${programList[i].title} (${shortMonth} ${year})`)
+ 		} 
+
+		return formatedProgramList;
+
+	},
 };

@@ -2,15 +2,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 <div class="container">
-	<!-- <script>
-		function noteReveal() {
-			var sel = document.getElementById('program_list')
-			var student_id_number = sel.options[sel.selectedIndex].text
-			document.getElementById('note').disabled = false
-			document.getElementById('note').style.display = "block"
-			document.getElementById('note_label').style.display = "block"
-        }
-    </script> -->
 <% if (add || student) { %>
 	<% if (view) { %>
 		<a href="/edit/<%= student.id %>" class="btn btn-sm btn-success float-center">Edit</a>
@@ -93,7 +84,7 @@
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].program == programs[i].id && registrations[j].student == student.id) {match = true;}  %> 
 						<% } %>
-						<option value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= programs[i].title %></option>
+						<option value="<%= programs[i].id %>" <% if(!add && !view) {if (match) { %> selected <% } } %>><%= formatedProgramList[i] %></option>
 					<% } %>
 				</select>
 			</div>
@@ -147,10 +138,6 @@
 		let guardianEmail = document.getElementById('guardianEmail').value;
 
     	if (!studentEmail.toLowerCase().match(format) || !guardianEmail.toLowerCase().match(format)) {
-    		alert('Insert valid emails')
-			return false;
-		}
-		if (!student.first_name || !student.last_name || !student.grade || !student.school || !student.email || !student.phone_number || !student.dateOfBirth || !student.guardianPhone || !student.notes) {
     		alert('Insert valid emails')
 			return false;
 		}

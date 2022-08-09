@@ -42,7 +42,7 @@ const ProgramSchema = new Schema({
     enum: ["active", "inactive"],
     required: true
   },
-  registration_required: {
+  isRegistrationRequired: {
     type: Boolean,
     required: true
   }

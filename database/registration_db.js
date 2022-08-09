@@ -33,5 +33,13 @@ module.exports = {
         },
         getActiveRegistrations: async function() {
           return await Registration.find({status: 'active'});
+      },
+        getRegistrationTitles: async function(studentId) {
+          return await Registration.find({
+            student: studentId,
+            status: 'active'});
+      },
+      getRegistrationsByParams: async function(params) {
+        return await Registration.find(params);
       }
 }

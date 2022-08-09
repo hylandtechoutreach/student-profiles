@@ -75,25 +75,20 @@ module.exports = {
 	},
 
 	editProgram: async function (request, response) {
-		let programId = request.params.id
-		let studentIds = []
-		await registration_db.deleteRegistrationByProgramId(programId)
-
-		if(request.body.student_list !== undefined) {
-		for(let i = 0; i < request.body.student_list.length; i++) {
-			studentIds.push(request.body.student_list[i])
-		}
-		if(request.body.student_list.length == 24) {
-			await registration_db.addRegistration(mongoose.Types.ObjectId(request.body.student_list), programId)
-		}
-		else {
-			for(let i = 0; i < request.body.student_list.length; i++) {
-				await registration_db.addRegistration(mongoose.Types.ObjectId(studentIds[i]), programId)
+		let programId = request.params.id;
+		await registration_db.deleteRegistrationByProgramId(programId);
+		student_list = request.body.student_list;
+		if(student_list !== undefined) {
+			if(student_list instanceof Array) {
+				for(let i = 0; i < student_list.length; i++) {
+					await registration_db.addRegistration(mongoose.Types.ObjectId(student_list[i]), programId);
+				}
+			} else {
+				await registration_db.addRegistration(mongoose.Types.ObjectId(student_list), programId);
 			}
 		}
-	}
-		await db.editProgramById(programId, request.body)
-		await module.exports.viewProgramPage(request, response)
+		await db.editProgramById(programId, request.body);
+		await module.exports.viewProgramPage(request, response);
 	},
 
 	deleteProgram: async function (request, response) {
