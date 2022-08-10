@@ -70,7 +70,6 @@ const StudentSchema = new Schema({
   },
   internalNotes: {
     type: String,
-    required: false
   },
   status: {
     type: String,
