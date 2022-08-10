@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 const countries = require("countries-list").countries;
 const moment = require('moment');
 const constants = require("./constants")
+const Image = require('../models/Image');
 
 module.exports = {
 	addStudentPage: async function (request, response) {
@@ -43,7 +44,7 @@ module.exports = {
 			countries: countries,
 			grades: constants.getGradeLevels(),
 			formatedProgramList: module.exports.getFormatedProgramList(programList),
-
+			image: await Image.findOne({ student: studentId })
 		};
 
 		response.render('edit-student', renderData)
@@ -68,6 +69,7 @@ module.exports = {
 			countries: countries,
 			grades: constants.getGradeLevels(),
 			formatedProgramList: module.exports.getFormatedProgramList(programList),
+			image: await Image.findOne({ student: studentId })
 		};
 		response.render('edit-student', renderData)
 	},

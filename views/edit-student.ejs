@@ -96,6 +96,11 @@
 				<label for="guardian_Name">Guardian Name</label>
 				<input type="text" class="form-control" name="guardian_Name" maxlength = "50" value="<%=student.guardian_Name%>" required <% if (view) { %> readonly <% } %>>
 			</div>
+			<% if (!add) { %> 
+				<div class="form-group col-md-6">
+					<img src="data:image/<%= image.img.contentType %>; base64, <%= image.img.toString('base64') %>">
+				</div>
+			<% } %> 
 			</div>
 			<% if (!view) { %>
 				<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Student</button>

@@ -1,0 +1,9 @@
+<%- include('partials/header'); %>
+<h1>Upload Image</h1>
+<form action="/uploadfile/<%= studentId %> " enctype="multipart/form-data" method="post">
+    <input type="file" name="myImage" accept="image/*">
+    <input type="submit" value="Upload Photo">
+</form>
+</div>
+</body>
+</html>
