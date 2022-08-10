@@ -11,7 +11,7 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
-  guardian_Name:{
+  guardian_Name: {
     type: String,
     required: true
   },

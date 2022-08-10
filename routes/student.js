@@ -33,7 +33,7 @@ module.exports = {
 
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
-		
+
 		let renderData = {
 			student: studentObj,
 			programs: programList,
@@ -54,7 +54,7 @@ module.exports = {
 
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
-		
+
 		let renderData = {
 			student: studentObj,
 			programs: programList,
@@ -74,16 +74,16 @@ module.exports = {
 		await student_db.addStudent(request.body);
 		response.redirect('/');
 	},
-	
+
 	editStudent: async function (request, response) {
 		let studentId = request.params.id;
 		await registration_db.deleteRegistrationByStudentId(studentId);
 		let program_list = request.body.program_list;
-		if(program_list !== undefined) {
-			if(program_list instanceof Array) {
-				for(let i = 0; i < program_list.length; i++) {
+		if (program_list !== undefined) {
+			if (program_list instanceof Array) {
+				for (let i = 0; i < program_list.length; i++) {
 					await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(program_list[i]));
-				}	
+				}
 			} else {
 				await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(program_list));
 			}
@@ -96,10 +96,10 @@ module.exports = {
 		let studentId = request.params.id;
 		let studentObj = await student_db.getStudentById(studentId);
 		let registrationList = await registration_db.getRegistrationsList();
-		for(let i = 0; i < registrationList.length; i++) {
-			if(registrationList[i].student == studentId) {
+		for (let i = 0; i < registrationList.length; i++) {
+			if (registrationList[i].student == studentId) {
 				registrationList[i]['status'] = 'disabled';
-				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i]);
+				await registration_db.editRegistrationById(registrationList[i].id, registrationList[i]);
 			}
 		}
 		studentObj['status'] = 'inactive';
@@ -112,10 +112,10 @@ module.exports = {
 		let studentId = request.params.id;
 		let studentObj = await student_db.getStudentById(studentId);
 		let registrationList = await registration_db.getRegistrationsList();
-		for(let i = 0; i < registrationList.length; i++) {
-			if(registrationList[i].student == studentId) {
+		for (let i = 0; i < registrationList.length; i++) {
+			if (registrationList[i].student == studentId) {
 				registrationList[i]['status'] = 'active';
-				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i]);
+				await registration_db.editRegistrationById(registrationList[i].id, registrationList[i]);
 			}
 		}
 		studentObj['status'] = 'active';
@@ -140,20 +140,20 @@ module.exports = {
 		response.redirect('/');
 	},
 	// Returns list of program titles with formated start dates
-	getFormatedProgramList:  function (programList) {
+	getFormatedProgramList: function (programList) {
 		let formatedProgramList = [];
-		for (let i = 0; i < programList.length; i++) { 
+		for (let i = 0; i < programList.length; i++) {
 			let startDate = moment.utc(programList[i].start_date);
 			let shortMonth = new Date(startDate).toLocaleString('en-us', { month: 'short' });
 			let year = startDate.format('YYYY');
 			formatedProgramList.push(`${programList[i].title} (${shortMonth} ${year})`);
- 		} 
+		}
 
 		return formatedProgramList;
 
 	},
 
-	activePrograms: async function() {
-		return await program_db.getProgramsByParams({status: 'active'});
+	activePrograms: async function () {
+		return await program_db.getProgramsByParams({ status: 'active' });
 	},
 };

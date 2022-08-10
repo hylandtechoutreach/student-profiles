@@ -12,12 +12,12 @@ module.exports = {
 		let activeRegistrations = await registrationFile.activeRegistrations();
 		let studentNames = [];
 		for (let i = 0; i < activePrograms.length; i++) {
-			for (let j = 0; j < activeRegistrations.length; j++) { 
-				if (activeRegistrations[j].program == activePrograms[i].id) { 
-					let studentObj =  await student_db.getStudentById(activeRegistrations[j].student);
+			for (let j = 0; j < activeRegistrations.length; j++) {
+				if (activeRegistrations[j].program == activePrograms[i].id) {
+					let studentObj = await student_db.getStudentById(activeRegistrations[j].student);
 					studentNames.push(studentObj.first_name);
-				} 
-			} 
+				}
+			}
 		}
 
 		for (let i = 0; i < activePrograms.length; i++) {
@@ -36,5 +36,5 @@ module.exports = {
 		response.render('program_index', renderData);
 
 	},
-	
+
 };

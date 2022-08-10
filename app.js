@@ -18,7 +18,7 @@ app.use(express.json());
 
 const dbStr = configKeys.mongoURI;
 const dbSettings = {
-	useNewUrlParser: true,
+  useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "student_profiles",
   useFindAndModify: false
@@ -51,7 +51,7 @@ app.post('/program_add', program.addProgram);
 app.post('/program_edit/:id', program.editProgram);
 
 function listenCallback() {
-	console.log(`Server Running on http://${hostname}:${port}`);
+  console.log(`Server Running on http://${hostname}:${port}`);
 }
 
 app.listen(port, hostname, listenCallback);

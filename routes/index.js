@@ -7,14 +7,14 @@ const registration_db = require("../database/registration_db")
 module.exports = {
 	getHomePage: async function (request, response) {
 		let activeStudents = await programFile.activeStudents();
-		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
+		activeStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
 		}));
-		
-		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
+
+		activeStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
 		}));
-		
+
 		let renderData = {
 			path: 'none',
 			students: activeStudents,
@@ -24,13 +24,13 @@ module.exports = {
 		};
 
 		response.render('index', renderData);
-		
+
 	},
 
-	sortFirstNames: async function(request, response) {
+	sortFirstNames: async function (request, response) {
 		let activeStudents = await programFile.activeStudents();
 
-		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
+		activeStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
 		}));
 
@@ -40,7 +40,7 @@ module.exports = {
 			registrations: registrationFile.activeRegistrations(),
 			titles: await module.exports.getProgramTitles(activeStudents),
 		};
-		
+
 		response.render('index', renderData);
 	},
 
@@ -55,7 +55,7 @@ module.exports = {
 			}
 		}
 
-		filteredStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
+		filteredStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
 			ignorePunctuation: true
 		}));
 
@@ -69,7 +69,7 @@ module.exports = {
 		response.render('index', renderData);
 	},
 
-	getProgramTitles: async function(activeStudents) {
+	getProgramTitles: async function (activeStudents) {
 		let programTitles = [];
 		for (let i = 0; i < activeStudents.length; i++) {
 			let registrations = await registration_db.getRegistrationsByParams({

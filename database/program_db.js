@@ -4,7 +4,7 @@ const constants = require("../routes/constants");
 const grades = constants.getGradeLevels();
 
 module.exports = {
-	addProgram: async function(programObj) {
+  addProgram: async function (programObj) {
     if (validateProgram(programObj)) {
 
       const newProgram = new Program({
@@ -16,52 +16,52 @@ module.exports = {
         min_grade_level: programObj.min_grade_level,
         max_grade_level: programObj.max_grade_level,
         isRegistrationRequired: !!programObj.isRegistrationRequired,
-        program_id: `${programObj.title}.${ await module.exports.getTitleCount(programObj.title)}`,
+        program_id: `${programObj.title}.${await module.exports.getTitleCount(programObj.title)}`,
         status: "active"
       });
       await newProgram.save()
       let student_list = programObj.student_list;
-      if(student_list !== undefined) {
-        if(student_list instanceof Array) {
-          for(let i = 0; i < student_list.length; i++) {
+      if (student_list !== undefined) {
+        if (student_list instanceof Array) {
+          for (let i = 0; i < student_list.length; i++) {
             await registration_db.addRegistration(student_list[i], newProgram.id);
-           }
+          }
         } else {
           await registration_db.addRegistration(student_list, newProgram.id);
         }
       }
     }
-	},
+  },
 
-  getTitleCount: async function(currentTitle) {
-	  return await Program.find({title : currentTitle}).countDocuments() + 1;
-	},
+  getTitleCount: async function (currentTitle) {
+    return await Program.find({ title: currentTitle }).countDocuments() + 1;
+  },
 
-	getProgramsList: async function() {
-	  return await Program.find({});
-	},
+  getProgramsList: async function () {
+    return await Program.find({});
+  },
 
-	getProgramById: async function(programId) {
+  getProgramById: async function (programId) {
     return await Program.findOne({
       _id: programId
     });
-	},
-  
-	editProgramById: async function(programId, newprogramObj) {
+  },
+
+  editProgramById: async function (programId, newprogramObj) {
     if (validateProgram(newprogramObj)) {
 
       newprogramObj['isRegistrationRequired'] = !!newprogramObj.isRegistrationRequired;
       await Program.findOneAndUpdate({
         _id: programId
       },
-      newprogramObj,
-      {
-        runValidators: true
-      });
+        newprogramObj,
+        {
+          runValidators: true
+        });
     }
-	},
+  },
 
-  getProgramsByParams: async function(params) {
+  getProgramsByParams: async function (params) {
     return await Program.find(params);
   },
 }
