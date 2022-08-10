@@ -1,18 +1,14 @@
-const programFile = require("./program")
-const registrationFile = require("./registration")
-const program_db = require("../database/program_db")
-const constants = require("./constants")
-const registration_db = require("../database/registration_db")
+const programFile = require("./program");
+const registrationFile = require("./registration");
+const program_db = require("../database/program_db");
+const constants = require("./constants");
+const registration_db = require("../database/registration_db");
 
 module.exports = {
 	getHomePage: async function (request, response) {
 		let activeStudents = await programFile.activeStudents();
 		activeStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
-			ignorePunctuation: true
-		}));
-
-		activeStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
-			ignorePunctuation: true
+			ignorePunctuation: true,
 		}));
 
 		let renderData = {
@@ -31,7 +27,7 @@ module.exports = {
 		let activeStudents = await programFile.activeStudents();
 
 		activeStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
-			ignorePunctuation: true
+			ignorePunctuation: true,
 		}));
 
 		let renderData = {
@@ -56,7 +52,7 @@ module.exports = {
 		}
 
 		filteredStudents.sort((a, b) => a.first_name.localeCompare(b.first_name, 'en', {
-			ignorePunctuation: true
+			ignorePunctuation: true,
 		}));
 
 		let renderData = {

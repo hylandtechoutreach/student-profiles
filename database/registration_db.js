@@ -7,17 +7,17 @@ module.exports = {
 
   editRegistrationById: async function (registrationId, newRegistrationObj) {
     await Registration.findOneAndUpdate({
-      _id: registrationId
+      _id: registrationId,
     },
       newRegistrationObj,
       {
-        runValidators: true
+        runValidators: true,
       });
   },
 
   getRegistrationById: async function (registrationId) {
     return await Registration.findOne({
-      _id: registrationId
+      _id: registrationId,
     });
   },
 
@@ -41,7 +41,7 @@ module.exports = {
   getRegistrationTitles: async function (studentId) {
     return await Registration.find({
       student: studentId,
-      status: 'active'
+      status: 'active',
     });
   },
 

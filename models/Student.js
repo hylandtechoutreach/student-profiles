@@ -5,73 +5,73 @@ const constants = require("../routes/constants");
 const StudentSchema = new Schema({
   first_name: {
     type: String,
-    required: true
+    required: true,
   },
   last_name: {
     type: String,
-    required: true
+    required: true,
   },
   guardian_Name: {
     type: String,
-    required: true
+    required: true,
   },
   grade: {
     type: String,
     enum: constants.getGradeLevels(),
-    required: true
+    required: true,
   },
   school: {
     type: String,
-    required: true
+    required: true,
   },
   id_number: {
     type: String,
-    required: true
+    required: true,
   },
   phone_number: {
     type: String,
-    required: true
+    required: true,
   },
   countryCode: {
     type: String,
-    required: true
+    required: true,
   },
   dateOfBirth: {
     type: Date,
-    required: false
+    required: false,
   },
   guardianEmail: {
     type: String,
-    required: false
+    required: false,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   guardianPhone: {
     type: String,
-    required: true
+    required: true,
   },
   countryCodeGuardian: {
     type: String,
-    required: true
+    required: true,
   },
   guardianPhone: {
     type: String,
-    required: true
+    required: true,
   },
   notes: {
     type: String,
-    required: false
+    required: false,
   },
   interestsAndHobies: {
     type: String,
-    required: false
+    required: false,
   },
   status: {
     type: String,
     enum: ["active", "inactive"],
-    required: true
+    required: true,
   }
 });
 

@@ -65,7 +65,7 @@ module.exports = {
 
       let studentSchool = studentId.school;
       if (studentId.school == "other") {
-        studentSchool = studentId.other_school
+        studentSchool = studentId.other_school;
       }
       guardianPhoneDeformated = newStudentObj.guardianPhone;
       studentPhoneDeformated = newStudentObj.phone_number;
@@ -79,18 +79,18 @@ module.exports = {
       newStudentObj['phone_number'] = studentPhoneDeformated;
 
       await Student.findOneAndUpdate({
-        _id: studentId
+        _id: studentId,
       },
         newStudentObj,
         {
-          runValidators: true
+          runValidators: true,
         });
     }
   },
 
   deleteStudentById: async function (studentId) {
     await Student.findOneAndRemove({
-      _id: studentId
+      _id: studentId,
     });
   },
 

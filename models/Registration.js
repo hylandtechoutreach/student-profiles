@@ -4,17 +4,17 @@ const Schema = mongoose.Schema;
 const RegistrationSchema = new Schema({
   student: {
     type: Schema.Types.ObjectId,
-    ref: 'Student'
+    ref: 'Student',
   },
   program: {
     type: Schema.Types.ObjectId,
-    ref: 'Program'
+    ref: 'Program',
   },
   status: {
     type: String,
     enum: ['active', 'accept', 'deny', 'disabled'],
     default: 'active',
-    required: true
+    required: true,
   },
 
 });

@@ -5,46 +5,46 @@ const constants = require("../routes/constants");
 const ProgramSchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   location: {
     type: String,
-    required: true
+    required: true,
   },
   start_date: {
     type: Date,
-    required: true
+    required: true,
   },
   end_date: {
     type: Date,
-    required: true
+    required: true,
   },
   min_grade_level: {
     type: String,
     enum: constants.getGradeLevels(),
-    required: true
+    required: true,
   },
   max_grade_level: {
     type: String,
     enum: constants.getGradeLevels(),
-    required: true
+    required: true,
   },
   program_id: {
     type: String,
-    required: true
+    required: true,
   },
   status: {
     type: String,
     enum: ["active", "inactive"],
-    required: true
+    required: true,
   },
   isRegistrationRequired: {
     type: Boolean,
-    required: true
+    required: true,
   },
 });
 

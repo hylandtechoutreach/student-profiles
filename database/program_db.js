@@ -6,7 +6,6 @@ const grades = constants.getGradeLevels();
 module.exports = {
   addProgram: async function (programObj) {
     if (validateProgram(programObj)) {
-
       const newProgram = new Program({
         title: programObj.title,
         description: programObj.description,
@@ -17,7 +16,7 @@ module.exports = {
         max_grade_level: programObj.max_grade_level,
         isRegistrationRequired: !!programObj.isRegistrationRequired,
         program_id: `${programObj.title}.${await module.exports.getTitleCount(programObj.title)}`,
-        status: "active"
+        status: "active",
       });
       await newProgram.save()
       let student_list = programObj.student_list;
@@ -43,7 +42,7 @@ module.exports = {
 
   getProgramById: async function (programId) {
     return await Program.findOne({
-      _id: programId
+      _id: programId,
     });
   },
 
@@ -52,11 +51,11 @@ module.exports = {
 
       newprogramObj['isRegistrationRequired'] = !!newprogramObj.isRegistrationRequired;
       await Program.findOneAndUpdate({
-        _id: programId
+        _id: programId,
       },
         newprogramObj,
         {
-          runValidators: true
+          runValidators: true,
         });
     }
   },
