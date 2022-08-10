@@ -19,7 +19,31 @@
 				return false;
 			}
 		}
+		function selectAll() {
+			options = document.getElementsByName("studentOption");
+			for (let i=0; i<options.length; i++)
+			{
+				options[i].selected = "true";
+			}
+    	}
+		function filterStudents(element) {
+					let filter = element.value;
+					let studentRows = document.getElementsByName('studentOption');
+		
+					for (let i = 0; i < studentRows.length; i++) {
+						if (studentRows[i].id.substring(0, 8) == "student-") {
+							let studentName = studentRows[i].id.toLowerCase().substring(8)
+						
+							if (studentName.includes(filter.toLowerCase())) {
+								document.getElementById(studentRows[i].id).hidden = false
+							} else {
+								document.getElementById(studentRows[i].id).hidden = true
+							}
+						}
+					}
+				}
     </script>
+	<body>
 <% if (add || program) { %>
 	<% if (view) { %>
 		<a href="/program_edit/<%= program.id %>" class="btn btn-sm btn-success">Edit</a>
@@ -76,15 +100,17 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="student_list">Students Involved</label>
+				<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll()">Select All</button>
 				<select class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < students.length; i++) { %>
 						<% let match = false %>
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
 						<% } %>
-						<option value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %> ><%= students[i].first_name %></option>
+						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %> ><%= students[i].first_name %></option>
 					<% } %>
 				</select>
+				<input type="text" id="student-filter" oninput="filterStudents(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
 			</div>
 		</div>
 		<div class="form-row">

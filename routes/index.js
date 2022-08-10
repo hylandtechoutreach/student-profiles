@@ -13,10 +13,6 @@ module.exports = {
 		}));
 		let activeRegistrations = await registrationFile.activeRegistrations()
 		
-		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
-			ignorePunctuation: true
-		}));
-		
 		let renderData = {
 			path: 'none',
 			students: activeStudents,
