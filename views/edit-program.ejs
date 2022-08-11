@@ -99,14 +99,11 @@
 				<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll()">Select All</button>
 				<select class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < students.length; i++) { %>
-						<% let match = false, eligible = true %>
+						<% let match = false%>
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
 						<% } %>
-						<% let studentGrade = grades.indexOf(students[i].grade), minGrade = grades.indexOf(program.min_grade_level), maxGrade = grades.indexOf(program.max_grade_level) %>
-						<% if((studentGrade < minGrade || studentGrade > maxGrade) && !view) { eligible = false } %>
-						<% if (add) { eligible = true } %> 
-						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
+						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %>> <%= students[i].first_name %></option>
 					<% } %>
 				</select>
 				<input type="text" id="student-filter" oninput="filterStudents(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
