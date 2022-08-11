@@ -86,6 +86,10 @@ exports.signin = (req, res) => {
         httpOnly: true
       });
 
-      res.redirect('/');
+      if (user.userType != 'unregistered') {
+        res.redirect('/');
+      } else {
+        res.redirect('/program')
+      }
     });
 };

@@ -97,7 +97,7 @@ module.exports = {
 				}
 				return response.render('signin', renderData)
 			} else {
-				if (!request.url == '/add') {
+				if (request.url != '/add') {
 					//Automatically signs user in after signup
 					let token = jwt.sign({ id: user.id }, config.secret, {
 						expiresIn: '1h'
