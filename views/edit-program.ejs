@@ -90,7 +90,7 @@
 				<label for="max_grade_level">Maximum Grade Level</label>
 				<select name="max_grade_level" class="form-control" id="max_grade_level" required <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < grades.length; i++) { %>
-						<option value="<%= grades[i] %>" <% if (program.max_grade_level == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
+						<option value="<%= grades[i] %>" <% if ((add && grades[i] == 'Out of School') || (program.max_grade_level == grades[i])) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
 				</select>
 			</div>
@@ -105,6 +105,7 @@
 						<% } %>
 						<% let studentGrade = grades.indexOf(students[i].grade), minGrade = grades.indexOf(program.min_grade_level), maxGrade = grades.indexOf(program.max_grade_level) %>
 						<% if((studentGrade < minGrade || studentGrade > maxGrade) && !view) { eligible = false } %>
+						<% if (add) { eligible = true } %> 
 						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
 					<% } %>
 				</select>
