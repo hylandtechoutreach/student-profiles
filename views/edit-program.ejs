@@ -19,7 +19,31 @@
 				return false;
 			}
 		}
+		function selectAll() {
+			options = document.getElementsByName("studentOption");
+			for (let i=0; i<options.length; i++)
+			{
+				options[i].selected = "true";
+			}
+    	}
+		function filterStudents(element) {
+					let filter = element.value;
+					let studentRows = document.getElementsByName('studentOption');
+		
+					for (let i = 0; i < studentRows.length; i++) {
+						if (studentRows[i].id.substring(0, 8) == "student-") {
+							let studentName = studentRows[i].id.toLowerCase().substring(8)
+						
+							if (studentName.includes(filter.toLowerCase())) {
+								document.getElementById(studentRows[i].id).hidden = false
+							} else {
+								document.getElementById(studentRows[i].id).hidden = true
+							}
+						}
+					}
+				}
     </script>
+	<body>
 <% if (add || program) { %>
 	<% if (view) { %>
 		<a href="/program_edit/<%= program.id %>" class="btn btn-sm btn-success">Edit</a>
@@ -71,20 +95,23 @@
 				</select>
 			</div>
 			<div class="form-group col-md-6">
-				<label for="isRegistrationRequired">Registration Required</label>
-				<input type="checkbox" class="form-control" name="isRegistrationRequired" <% if (program.isRegistrationRequired) { %>checked<% } %>  <% if (view) { %> onclick="return false" <% } %>>
-			</div>
-			<div class="form-group col-md-6">
 				<label for="student_list">Students Involved</label>
+				<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll()">Select All</button>
 				<select class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < students.length; i++) { %>
-						<% let match = false %>
+						<% let match = false, eligible = true %>
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
 						<% } %>
-						<option value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %> ><%= students[i].first_name %></option>
+						<% if((students[i].grade > program.max_grade_level || students[i].grade < program.min_grade_level) && !view) { eligible = false  } %>
+						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
 					<% } %>
 				</select>
+				<input type="text" id="student-filter" oninput="filterStudents(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
+			</div>
+			<div class="form-group col-md-6">
+				<label for="registration_required">Registration Required</label>
+				<input type="checkbox" class="form-control" name="registration_required" <% if (program.registration_required) { %>checked<% } %>  <% if (view) { %> onclick="return false" <% } %>>
 			</div>
 		</div>
 		<div class="form-row">
