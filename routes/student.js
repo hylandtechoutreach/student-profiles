@@ -15,19 +15,75 @@ const constants = require("./constants")
 module.exports = {
 	addStudentPage: async function (request, response) {
 		let programList = module.exports.activePrograms(await program_db.getProgramsList());
-		let renderData = {
-			student: {},
-			add: true,
-			view: false,
-			countries: countries,
-			programs: module.exports.activePrograms(programList),
-			registrations: await registrationFile.activeRegistrations(),
-			grades: constants.getGradeLevels(),
-			formatedProgramList: module.exports.getFormatedProgramList(programList),
 
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
+
+		if (!token) {
+			let renderData = {
+				message: ""
+			}
+			return res.render('signin', renderData)
 		}
 
-		response.render('edit-student', renderData)
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				}
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec(async (err, user) => {
+				if (user.userType == 'admin') {
+					let renderData = {
+						student: {},
+						add: true,
+						view: false,
+						countries: countries,
+						programs: module.exports.activePrograms(programList),
+						registrations: await registrationFile.activeRegistrations(),
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: true,
+						isStudent: false,
+					}
+
+					return response.render('edit-student', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						student: {},
+						add: true,
+						view: false,
+						countries: countries,
+						programs: module.exports.activePrograms(programList),
+						registrations: await registrationFile.activeRegistrations(),
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+					}
+
+					return response.render('edit-student', renderData);
+				} else {
+					let renderData = {
+						student: {},
+						add: true,
+						view: false,
+						countries: countries,
+						programs: module.exports.activePrograms(programList),
+						registrations: await registrationFile.activeRegistrations(),
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: false,
+						isStudent: false,
+					}
+
+					response.render('edit-student', renderData);
+				}
+			});
+		});
 	},
 
 	viewStudentPage: async function (request, response) {
@@ -38,19 +94,74 @@ module.exports = {
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
 
-		let renderData = {
-			student: studentObj,
-			add: false,
-			view: true,
-			programs: await registrationFile.getProgramListByStudentId(studentId),
-			registrations: await registrationFile.activeRegistrations(),
-			countries: countries,
-			grades: constants.getGradeLevels(),
-			formatedProgramList: module.exports.getFormatedProgramList(programList),
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
 
-		};
+		if (!token) {
+			let renderData = {
+				message: ""
+			}
+			return res.render('signin', renderData)
+		}
 
-		response.render('edit-student', renderData)
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				}
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec(async (err, user) => {
+				if (user.userType == 'admin') {
+					let renderData = {
+						student: studentObj,
+						add: false,
+						view: true,
+						programs: await registrationFile.getProgramListByStudentId(studentId),
+						registrations: await registrationFile.activeRegistrations(),
+						countries: countries,
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: true,
+						isStudent: false,
+					}
+
+					return response.render('edit-student', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						student: studentObj,
+						add: false,
+						view: true,
+						programs: await registrationFile.getProgramListByStudentId(studentId),
+						registrations: await registrationFile.activeRegistrations(),
+						countries: countries,
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+					}
+
+					return response.render('edit-student', renderData);
+				} else {
+					let renderData = {
+						student: studentObj,
+						add: false,
+						view: true,
+						programs: await registrationFile.getProgramListByStudentId(studentId),
+						registrations: await registrationFile.activeRegistrations(),
+						countries: countries,
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: false,
+						isStudent: false,
+					}
+
+					response.render('edit-student', renderData);
+				}
+			});
+		});
 	},
 
 	editStudentPage: async function (request, response) {
@@ -62,18 +173,74 @@ module.exports = {
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
 
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
 
-		let renderData = {
-			student: studentObj,
-			view: false,
-			programs: programList,
-			registrations: registrationList,
-			add: false,
-			countries: countries,
-			grades: constants.getGradeLevels(),
-			formatedProgramList: module.exports.getFormatedProgramList(programList),
-		};
-		response.render('edit-student', renderData)
+		if (!token) {
+			let renderData = {
+				message: ""
+			}
+			return res.render('signin', renderData)
+		}
+
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				}
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec(async (err, user) => {
+				if (user.userType == 'admin') {
+					let renderData = {
+						student: studentObj,
+						view: false,
+						programs: programList,
+						registrations: registrationList,
+						add: false,
+						countries: countries,
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: true,
+						isStudent: false,
+					}
+
+					return response.render('edit-student', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						student: studentObj,
+						view: false,
+						programs: programList,
+						registrations: registrationList,
+						add: false,
+						countries: countries,
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+					}
+
+					return response.render('edit-student', renderData);
+				} else {
+					let renderData = {
+						student: studentObj,
+						view: false,
+						programs: programList,
+						registrations: registrationList,
+						add: false,
+						countries: countries,
+						grades: constants.getGradeLevels(),
+						formatedProgramList: module.exports.getFormatedProgramList(programList),
+						isAdmin: false,
+						isStudent: false,
+					}
+
+					response.render('edit-student', renderData);
+				}
+			});
+		});
 	},
 
 	addStudent: async function (request, response) {
