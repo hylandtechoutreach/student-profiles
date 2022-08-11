@@ -63,13 +63,13 @@ module.exports = {
 	},
 
 	getStudentsList: async function() {
-	  return await Student.find({})
+	  return await Student.find({});
 	},
 
 	getStudentById: async function(studentId) {
     return await Student.findOne({
       _id: studentId
-    })
+    });
 	},
 
 	editStudentById: async function(studentId, newStudentObj) {

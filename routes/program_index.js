@@ -42,6 +42,7 @@ module.exports = {
 		}
 		let token = request.headers['cookie']
 
+		let token = request.headers['cookie']
 		if (!token) {
 			let renderData = {
 				message: ""

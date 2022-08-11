@@ -1,8 +1,8 @@
-const jwt = require('jsonwebtoken');
-const userDb = require("../auth/models");
-const User = userDb.user;
-const config = require('../auth/config/auth.config');
 const db = require("../database/db")
+const jwt = require('jsonwebtoken')
+const userDb = require("../auth/models")
+const User = userDb.user
+const config = require('../auth/config/auth.config')
 const programFile = require("./program")
 const registrationFile = require("./registration")
 const program_db = require("../database/program_db")
@@ -206,19 +206,3 @@ module.exports = {
 		return programTitles
 	},
 };
-
-async function getProgramTitles(activeStudents, activeRegistrations) {
-	let programTitles = []
-	for (let i = 0; i < activeStudents.length; i++) {
-		let registrations = await registration_db.getRegistrationsByParams({
-			status: 'active',
-			student: activeStudents[i].id
-		})
-
-		for (let j = 0; j < registrations.length; j++) {
-			let programObj = await program_db.getProgramById(registrations[j].program)
-			programTitles.push(programObj.title)
-		}
-	}
-	return programTitles
-}

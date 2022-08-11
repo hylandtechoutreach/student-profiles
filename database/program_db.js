@@ -38,7 +38,7 @@ module.exports = {
 	  return await Program.find({title : currentTitle}).countDocuments() + 1 
 	},
 	getProgramsList: async function() {
-	  return await Program.find({})
+	  return await Program.find({});
 	},
 	getProgramById: async function(programId) {
     return await Program.findOne({
