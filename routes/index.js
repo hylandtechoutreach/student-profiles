@@ -1,3 +1,7 @@
+const jwt = require('jsonwebtoken');
+const userDb = require("../auth/models");
+const User = userDb.user;
+const config = require('../auth/config/auth.config');
 const db = require("../database/db")
 const programFile = require("./program")
 const registrationFile = require("./registration")
@@ -13,15 +17,68 @@ module.exports = {
 		}));
 		let activeRegistrations = await registrationFile.activeRegistrations()
 		
-		let renderData = {
-			path: 'none',
-			students: activeStudents,
-			registrations: activeRegistrations,
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
-			grades: constants.getGradeLevels(),
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
+
+		if (!token) {
+			let renderData = {
+				message: ""
+			  }
+			return res.render('signin', renderData)
 		}
 
-		response.render('index', renderData)
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				  }
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec(async (err, user) => {
+				if (user.userType == 'admin') {
+					let titles = await getProgramTitles(activeStudents, activeRegistrations);
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						registrations: activeRegistrations,
+						titles: titles,
+						grades: constants.getGradeLevels(),
+						isAdmin: true,
+						isStudent: false,
+					}
+			
+					return response.render('index', renderData);
+				} else if (user.userType == 'student') {
+					let titles = await getProgramTitles(activeStudents, activeRegistrations);
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						registrations: activeRegistrations,
+						titles: titles,
+						grades: constants.getGradeLevels(),
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+					}
+			
+					return response.render('index', renderData);
+				} else {
+					let titles = await getProgramTitles(activeStudents, activeRegistrations);
+					let renderData = {
+						path: 'none',
+						students: activeStudents,
+						registrations: activeRegistrations,
+						titles: titles,
+						grades: constants.getGradeLevels(),
+						isAdmin: false,
+						isStudent: false,
+					}
+
+					response.render('index', renderData);
+				}
+			});
+		});
 		
 	},
 
@@ -38,7 +95,7 @@ module.exports = {
 			path: 'none',
 			students: activeStudents,
 			registrations: registrationFile.activeRegistrations(),
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
+			titles: await getProgramTitles(activeStudents, activeRegistrations),
 		}
 		
 		response.render('index', renderData)
@@ -66,11 +123,70 @@ module.exports = {
 			path: filteredGrade,
 			students: filteredStudents,
 			registrations: registrationFile.activeRegistrations(),
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
+			titles: await getProgramTitles(activeStudents, activeRegistrations),
 		}
 
-		response.render('index', renderData)
+		//Want to make this a separate function for better organization
+		let token = request.headers['cookie'];
+
+		if (!token) {
+			let renderData = {
+				message: ""
+			  }
+			return res.render('signin', renderData)
+		}
+
+		token = token.substring(6);
+		jwt.verify(token, config.secret, async (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				  }
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec(async (err, user) => {
+				if (user.userType == 'admin') {
+					let titles = await getProgramTitles(activeStudents, activeRegistrations);
+					let renderData = {
+						path: filteredGrade,
+						students: filteredStudents,
+						registrations: registrationFile.activeRegistrations(),
+						titles: titles,
+						isAdmin: true,
+						isStudent: false,
+					}
+			
+					return response.render('index', renderData);
+				} else if (user.userType == 'student') {
+					let titles = await getProgramTitles(activeStudents, activeRegistrations);
+					let renderData = {
+						path: filteredGrade,
+						students: filteredStudents,
+						registrations: registrationFile.activeRegistrations(),
+						titles: titles,
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+					}
+			
+					return response.render('index', renderData);
+				} else {
+					let titles = await getProgramTitles(activeStudents, activeRegistrations);
+					let renderData = {
+						path: filteredGrade,
+						students: filteredStudents,
+						registrations: registrationFile.activeRegistrations(),
+						titles: titles,
+						isAdmin: false,
+						isStudent: false,
+					}
+
+					response.render('index', renderData);
+				}
+			});
+		});
 	},
+
 	getProgramTitles: async function(activeStudents, activeRegistrations) {
 		let programTitles = []
 		for (let i = 0; i < activeStudents.length; i++) {
@@ -87,3 +203,19 @@ module.exports = {
 		return programTitles
 	},
 };
+
+async function getProgramTitles(activeStudents, activeRegistrations) {
+	let programTitles = []
+	for (let i = 0; i < activeStudents.length; i++) {
+		let registrations = await registration_db.getRegistrationsByParams({
+			status: 'active',
+			student: activeStudents[i].id
+		})
+
+		for (let j = 0; j < registrations.length; j++) {
+			let programObj = await program_db.getProgramById(registrations[j].program)
+			programTitles.push(programObj.title)
+		}
+	}
+	return programTitles
+}

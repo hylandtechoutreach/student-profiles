@@ -9,11 +9,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "countries-list": "^2.6.1",
     "dotenv": "^16.0.1",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "global": "^4.4.0",
+    "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
     "mongoose": "^5"
   }

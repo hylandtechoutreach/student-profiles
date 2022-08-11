@@ -4,6 +4,10 @@ const registration_db = require("../database/registration_db")
 const registrationFile = require("./registration")
 const student_db = require("../database/db")
 const moment = require('moment');
+const jwt = require('jsonwebtoken');
+const userDb = require("../auth/models");
+const User = userDb.user;
+const config = require('../auth/config/auth.config');
 
 module.exports = {
 	getProgramPage: async function (request, response) {
@@ -36,8 +40,61 @@ module.exports = {
 			registrations: activeRegistrations,
 			first_names: studentNames,
 		}
-		response.render('program_index', renderData)
+		let token = request.headers['cookie']
 
+		if (!token) {
+			let renderData = {
+				message: ""
+			  }
+			return res.render('signin', renderData)
+		}
+
+		token = token.substring(6);
+		jwt.verify(token, config.secret, (err, decoded) => {
+			if (err) {
+				let renderData = {
+					message: ""
+				  }
+				return res.render('signin', renderData)
+			}
+			let user = User.findById(decoded.id).exec((err, user) => {
+				if (user.userType == 'admin') {
+					let renderData = {
+						path: 'none',
+						programs: activePrograms,
+						isAdmin: true,
+						isStudent: false,
+						registrations: activeRegistrations,
+						first_names: studentNames,
+					}
+			
+					return response.render('program_index', renderData);
+				} else if (user.userType == 'student') {
+					let renderData = {
+						path: 'none',
+						programs: activePrograms,
+						isAdmin: false,
+						isStudent: true,
+						studentId: user.studentId,
+						registrations: activeRegistrations,
+						first_names: studentNames,
+					}
+			
+					return response.render('program_index', renderData);
+				} else {
+					let renderData = {
+						path: 'none',
+						programs: activePrograms,
+						isAdmin: false,
+						isStudent: false,
+						registrations: activeRegistrations,
+						first_names: studentNames,
+					}
+					response.render('program_index', renderData);
+				}
+			});
+		});
+		
 	},
 	
 };

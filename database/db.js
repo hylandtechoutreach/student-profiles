@@ -1,5 +1,11 @@
 const Student = require("../models/Student");
+const userDb = require('../auth/models');
+const User = userDb.user;
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
+const config = require("../auth/config/auth.config");
 const registration_db = require("./registration_db")
+
 module.exports = {
 	addStudent: async function(studentObj) {
     if (validateStudent(studentObj)) {
@@ -32,6 +38,7 @@ module.exports = {
 
       
       });
+
       await newStudent.save();
       
       let program_list = studentObj.program_list;
@@ -44,11 +51,16 @@ module.exports = {
           await registration_db.addRegistration(newStudent.id,program_list);
         }
      }
+
+     return newStudent
+    } else {
+      consol.log('Invalid Student');
     }
 	},
   getLastNameCount: async function(lastName) {
     return await Student.find({last_name : lastName}).countDocuments() + 1 
 	},
+
 	getStudentsList: async function() {
 	  return await Student.find({})
 	},
