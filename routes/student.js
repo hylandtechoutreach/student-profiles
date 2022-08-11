@@ -6,6 +6,10 @@ const registrationFile = require("./registration")
 var mongoose = require('mongoose');
 const countries = require("countries-list").countries;
 const moment = require('moment');
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const User = require('../auth/models/user.model')
+const config = require('../auth/config/auth.config')
 const constants = require("./constants")
 
 module.exports = {
@@ -33,7 +37,7 @@ module.exports = {
 
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
-		
+
 		let renderData = {
 			student: studentObj,
 			add: false,
@@ -57,8 +61,8 @@ module.exports = {
 
 		let dateOfBirth = moment.utc(studentObj.dateOfBirth);
 		studentObj['dateOfBirthFormatted'] = dateOfBirth.format('YYYY[-]MM[-]DD');
-		
-		
+
+
 		let renderData = {
 			student: studentObj,
 			view: false,
@@ -73,20 +77,58 @@ module.exports = {
 	},
 
 	addStudent: async function (request, response) {
-		await db.addStudent(request.body)
+		if (request.body.studentEmail) {
+			request.body['email'] = request.body.studentEmail
+		}
+		const newStudent = await db.addStudent(request.body)
 
-		response.redirect('/')
+		const user = new User({
+			username: request.body.studentUsername,
+			email: request.body.email,
+			password: bcrypt.hashSync(request.body.studentPassword, 8),
+			userType: 'student',
+			studentId: newStudent._id
+		});
+
+		user.save((err, user) => {
+			if (err) {
+				let renderData = {
+					message: err
+				}
+				return response.render('signin', renderData)
+			} else {
+				if (request.url != '/add') {
+					//Automatically signs user in after signup
+					let token = jwt.sign({ id: user.id }, config.secret, {
+						expiresIn: '1h'
+					});
+
+					response.cookie('token', token, {
+						httpOnly: true
+					});
+
+					if (user.userType) {
+						let renderData = {
+							message: "User was registered successfully!"
+						}
+						return response.render('signin', renderData)
+					}
+				} else {
+					response.redirect('/')
+				}
+			}
+		})
 	},
-	
+
 	editStudent: async function (request, response) {
 		let studentId = request.params.id;
 		await registration_db.deleteRegistrationByStudentId(studentId);
 		let program_list = request.body.program_list;
-		if(program_list !== undefined) {
-			if(program_list instanceof Array) {
-				for(let i = 0; i < program_list.length; i++) {
+		if (program_list !== undefined) {
+			if (program_list instanceof Array) {
+				for (let i = 0; i < program_list.length; i++) {
 					await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(program_list[i]));
-				}	
+				}
 			} else {
 				await registration_db.addRegistration(studentId, mongoose.Types.ObjectId(program_list));
 			}
@@ -99,10 +141,10 @@ module.exports = {
 		let studentId = request.params.id
 		let studentObj = await db.getStudentById(studentId)
 		let registrationList = await registration_db.getRegistrationsList()
-		for(let i = 0; i < registrationList.length; i++) {
-			if(registrationList[i].student == studentId) {
+		for (let i = 0; i < registrationList.length; i++) {
+			if (registrationList[i].student == studentId) {
 				registrationList[i]['status'] = 'disabled'
-				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i])
+				await registration_db.editRegistrationById(registrationList[i].id, registrationList[i])
 			}
 		}
 		studentObj['status'] = 'inactive'
@@ -115,10 +157,10 @@ module.exports = {
 		let studentId = request.params.id;
 		let studentObj = await db.getStudentById(studentId);
 		let registrationList = await registration_db.getRegistrationsList();
-		for(let i = 0; i < registrationList.length; i++) {
-			if(registrationList[i].student == studentId) {
+		for (let i = 0; i < registrationList.length; i++) {
+			if (registrationList[i].student == studentId) {
 				registrationList[i]['status'] = 'active'
-				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i])
+				await registration_db.editRegistrationById(registrationList[i].id, registrationList[i])
 			}
 		}
 		studentObj['status'] = 'active';
@@ -126,7 +168,7 @@ module.exports = {
 
 		response.redirect('/');
 	},
-	activePrograms: function(programList) {
+	activePrograms: function (programList) {
 		let activePrograms = [];
 		for (let i = 0; i < programList.length; i++) {
 			if (programList[i].status == "active") {
@@ -135,7 +177,7 @@ module.exports = {
 		}
 		return activePrograms
 	},
-	
+
 
 	increaseStudentGrades: async function (request, response) {
 		let grades = constants.getGradeLevels()
@@ -152,14 +194,14 @@ module.exports = {
 
 		response.redirect('/');
 	},
-	getFormatedProgramList:  function (programList) {
+	getFormatedProgramList: function (programList) {
 		let formatedProgramList = [];
-		for (let i = 0; i < programList.length; i++) { 
+		for (let i = 0; i < programList.length; i++) {
 			let startDate = moment.utc(programList[i].start_date);
 			let shortMonth = new Date(startDate).toLocaleString('en-us', { month: 'short' });
 			let year = startDate.format('YYYY');
 			formatedProgramList.push(`${programList[i].title} (${shortMonth} ${year})`)
- 		} 
+		}
 
 		return formatedProgramList;
 

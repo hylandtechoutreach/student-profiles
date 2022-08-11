@@ -65,8 +65,8 @@
 		<tbody>
 		<% let count = 0; %>
 		<% for (let i = 0; i < students.length; i++) { %>
-			<tr ondblclick="window.location='/view/<%= students[i].id %>';" id="<%= students[i].first_name + '-' + students[i].last_name %>">
-				
+			<% if (isAdmin || (isStudent && studentId == students[i].id)) { %>
+				<tr ondblclick="window.location='/view/<%= students[i].id %>';" id="<%= students[i].first_name + '-' + students[i].last_name %>">
 					<td><%= students[i].first_name %></td>
 					<td><%= students[i].last_name %></td>
 					<td><%= students[i].school %></td>
@@ -83,9 +83,12 @@
 				</td>
 			</tr>
 		<% } %>
+		<% } %>
 		</tbody>
 	</table>
-	<a href="/next-grade" class="btn btn-sm btn-info">Increment Grades</a>
+	<% if (isAdmin) { %>
+		<a href="/next-grade" class="btn btn-sm btn-info">Increment Grades</a>
+	<% } %>
 <% } else { %>
 	<p class="text-center">No students found.</p>
 <% } %>
