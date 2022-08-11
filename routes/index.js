@@ -17,10 +17,6 @@ module.exports = {
 		}));
 		let activeRegistrations = await registrationFile.activeRegistrations()
 		
-		activeStudents.sort( (a, b) => a.first_name.localeCompare(b.first_name, 'en', {
-			ignorePunctuation: true
-		}));
-
 		//Want to make this a separate function for better organization
 		let token = request.headers['cookie'];
 
@@ -30,14 +26,6 @@ module.exports = {
 			  }
 			return res.render('signin', renderData)
 		}
-		
-		/*let renderData = {
-			path: 'none',
-			students: activeStudents,
-			registrations: activeRegistrations,
-			titles: await module.exports.getProgramTitles(activeStudents, activeRegistrations),
-			grades: constants.getGradeLevels(),
-		}*/
 
 		token = token.substring(6);
 		jwt.verify(token, config.secret, (err, decoded) => {
