@@ -9,14 +9,25 @@ const constants = require("./constants")
 
 module.exports = {
 	addProgramPage: async function (request, response) {
-		let studentList = await student_db.getStudentsList()
+		let activeStudents = module.exports.activeStudents(await student_db.getStudentsList())
+
+		let eligibleList = [];
+		let grades = constants.getGradeLevels()
+		for (let i = 0; i < activeStudents.length; i++) {
+			let eligible = true;
+			let studentGrade = grades.indexOf(activeSTudents[i].grade), minGrade = grades.indexOf(programObj['min_grade_level']), maxGrade = grades.indexOf(programObj['max_grade_level'])
+
+			if (studentGrade < minGrade || studentGrade > maxGrade) { eligible = false }
+			eligibleList.push(eligible)
+		}
+
 		let renderData = {
 			program: {},
-			students: module.exports.activeStudents(studentList),
+			students: activeStudents,
 			add: true,
 			view: false,
-			registrations: await registrationFile.activeRegistrations(),
-			grades: constants.getGradeLevels(),
+			grades: grades,
+			eligibleList: eligibleList,
 
 		}
 
@@ -26,21 +37,32 @@ module.exports = {
 	editProgramPage: async function (request, response) {
 		let programId = request.params.id
 		let programObj = await db.getProgramById(programId)
-		let studentList = await student_db.getStudentsList()
-		
+		let activeStudents = module.exports.activeStudents(await student_db.getStudentsList())
+
 		startDate = moment(programObj.start_date);
 		endDate = moment(programObj.end_date);
 
 		programObj['start_date_formatted'] = startDate.format('YYYY[-]MM[-]DD[T]hh:mm');
 		programObj['end_date_formatted'] = endDate.format('YYYY[-]MM[-]DD[T]hh:mm');
 
+		let eligibleList = [];
+		let grades = constants.getGradeLevels()
+		for (let i = 0; i < activeStudents.length; i++) {
+			let eligible = true;
+			let studentGrade = grades.indexOf(activeStudents[i].grade), minGrade = grades.indexOf(programObj['min_grade_level']), maxGrade = grades.indexOf(programObj['max_grade_level'])
+
+			if (studentGrade < minGrade || studentGrade > maxGrade) { eligible = false }
+			eligibleList.push(eligible)
+		}
+
 		let renderData = {
 			program: programObj,
-			students: module.exports.activeStudents(studentList),
+			students: activeStudents,
 			registrations: await registrationFile.activeRegistrations(),
 			add: false,
 			view: false,
-			grades: constants.getGradeLevels(),
+			grades: grades,
+			eligibleList: eligibleList,
 		};
 
 		response.render('edit-program', renderData);
@@ -49,7 +71,7 @@ module.exports = {
 		let programId = request.params.id
 		let programObj = await db.getProgramById(programId)
 		let studentList = await student_db.getStudentsList();
-		
+
 		startDate = moment(programObj.start_date);
 		endDate = moment(programObj.end_date);
 
@@ -63,6 +85,7 @@ module.exports = {
 			students: await registrationFile.getStudentListByProgramId(programId),
 			registrations: await registrationFile.activeRegistrations(),
 			grades: constants.getGradeLevels(),
+			eligibleList: "",
 		}
 
 		response.render('edit-program', renderData);
@@ -78,9 +101,9 @@ module.exports = {
 		let programId = request.params.id;
 		await registration_db.deleteRegistrationByProgramId(programId);
 		student_list = request.body.student_list;
-		if(student_list !== undefined) {
-			if(student_list instanceof Array) {
-				for(let i = 0; i < student_list.length; i++) {
+		if (student_list !== undefined) {
+			if (student_list instanceof Array) {
+				for (let i = 0; i < student_list.length; i++) {
 					await registration_db.addRegistration(mongoose.Types.ObjectId(student_list[i]), programId);
 				}
 			} else {
@@ -95,10 +118,10 @@ module.exports = {
 		let programId = request.params.id
 		let programObj = await db.getProgramById(programId)
 		let registrationList = await registration_db.getRegistrationsList()
-		for(let i = 0; i < registrationList.length; i++) {
-			if(registrationList[i].program == programId) {
+		for (let i = 0; i < registrationList.length; i++) {
+			if (registrationList[i].program == programId) {
 				registrationList[i]['status'] = 'disabled'
-				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i])
+				await registration_db.editRegistrationById(registrationList[i].id, registrationList[i])
 			}
 		}
 		programObj['status'] = 'inactive'
@@ -111,10 +134,10 @@ module.exports = {
 		let programId = request.params.id
 		let programObj = await db.getProgramById(programId)
 		let registrationList = await registration_db.getRegistrationsList();
-		for(let i = 0; i < registrationList.length; i++) {
-			if(registrationList[i].program == programId) {
+		for (let i = 0; i < registrationList.length; i++) {
+			if (registrationList[i].program == programId) {
 				registrationList[i]['status'] = 'active'
-				await registration_db.editRegistrationById(registrationList[i].id,registrationList[i])
+				await registration_db.editRegistrationById(registrationList[i].id, registrationList[i])
 			}
 		}
 		programObj['status'] = 'active'
@@ -122,7 +145,7 @@ module.exports = {
 
 		response.redirect('/program')
 	},
-	activeStudents: function(studentList) {
+	activeStudents: function (studentList) {
 		let activeStudents = []
 		for (let i = 0; i < studentList.length; i++) {
 			if (studentList[i].status == "active") {
@@ -131,5 +154,5 @@ module.exports = {
 		}
 		return activeStudents
 	},
-	
+
 };

@@ -103,7 +103,7 @@
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
 						<% } %>
-						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %>> <%= students[i].first_name %></option>
+						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } %>> <% if(!eligibleList[i] && !view) { %> &#9888; <% } %> <%= students[i].first_name %></option>
 					<% } %>
 				</select>
 				<input type="text" id="student-filter" oninput="filterStudents(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
