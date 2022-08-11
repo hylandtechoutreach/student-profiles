@@ -29,31 +29,31 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="username">Username</label>
-                    <input type="text" name="studentUsername" class="form-control" maxlength="50">
+                    <input type="text" name="studentUsername student-required" class="form-control" maxlength="50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="password">Password</label>
-                    <input type="text" name="studentPassword" class="form-control" maxlength="50">
+                    <input type="text" name="studentPassword student-required" class="form-control" maxlength="50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="first-name">First Name</label>
-                    <input type="text" class="form-control" name="first_name" maxlength = "50">
+                    <input type="text" class="form-control student-required" name="first_name" maxlength = "50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="last-name">Last Name</label>
-                    <input type="text" class="form-control" name="last_name" maxlength = "50">
+                    <input type="text" class="form-control student-required" name="last_name" maxlength = "50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="email">Email</label>
-                    <input type="email" class="form-control" name="studentEmail" id="email" maxlength = "50">
+                    <input type="email" class="form-control student-required" name="studentEmail" id="email" maxlength = "50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="guardianEmail">Guardian Email</label>
-                    <input type="email" class="form-control" name="guardianEmail" id="guardianEmail" maxlength = "50">
+                    <input type="email" class="form-control student-required" name="guardianEmail" id="guardianEmail" maxlength = "50">
                 </div>
                 <div class="form-group col-md-2">
                     <label>Country</label>
-                    <input name="countryCode" class="form-control" list="countryCodes" id="countryCode-phone" value="+1"/>
+                    <input name="countryCode" class="form-control student-required" list="countryCodes" id="countryCode-phone" value="+1"/>
                     <datalist id="countryCodes">
                         <% for (const country in countries) { %>
                             <option value="+<%= countries[country].phone %>"><%= countries[country].name %></option>
@@ -62,15 +62,15 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="phone_number">Phone Number</label>
-                    <input oninput="formatPhoneNumber(this)" id="phoneNumber" type="tel" class="form-control" name="phone_number" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="(###) ###-####" maxlength="14">
+                    <input oninput="formatPhoneNumber(this)" id="phoneNumber" type="tel" class="form-control student-required" name="phone_number" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="(###) ###-####" maxlength="14">
                 </div>
                 <div class="form-group col-md-2">
                     <label>Country</label>
-                    <input name="countryCodeGuardian" class="form-control" list="countryCodes" id="countryCode-guardianPhone" value="+1"/>
+                    <input name="countryCodeGuardian" class="form-control student-required" list="countryCodes" id="countryCode-guardianPhone" value="+1"/>
                 </div>
                 <div class="form-group col-md-4">
                     <label for="guardianPhone">Guardian Phone Number</label>
-                    <input oninput="formatPhoneNumber(this)" id="guardianPhoneNumber" type="tel" class="form-control" name="guardianPhone" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="(###) ###-####" maxlength="14">
+                    <input oninput="formatPhoneNumber(this)" id="guardianPhoneNumber" type="tel" class="form-control student-required" name="guardianPhone" pattern ="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="(###) ###-####" maxlength="14">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="notes">Notes</label>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="grade">Grade</label>
-                    <select name="grade" class="form-control">
+                    <select name="grade" class="form-control student-required">
                         <% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"]; %>
                         <% for (let i = 0; i < grades.length; i++) { %>
                             <option><%= grades[i] %></option>
@@ -96,7 +96,7 @@
                 <div class="form-group col-md-6">
                     <label for="school" class="form-label">School</label>
                     <% let schools = ["Berea-Midpark High School", "Solon High School", "Lakewood High School", "Westlake High School"]; %>
-                    <input id="school" maxlength = "50" class="form-control" name="school" list="school_options"/>
+                    <input id="school" maxlength = "50" class="form-control student-required" name="school" list="school_options"/>
                     <datalist id="school_options">
                         <% for (let i = 0; i < schools.length; i++) { %>
                                 <option value="<%= schools[i] %>">
@@ -105,7 +105,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="guardian_Name">Guardian Name</label>
-                    <input type="text" class="form-control" name="guardian_Name" maxlength = "50" required>
+                    <input type="text" class="form-control student-required" name="guardian_Name" maxlength = "50">
                 </div>
             </div>
         </div>
@@ -121,6 +121,13 @@
             } else if (element.value == 'student') {
                 studentSignupDiv.style = 'display: block;'
                 userSignupDiv.style = 'display: none;'
+
+                /*let studentInputs = document.getElementsByClassName('student-required');
+                for (let i = 0; i < studentInputs.length; i++) {
+                    console.log(studentInputs[i].tagName)
+                    studentInputs[i].setAttribute('required', '');
+                }*/
+
             } else {
                 //This code should never run
                 console.log('How did you even get here?')
