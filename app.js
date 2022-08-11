@@ -14,11 +14,10 @@ const index = require('./routes/index');
 const program_index = require('./routes/program_index');
 const student = require('./routes/student');
 const program = require('./routes/program');
-const application = require('./routes/application');
 const auth = require('./routes/auth');
 
 let app = express();
-
+app.use(express.static("config"))
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -31,7 +30,6 @@ const dbSettings = {
   dbName: "student_profiles",
   useFindAndModify: false
 }
-
 // connect to mongodb
 mongoose.connect(dbStr, dbSettings)
   .then(() => {
@@ -46,16 +44,17 @@ app.get('/api/auth/signin', auth.getSigninPage);
 app.get('/', [authJwt.verifyToken, authJwt.isStudentOrAdmin] ,index.getHomePage);
 app.get('/sort', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.sortFirstNames);
 app.get('/unsort', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.getHomePage);
-app.get('/add', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.addStudentPage);
+app.get('/add', [authJwt.verifyToken, authJwt.isAdmin], student.addStudentPage);
 app.get('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudentPage);
 app.get('/delete/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.deleteStudent);
 app.get('/reactivate/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.reactivateStudent);
 app.get('/next-grade', [authJwt.verifyToken, authJwt.isAdmin], student.increaseStudentGrades);
 app.get('/filter/:grade', [authJwt.verifyToken], index.filter);
 app.get('/view/:id', [authJwt.verifyToken], student.viewStudentPage);
-app.post('/add', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.addStudent);
+app.post('/add', [authJwt.verifyToken, authJwt.isAdmin], student.addStudent);
 app.post('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudent);
 
+app.get('/view_program/:id', [authJwt.verifyToken],program.viewProgramPage);
 app.get('/program_delete/:id', [authJwt.verifyToken, authJwt.isAdmin], program.deleteProgram);
 app.get('/program_reactivate/:id', [authJwt.verifyToken, authJwt.isAdmin], program.reactivateProgram);
 app.get('/program', [authJwt.verifyToken], program_index.getProgramPage);

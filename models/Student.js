@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
+const constants = require("../routes/constants")
 
 const StudentSchema = new Schema({
   first_name: {
@@ -10,8 +11,13 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
+  guardian_Name:{
+    type: String,
+    required: true
+  },
   grade: {
     type: String,
+    enum: constants.getGradeLevels(),
     required: true
   },
   school: {
@@ -26,9 +32,13 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
+  countryCode: {
+    type: String,
+    required: true
+  },
   dateOfBirth: {
     type: Date,
-    required: true
+    required: false
   },
   guardianEmail: {
     type: String,
@@ -42,11 +52,23 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
-  notes: {
+  countryCodeGuardian: {
     type: String,
     required: true
   },
+  guardianPhone: {
+    type: String,
+    required: true
+  },
+  notes: {
+    type: String,
+    required: false
+  },
   interestsAndHobies: {
+    type: String,
+    required: false
+  },
+  internalNotes: {
     type: String,
     required: false
   },
@@ -55,6 +77,6 @@ const StudentSchema = new Schema({
     enum: ["active", "inactive"],
     required: true
   }
-});
+})
 
-module.exports = Student = mongoose.model("students", StudentSchema);
+module.exports = Student = mongoose.model("students", StudentSchema)

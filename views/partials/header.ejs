@@ -40,18 +40,15 @@
 			  font-size: 36px;
 			  margin-left: 50px;
 			}
-
 			#main {
   				transition: margin-left .5s;
 			}
-
 			#btn-sidenav:hover {
 				background-color: rgb(230, 230, 230);
 				transition: 0.5s;
 				border-radius: 5px;
 				width: 400px;
 			}
-
 			#btn-sidenav {
 				font-size: 30px;
 				margin-left: 20px;
@@ -62,7 +59,6 @@
 			  .sidenav {padding-top: 15px;}
 			  .sidenav a {font-size: 18px;}
 			}
-
 			.big-box {
 				height: 100%;
 			  	width: 100%;
@@ -77,7 +73,6 @@
 				opacity: 0;
 				pointer-events: none;
 			}
-
 			#smaller-box {
 				height: 100%;
 				width: 0;
@@ -95,7 +90,7 @@
 			}
 			</style>
 	</head>
-	<body>
+	<body  onload="dino()">
 		<div class="page-wrapper">
 			<div class="big-box" id="big-box" onmousedown="exitNav(event)">
 				<div id="smaller-box" onclick="closeNav()"></div>
@@ -108,9 +103,7 @@
 				<a href="/add">Add a Student</a>
 				<a href="/program_add">Add a Program</a>
 				<a href="/program">Programs</a>
-				<a href="/applications">Applications</a>
 			  </div>
-
 			  <span onclick="openNav()" id="btn-sidenav">&#9776;</span>
 			  
 			  <script>
@@ -125,6 +118,10 @@
 				document.getElementById('big-box').style.opacity = "0";
 				document.getElementById('smaller-box').style.width = "0";
 			  }
-
-
+			  function dino() {
+			 
+			  setTimeout(() => {  document.getElementById("dino").style =  "display: block"; },1800000 );
+			  setTimeout(() => {  document.getElementById("dino").style =  "display: none"; }, 1800050); 
+			  }
 			  </script>
+			  
