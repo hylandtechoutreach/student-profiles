@@ -34,7 +34,6 @@
    			background: rgb(250,250,250); 
 		}
 	</style>
-	<% let grades = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"]; %>
 	<form>
 	<div class="row">
 		<div class="col-md-2">
@@ -75,9 +74,9 @@
 					<td><%= students[i].email %></td>
 					<td><%= students[i].id_number %></td>
 				<td>
-					<% for (let j = 0; j < applications.length; j++) { %>
-						<% if (applications[j].student == students[i].id) { %>
-							<a href="/view_program/<%= applications[j].program %>"><%= titles[count] %> </a>
+					<% for (let j = 0; j < registrations.length; j++) { %>
+						<% if (registrations[j].student == students[i].id) { %>
+							<a href="/view_program/<%= registrations[j].program %>"><%= titles[count] %> </a>
 							<% count++ %> 
 						<% } %>
                     <% } %>

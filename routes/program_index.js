@@ -1,7 +1,7 @@
 const db = require("../database/program_db")
 const studentFile = require("./student")
-const application_db = require("../database/application_db")
-const applicationFile = require("./application")
+const registration_db = require("../database/registration_db")
+const registrationFile = require("./registration")
 const student_db = require("../database/db")
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
@@ -13,12 +13,15 @@ module.exports = {
 	getProgramPage: async function (request, response) {
 		let programList = await db.getProgramsList()
 		let activePrograms = studentFile.activePrograms(programList)
-		let activeApplications = await applicationFile.activeApplications()
+		activePrograms.sort( (a, b) => a.title.localeCompare(b.title, 'en', {
+			ignorePunctuation: true
+		}));
+		let activeRegistrations = await registrationFile.activeRegistrations()
 		let studentNames = []
 		for (let i = 0; i < activePrograms.length; i++) {
-			for (let j = 0; j < activeApplications.length; j++) { 
-				if (activeApplications[j].program == activePrograms[i].id) { 
-					let studentObj =  await student_db.getStudentById(activeApplications[j].student)
+			for (let j = 0; j < activeRegistrations.length; j++) { 
+				if (activeRegistrations[j].program == activePrograms[i].id) { 
+					let studentObj =  await student_db.getStudentById(activeRegistrations[j].student)
 					studentNames.push(studentObj.first_name)
 				} 
 			} 
@@ -34,7 +37,7 @@ module.exports = {
 
 		let renderData = {
 			programs: activePrograms,
-			applications: activeApplications,
+			registrations: activeRegistrations,
 			first_names: studentNames,
 		}
 		let token = request.headers['cookie']
@@ -61,7 +64,7 @@ module.exports = {
 						programs: activePrograms,
 						isAdmin: true,
 						isStudent: false,
-						applications: activeApplications,
+						registrations: activeRegistrations,
 						first_names: studentNames,
 					}
 			
@@ -73,7 +76,7 @@ module.exports = {
 						isAdmin: false,
 						isStudent: true,
 						studentId: user.studentId,
-						applications: activeApplications,
+						registrations: activeRegistrations,
 						first_names: studentNames,
 					}
 			
@@ -84,7 +87,7 @@ module.exports = {
 						programs: activePrograms,
 						isAdmin: false,
 						isStudent: false,
-						applications: activeApplications,
+						registrations: activeRegistrations,
 						first_names: studentNames,
 					}
 					response.render('program_index', renderData);

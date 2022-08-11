@@ -29,11 +29,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="username">Username</label>
-                    <input type="text" name="studentUsername" class="form-control">
+                    <input type="text" name="studentUsername" class="form-control" maxlength="50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="password">Password</label>
-                    <input type="text" name="studentPassword" class="form-control">
+                    <input type="text" name="studentPassword" class="form-control" maxlength="50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="first-name">First Name</label>
@@ -102,6 +102,10 @@
                                 <option value="<%= schools[i] %>">
                         <% } %>
                     </datalist>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="guardian_Name">Guardian Name</label>
+                    <input type="text" class="form-control" name="guardian_Name" maxlength = "50" required>
                 </div>
             </div>
         </div>
