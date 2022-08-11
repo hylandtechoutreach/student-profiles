@@ -109,10 +109,12 @@
 					}
 				}
 				function selectAll() {
-					options = document.getElementsByName("programOption");
+					let options = document.getElementsByName("programOption");
 					for (let i=0; i<options.length; i++)
 					{
+						if(options[i].hidden == false) {
 						options[i].selected = "true";
+						}
 					}
     			}
 				</script>
