@@ -13,15 +13,15 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="username">Username</label>
-                    <input type="text" name="username" class="form-control">
+                    <input type="text" name="username" class="form-control user-required">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="password">Password</label>
-                    <input type="text" name="password" class="form-control">
+                    <input type="text" name="password" class="form-control user-required">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="email">Email</label>
-                    <input type="email" name="email" class="form-control">
+                    <input type="email" name="email" class="form-control user-required">
                 </div>
             </div>
         </div>
@@ -29,11 +29,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="username">Username</label>
-                    <input type="text" name="studentUsername student-required" class="form-control" maxlength="50">
+                    <input type="text" name="studentUsername" class="form-control student-required" maxlength="50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="password">Password</label>
-                    <input type="text" name="studentPassword student-required" class="form-control" maxlength="50">
+                    <input type="text" name="studentPassword" class="form-control student-required" maxlength="50">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="first-name">First Name</label>
@@ -118,15 +118,29 @@
             if (element.value == 'unregistered' || element.value == 'admin') {
                 userSignupDiv.style = 'display: block;'
                 studentSignupDiv.style = 'display: none;'
+
+                let studentInputs = document.getElementsByClassName('student-required');
+                for (let i = 0; i < studentInputs.length; i++) {
+                    studentInputs[i].required = false;
+                }
+
+                let userInputs = document.getElementsByClassName('user-required');
+                for (let i = 0; i < userInputs.length; i++) {
+                    userInputs[i].required = true;
+                }
             } else if (element.value == 'student') {
                 studentSignupDiv.style = 'display: block;'
                 userSignupDiv.style = 'display: none;'
 
-                /*let studentInputs = document.getElementsByClassName('student-required');
+                let studentInputs = document.getElementsByClassName('student-required');
                 for (let i = 0; i < studentInputs.length; i++) {
-                    console.log(studentInputs[i].tagName)
-                    studentInputs[i].setAttribute('required', '');
-                }*/
+                    studentInputs[i].required = true;
+                }
+
+                let userInputs = document.getElementsByClassName('user-required');
+                for (let i = 0; i < userInputs.length; i++) {
+                    userInputs[i].required = false;
+                }
 
             } else {
                 //This code should never run
