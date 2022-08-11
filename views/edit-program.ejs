@@ -20,12 +20,14 @@
 			}
 		}
 		function selectAll() {
-			options = document.getElementsByName("studentOption");
-			for (let i=0; i<options.length; i++)
-			{
-				options[i].selected = "true";
-			}
-    	}
+					let options = document.getElementsByName("studentOption");
+					for (let i=0; i<options.length; i++)
+					{
+						if(options[i].hidden == false) {
+						options[i].selected = "true";
+						}
+					}
+    			}
 		function filterStudents(element) {
 					let filter = element.value;
 					let studentRows = document.getElementsByName('studentOption');
@@ -42,6 +44,17 @@
 						}
 					}
 				}
+							function maxGradeLevelChange() {
+					let newGrade = document.getElementById('max_grade_level').value;
+					let index = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"].indexOf(newGrade);
+
+				}
+				function minGradeLevelChange() {
+					let newGrade = document.getElementById('min_grade_level').value;
+					let index = ["6th", "7th", "8th", "9th", "10th", "11th", "12th", "College Freshman", "College Sophmore", "College Junior", "College Senior", "Out of School"].indexOf(newGrade);
+					
+				}
+						</script>
     </script>
 	<body>
 <% if (add || program) { %>
@@ -73,7 +86,7 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="min_grade_level">Minimum Grade Level</label>
-				<select name="min_grade_level" class="form-control" id="min_grade_level" required <% if (view) { %> readonly <% } %>>
+				<select name="min_grade_level" onchange="minGradeLevelChange()" class="form-control" id="min_grade_level" required <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < grades.length; i++) { %>
 						<option value="<%= grades[i] %>" <% if (program.min_grade_level == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
@@ -88,7 +101,7 @@
 		<div class="form-row">
 			<div class="form-group col-md-6">
 				<label for="max_grade_level">Maximum Grade Level</label>
-				<select name="max_grade_level" class="form-control" id="max_grade_level" required <% if (view) { %> readonly <% } %>>
+				<select name="max_grade_level" onchange="maxGradeLevelChange()" class="form-control" id="max_grade_level" required <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < grades.length; i++) { %>
 						<option value="<%= grades[i] %>" <% if (program.max_grade_level == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
 					<% } %>
@@ -103,7 +116,7 @@
 						<% for (let j = 0; j < registrations.length; j++) { %>
 							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
 						<% } %>
-						<% let studentGrade = grades.indexOf(students[i].grade), minGrade = grades.indexOf(program.min_grade_level), maxGrade = grades.indexOf(program.max_grade_level) %>
+						<% var studentGrade = grades.indexOf(students[i].grade), minGrade = grades.indexOf(program.min_grade_level), maxGrade = grades.indexOf(program.max_grade_level) %>
 						<% if((studentGrade < minGrade || studentGrade > maxGrade) && !view) { eligible = false } %>
 						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
 					<% } %>
