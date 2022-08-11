@@ -28,6 +28,14 @@
 				}
 			}
 		}
+
+		function confirmGradeIncrement() {
+			if (confirm('Are you sure you want to increase all grades by a year?')) {
+				location.href = '/next-grade';
+			} else {
+
+			}
+		}
 	</script>
 	<style>
 		tr:hover { 
@@ -87,7 +95,7 @@
 		</tbody>
 	</table>
 	<% if (isAdmin) { %>
-		<a href="/next-grade" class="btn btn-sm btn-info">Increment Grades</a>
+		<button class="btn btn-sm btn-info" onclick="confirmGradeIncrement()">Increment Grades</button>
 	<% } %>
 <% } else { %>
 	<p class="text-center">No students found.</p>
