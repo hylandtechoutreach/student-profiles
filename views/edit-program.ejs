@@ -42,7 +42,29 @@
 						}
 					}
 				}
+				function changeColor(element) {
+					console.log(element.children)
+					elementChildren = element.children;
+					for (let i = 0; i < elementChildren.length; i++) {
+						if (elementChildren[i].selected) {
+							elementChildren[i].style = 'background-color: light-grey;'
+						} else {
+							if (elementChildren[i].className == 'eligible:false') {
+								elementChildren[i].style = 'background-color: eed202;';
+							} else {
+								elementChildren[i].style = 'background-color: white;';
+							}
+						}
+					}
+				}
     </script>
+	<% if (!view)  { %> 
+	<script>
+		window.onload = function() {
+					changeColor(document.getElementById('student_list'))
+				}
+	</script>
+	<% } %> 
 	<body>
 <% if (add || program) { %>
 	<% if (view) { %>
@@ -96,8 +118,8 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="student_list">Students Involved</label>
-				<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll()">Select All</button>
-				<select class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
+				<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll(); changeColor(document.getElementById('student_list'))">Select All</button>
+				<select onchange="changeColor(this)" class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
 					<% for (let i = 0; i < students.length; i++) { %>
 						<% let match = false, eligible = true %>
 						<% for (let j = 0; j < registrations.length; j++) { %>
@@ -106,7 +128,7 @@
 						<% let studentGrade = grades.indexOf(students[i].grade), minGrade = grades.indexOf(program.min_grade_level), maxGrade = grades.indexOf(program.max_grade_level) %>
 						<% if((studentGrade < minGrade || studentGrade > maxGrade) && !view) { eligible = false } %>
 						<% if (add) { eligible = true } %> 
-						<option name="studentOption" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
+						<option name="studentOption" class="eligible:<%= eligible %>" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
 					<% } %>
 				</select>
 				<input type="text" id="student-filter" oninput="filterStudents(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
