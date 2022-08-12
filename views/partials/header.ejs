@@ -52,7 +52,7 @@
 			border-radius: 5px;
 			width: 400px;
 		}
-
+		
 		#btn-sidenav {
 			font-size: 30px;
 			margin-left: 20px;
@@ -107,6 +107,9 @@
 		<div class="big-box" id="big-box" onmousedown="exitNav(event)">
 			<div id="smaller-box" onclick="closeNav()"></div>
 		</div>
+		
+		add a href bellow to add it to the side menu
+
 		<div id="mySidenav" class="sidenav">
 			<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 			<a href="/">Students List</a>
@@ -119,17 +122,19 @@
 		<span onclick="openNav()" id="btn-sidenav">&#9776;</span>
 
 		<script>
+			//opens navigation pannel 
 			function openNav() {
 				document.getElementById('mySidenav').style.width = "250px";
 				document.getElementById('big-box').style.opacity = "50%";
 				document.getElementById('smaller-box').style.width = "100%";
 			}
-
+			//closes navigation pannel
 			function closeNav() {
 				document.getElementById('mySidenav').style.width = "0";
 				document.getElementById('big-box').style.opacity = "0";
 				document.getElementById('smaller-box').style.width = "0";
 			}
+			// dont wory about what this does 
 			function dino() {
 
 				setTimeout(() => { document.getElementById("dino").style = "display: block"; }, 1800000);

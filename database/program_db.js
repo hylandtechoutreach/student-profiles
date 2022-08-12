@@ -10,6 +10,7 @@ module.exports = {
     if (validateProgram(programObj)) {
 
       const newProgram = new Program({
+        //program data to be stored in db
         title: programObj.title,
         description: programObj.description,
         location: programObj.location,

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const constants = require("../routes/constants")
-
+//if you add somthing to program_db.js to be sent to the db, you must also add it here
 const ProgramSchema = new Schema({
   title: {
     type: String,

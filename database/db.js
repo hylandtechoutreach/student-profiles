@@ -9,6 +9,7 @@ const registration_db = require("./registration_db")
 module.exports = {
   addStudent: async function (studentObj) {
     if (validateStudent(studentObj)) {
+      //deformats phone number to be stored in db
       guardianPhoneDeformated = studentObj.guardianPhone
       studentPhoneDeformated = studentObj.phone_number
       let replace_chars = ['(', ')', '-', '+', ' '];
@@ -16,8 +17,9 @@ module.exports = {
         guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(replace_chars[i], "");
         studentPhoneDeformated = studentPhoneDeformated.replaceAll(replace_chars[i], "");
       }
-
+      
       const newStudent = new Student({
+        //studentObj data to be stored in db
         first_name: studentObj.first_name,
         last_name: studentObj.last_name,
         guardian_Name: studentObj.guardian_Name,

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
-
+//if you add somthing to registration_db.js to be sent to the db, you must also add it here
 const RegistrationSchema = new Schema({
   student: {
     type: Schema.Types.ObjectId,
