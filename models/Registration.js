@@ -16,7 +16,7 @@ const RegistrationSchema = new Schema({
     default: 'active',
     required: true
   },
- 
+
 });
 
 module.exports = Registration = mongoose.model("registrations", RegistrationSchema)

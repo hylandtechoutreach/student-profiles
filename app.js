@@ -25,7 +25,7 @@ app.use(cors(corsOptions));
 
 const dbStr = configKeys.mongoURI;
 const dbSettings = {
-	useNewUrlParser: true,
+  useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "student_profiles",
   useFindAndModify: false
@@ -41,7 +41,7 @@ require('./auth/routes/auth.routes')(app);
 app.get('/api/auth/signup', auth.getSignupPage);
 app.get('/api/auth/signin', auth.getSigninPage);
 
-app.get('/', [authJwt.verifyToken, authJwt.isStudentOrAdmin] ,index.getHomePage);
+app.get('/', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.getHomePage);
 app.get('/sort', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.sortFirstNames);
 app.get('/unsort', [authJwt.verifyToken, authJwt.isStudentOrAdmin], index.getHomePage);
 app.get('/add', [authJwt.verifyToken, authJwt.isAdmin], student.addStudentPage);
@@ -54,7 +54,7 @@ app.get('/view/:id', [authJwt.verifyToken], student.viewStudentPage);
 app.post('/add', [authJwt.verifyToken, authJwt.isAdmin], student.addStudent);
 app.post('/edit/:id', [authJwt.verifyToken, authJwt.isStudentOrAdmin], student.editStudent);
 
-app.get('/view_program/:id', [authJwt.verifyToken],program.viewProgramPage);
+app.get('/view_program/:id', [authJwt.verifyToken], program.viewProgramPage);
 app.get('/program_delete/:id', [authJwt.verifyToken, authJwt.isAdmin], program.deleteProgram);
 app.get('/program_reactivate/:id', [authJwt.verifyToken, authJwt.isAdmin], program.reactivateProgram);
 app.get('/program', [authJwt.verifyToken], program_index.getProgramPage);
@@ -64,7 +64,7 @@ app.post('/program_add', [authJwt.verifyToken, authJwt.isAdmin], program.addProg
 app.post('/program_edit/:id', [authJwt.verifyToken, authJwt.isAdmin], program.editProgram);
 
 function listenCallback() {
-	console.log(`Server Running on http://${hostname}:${port}`);
+  console.log(`Server Running on http://${hostname}:${port}`);
 }
 
 app.listen(port, hostname, listenCallback);

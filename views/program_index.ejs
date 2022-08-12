@@ -1,51 +1,68 @@
 <%- include('partials/header'); %>
-<div>
-	<style>
-		tr:hover { 
-   			background: rgb(250,250,250); 
-		}
-	</style>
-<% if (programs.length > 0) { %>
-	<table class="table">
-		<thead class="thead-dark">
-			<tr>
-				<th>Title</th>
-                <th>Description</th>
-                <th>Location</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Minimum Grade Level</th>
-				<th>Maximum Grade Level</th>
-				<th>Students Involved</th>
-			</tr>
-		</thead>
-		<tbody>
-		<% let count = 0; %> 
-		<% for (let i = 0; i < programs.length; i++) { %>
-			<tr ondblclick="window.location='/view_program/<%= programs[i].id %>';">
-				<td><%= programs[i].title %></td>
-                <td><%= programs[i].description %></td>
-                <td><%= programs[i].location %></td>
-                <td><%= programs[i].start_date_formatted %></td>
-                <td><%= programs[i].end_date_formatted %></td>
-                <td><%= programs[i].min_grade_level %></td>
-                <td><%= programs[i].max_grade_level %></td>
-				<td>
-					<% for (let j = 0; j < registrations.length; j++) { %>
-						<% if (registrations[j].program == programs[i].id) { %>
-							<a href="/view/<%= registrations[j].student %>"><%= first_names[count] %> </a>
-							<% count++ %> 
-						<% } %>
-                    <% } %>
-				</td>
-			</tr>
-		<% } %>
-		</tbody>
-	</table>
-<% } else { %>
-	<p class="text-center">No programs found.</p>
-<% } %>
-</div>
-</div>
-</body>
-</html>
+	<div>
+		<style>
+			tr:hover {
+				background: rgb(250, 250, 250);
+			}
+		</style>
+		<% if (programs.length> 0) { %>
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th>Title</th>
+						<th>Description</th>
+						<th>Location</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Minimum Grade Level</th>
+						<th>Maximum Grade Level</th>
+						<th>Students Involved</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% let count=0; %>
+						<% for (let i=0; i < programs.length; i++) { %>
+							<tr ondblclick="window.location='/view_program/<%= programs[i].id %>';">
+								<td>
+									<%= programs[i].title %>
+								</td>
+								<td>
+									<%= programs[i].description %>
+								</td>
+								<td>
+									<%= programs[i].location %>
+								</td>
+								<td>
+									<%= programs[i].start_date_formatted %>
+								</td>
+								<td>
+									<%= programs[i].end_date_formatted %>
+								</td>
+								<td>
+									<%= programs[i].min_grade_level %>
+								</td>
+								<td>
+									<%= programs[i].max_grade_level %>
+								</td>
+								<td>
+									<% for (let j=0; j < registrations.length; j++) { %>
+										<% if (registrations[j].program==programs[i].id) { %>
+											<a href="/view/<%= registrations[j].student %>">
+												<%= first_names[count] %>
+											</a>
+											<% count++ %>
+												<% } %>
+													<% } %>
+								</td>
+							</tr>
+							<% } %>
+				</tbody>
+			</table>
+			<% } else { %>
+				<p class="text-center">No programs found.</p>
+				<% } %>
+	</div>
+	</div>
+	</body>
+
+	</html>
