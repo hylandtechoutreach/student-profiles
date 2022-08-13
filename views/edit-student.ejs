@@ -12,6 +12,9 @@
 						<form method="post" action="/<%=add ? 'add' : `edit/${student.id}`%>"
 							onsubmit="return validateForm()">
 							<div class="form-row">
+
+								below is the fields that appear on edit and create student page
+
 								<div class="form-group col-md-6">
 									<label for="first-name">First Name</label>
 									<input type="text" class="form-control" name="first_name" maxlength="50"
@@ -46,6 +49,7 @@
 																<% } %>
 														</datalist>
 								</div>
+								this field formats the phone number while the user is typing
 								<div class="form-group col-md-4">
 									<label for="phone_number">Phone Number</label>
 									<input oninput="formatPhoneNumber(this)" id="phoneNumber" type="tel"
@@ -207,6 +211,7 @@
 									<% } %>
 		</div>
 		<script>
+			// formats phone numbers while user is typing 
 			function formatPhoneNumber(element) {
 				let phoneNumber = element.value;
 
