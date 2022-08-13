@@ -13,8 +13,16 @@
 							onsubmit="return validateForm()">
 							<div class="form-row">
 
-								below is the fields that appear on edit and create student page
-
+							
+								<div class="form-group col-md-6">
+									<label for="username">Username</label>
+									<input type="text" name="studentUsername" class="form-control"
+										maxlength="50">
+								</div>
+								<div class="form-group col-md-6">
+									<label for="password">Password</label>
+									<input type="text" name="studentPassword" class="form-control">
+								</div>
 								<div class="form-group col-md-6">
 									<label for="first-name">First Name</label>
 									<input type="text" class="form-control" name="first_name" maxlength="50"
@@ -26,15 +34,39 @@
 										value="<%=student.last_name%>" required <% if (view) { %> readonly <% } %>>
 								</div>
 								<div class="form-group col-md-6">
+									<label for="school" class="form-label">School</label>
+									<% let schools=["Berea-Midpark High School", "Solon High School"
+										, "Lakewood High School" , "Westlake High School" ]; %>
+										<input id="school" maxlength="50" class="form-control" name="school"
+											list="school_options" required <% if (!add) { %> value="<%=
+											student.school %>" <% } %>
+												<% if (view) { %> readonly <% } %>/>
+														<datalist id="school_options">
+															<% for (let i=0; i < schools.length; i++) { %>
+																<option value="<%= schools[i] %>">
+																	<% } %>
+														</datalist>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="grade">Grade</label>
+									<select name="grade" class="form-control" required <% if (view) { %>
+										readonly <% } %>>
+											<% for (let i=0; i < grades.length; i++) { %>
+												<option <% if (student.grade==grades[i]) { %> selected <% } %>>
+														<%= grades[i] %>
+												</option>
+												<% } %>
+									</select>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="dateOfBirth">Date Of Birth</label>
+									<input type="date" class="form-control" name="dateOfBirth"
+										value="<%=student.dateOfBirthFormatted%>" <% if (view) { %> readonly <% } %>>
+								</div>
+								<div class="form-group col-md-6">
 									<label for="email">Email</label>
 									<input type="email" class="form-control" name="email" id="email" maxlength="50"
 										value="<%=student.email%>" required <% if (view) { %> readonly <% } %>>
-								</div>
-								<div class="form-group col-md-6">
-									<label for="guardianEmail">Guardian Email</label>
-									<input type="email" class="form-control" name="guardianEmail" id="guardianEmail"
-										maxlength="50" value="<%=student.guardianEmail%>" required <% if (view) { %>
-									readonly <% } %>>
 								</div>
 								<div class="form-group col-md-2">
 									<label>Country</label>
@@ -49,7 +81,7 @@
 																<% } %>
 														</datalist>
 								</div>
-								this field formats the phone number while the user is typing
+								
 								<div class="form-group col-md-4">
 									<label for="phone_number">Phone Number</label>
 									<input oninput="formatPhoneNumber(this)" id="phoneNumber" type="tel"
@@ -57,6 +89,18 @@
 										pattern="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}" placeholder="###-###-####"
 										value="<% if (student.phone_number) { %>(<%=student.phone_number.substring(0, 3)%>) <%=student.phone_number.substring(3, 6)%>-<%=student.phone_number.substring(6)%><% } %>"
 										maxlength="14" required <% if (view) { %> readonly <% } %>>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="guardian_Name">Guardian Name</label>
+									<input type="text" class="form-control" name="guardian_Name" maxlength="50"
+										value="<%=student.guardian_Name%>" required <% if (view) { %> readonly
+									<% } %>>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="guardianEmail">Guardian Email</label>
+									<input type="email" class="form-control" name="guardianEmail" id="guardianEmail"
+										maxlength="50" value="<%=student.guardianEmail%>" required <% if (view) { %>
+									readonly <% } %>>
 								</div>
 								<div class="form-group col-md-2">
 									<label>Country</label>
@@ -74,19 +118,39 @@
 										maxlength="14" required <% if (view) { %> readonly <% } %>>
 								</div>
 								<div class="form-group col-md-6">
+									<label for="interestsAndHobies">Hobbies/Interests.</label>
+									<input type="text" class="form-control" name="interestsAndHobies" maxlength="50"
+										value="<%=student.interestsAndHobies%>" <% if (view) { %> readonly <% } %>>
+								</div>
+								<div class="form-group col-md-6">
 									<label for="notes">Notes</label>
 									<input type="text" class="form-control" name="notes" maxlength="50"
 										value="<%=student.notes%>" <% if (view) { %> readonly <% } %>>
 								</div>
 								<div class="form-group col-md-6">
-									<label for="dateOfBirth">Date Of Birth</label>
-									<input type="date" class="form-control" name="dateOfBirth"
-										value="<%=student.dateOfBirthFormatted%>" <% if (view) { %> readonly <% } %>>
-								</div>
-								<div class="form-group col-md-6">
-									<label for="interestsAndHobies">Hobbies/Interests.</label>
-									<input type="text" class="form-control" name="interestsAndHobies" maxlength="50"
-										value="<%=student.interestsAndHobies%>" <% if (view) { %> readonly <% } %>>
+									<label for="program_list">Programs Involved In</label>
+									<button type='button' onClick="selectAll()" <% if (view) { %>hidden<% } %>
+											>Select All</button>
+									<select class="form-control" name="program_list" id="program_list" multiple
+										<% if (view) { %> readonly <% } %>>
+											<% for (let i=0; i < programs.length; i++) { %>
+												<% let match=false %>
+													<% for (let j=0; j < registrations.length; j++) { %>
+														<% if(registrations[j].program==programs[i].id &&
+															registrations[j].student==student.id) {match=true;}
+															%>
+															<% } %>
+																<option name="programOption"
+																	id="program-<%=programs[i].title%>"
+																	value="<%= programs[i].id %>" <% if(!add &&
+																	!view) {if (match) { %> selected <% } } %>>
+																		<%= formatedProgramList[i] %>
+																</option>
+																<% } %>
+									</select>
+									<input type="text" id="student-filter" oninput="filterPrograms(this)"
+										class="float-right form-control" placeholder="Filter by name" <% if
+										(view) { %>hidden<% } %> >
 								</div>
 								<% if(isAdmin){ %>
 
@@ -96,57 +160,6 @@
 											value="<%=student.internalNotes%>" <% if (view) { %> readonly <% } %>>
 									</div>
 									<% } %>
-
-										<div class="form-group col-md-6">
-											<label for="grade">Grade</label>
-											<select name="grade" class="form-control" required <% if (view) { %>
-												readonly <% } %>>
-													<% for (let i=0; i < grades.length; i++) { %>
-														<option <% if (student.grade==grades[i]) { %> selected <% } %>>
-																<%= grades[i] %>
-														</option>
-														<% } %>
-											</select>
-										</div>
-										<div class="form-group col-md-6">
-											<label for="school" class="form-label">School</label>
-											<% let schools=["Berea-Midpark High School", "Solon High School"
-												, "Lakewood High School" , "Westlake High School" ]; %>
-												<input id="school" maxlength="50" class="form-control" name="school"
-													list="school_options" required <% if (!add) { %> value="<%=
-													student.school %>" <% } %>
-														<% if (view) { %> readonly <% } %>/>
-																<datalist id="school_options">
-																	<% for (let i=0; i < schools.length; i++) { %>
-																		<option value="<%= schools[i] %>">
-																			<% } %>
-																</datalist>
-										</div>
-										<div class="form-group col-md-6">
-											<label for="program_list">Programs Involved In</label>
-											<button type='button' onClick="selectAll()" <% if (view) { %>hidden<% } %>
-													>Select All</button>
-											<select class="form-control" name="program_list" id="program_list" multiple
-												<% if (view) { %> readonly <% } %>>
-													<% for (let i=0; i < programs.length; i++) { %>
-														<% let match=false %>
-															<% for (let j=0; j < registrations.length; j++) { %>
-																<% if(registrations[j].program==programs[i].id &&
-																	registrations[j].student==student.id) {match=true;}
-																	%>
-																	<% } %>
-																		<option name="programOption"
-																			id="program-<%=programs[i].title%>"
-																			value="<%= programs[i].id %>" <% if(!add &&
-																			!view) {if (match) { %> selected <% } } %>>
-																				<%= formatedProgramList[i] %>
-																		</option>
-																		<% } %>
-											</select>
-											<input type="text" id="student-filter" oninput="filterPrograms(this)"
-												class="float-right form-control" placeholder="Filter by name" <% if
-												(view) { %>hidden<% } %> >
-										</div>
 										<script>
 											function filterPrograms(element) {
 												let filter = element.value;
@@ -179,22 +192,8 @@
 												<input type="text" class="form-control" value="<%=student.id_number%>"
 													readonly required>
 										</div>
-										<div class="form-group col-md-6">
-											<label for="guardian_Name">Guardian Name</label>
-											<input type="text" class="form-control" name="guardian_Name" maxlength="50"
-												value="<%=student.guardian_Name%>" required <% if (view) { %> readonly
-											<% } %>>
-										</div>
+
 										<% if (add) { %>
-											<div class="form-group col-md-6">
-												<label for="username">Username</label>
-												<input type="text" name="studentUsername" class="form-control"
-													maxlength="50">
-											</div>
-											<div class="form-group col-md-6">
-												<label for="password">Password</label>
-												<input type="text" name="studentPassword" class="form-control">
-											</div>
 											<% } %>
 							</div>
 							<% if (!view) { %>

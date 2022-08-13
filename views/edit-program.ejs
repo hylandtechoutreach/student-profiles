@@ -80,7 +80,7 @@
 									onsubmit="return validateForm()">
 									<div class="form-row">
 
-										bellow is the fields on edit program and add program page
+										
 
 										<div class="form-group col-md-6">
 											<label for="title">Title</label>
@@ -122,15 +122,6 @@
 											</select>
 										</div>
 										<div class="form-group col-md-6">
-											<label for="location">Location</label>
-											<input type="text" class="form-control" name="location" maxlength="50"
-												value="<%=program.location%>" required <% if (view) { %> readonly <% }
-												%>>
-										</div>
-
-									</div>
-									<div class="form-row">
-										<div class="form-group col-md-6">
 											<label for="max_grade_level">Maximum Grade Level</label>
 											<select name="max_grade_level" class="form-control" id="max_grade_level"
 												required <% if (view) { %> readonly <% } %>>
@@ -143,6 +134,16 @@
 														<% } %>
 											</select>
 										</div>
+										<div class="form-group col-md-6">
+											<label for="location">Location</label>
+											<input type="text" class="form-control" name="location" maxlength="50"
+												value="<%=program.location%>" required <% if (view) { %> readonly <% }
+												%>>
+										</div>
+
+									</div>
+									<div class="form-row">
+										
 										<div class="form-group col-md-6">
 											<label for="student_list">Students Involved</label>
 											<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll();
