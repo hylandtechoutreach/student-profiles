@@ -1,160 +1,225 @@
 <%- include('partials/header') %>
-<div class="container">
-	<script>
-		function validateForm() {
-			let min_grade_level = document.getElementById('min_grade_level').value;
-			let max_grade_level = document.getElementById('max_grade_level').value;
+	<div class="container">
+		<script>
+			function validateForm() {
+				//does front end validation to check if min grade is less than max grade
+				let min_grade_level = document.getElementById('min_grade_level').value;
+				let max_grade_level = document.getElementById('max_grade_level').value;
 
-			let gradeElements = document.getElementById('min_grade_level').children;
+				let gradeElements = document.getElementById('min_grade_level').children;
 
-			let grades = []
-			for (let i = 0; i < gradeElements.length; i++) {
-				grades.push(gradeElements[i].value)
-			}
-
-			if (grades.indexOf(min_grade_level) <= grades.indexOf(max_grade_level)) {
-				return true;
-			} else {
-				alert('Minimum grade must be lower than maximum grade');
-				return false;
-			}
-		}
-		function selectAll() {
-			options = document.getElementsByName("studentOption");
-			for (let i=0; i<options.length; i++)
-			{
-				options[i].selected = "true";
-			}
-    	}
-		function filterStudents(element) {
-					let filter = element.value;
-					let studentRows = document.getElementsByName('studentOption');
-		
-					for (let i = 0; i < studentRows.length; i++) {
-						if (studentRows[i].id.substring(0, 8) == "student-") {
-							let studentName = studentRows[i].id.toLowerCase().substring(8)
-						
-							if (studentName.includes(filter.toLowerCase())) {
-								document.getElementById(studentRows[i].id).hidden = false
-							} else {
-								document.getElementById(studentRows[i].id).hidden = true
-							}
-						}
-					}
+				let grades = []
+				for (let i = 0; i < gradeElements.length; i++) {
+					grades.push(gradeElements[i].value)
 				}
-				function changeColor(element) {
-					console.log(element.children)
-					elementChildren = element.children;
-					for (let i = 0; i < elementChildren.length; i++) {
-						if (elementChildren[i].selected) {
-							elementChildren[i].style = 'background-color: light-grey;'
+
+				if (grades.indexOf(min_grade_level) <= grades.indexOf(max_grade_level)) {
+					return true;
+				} else {
+					alert('Minimum grade must be lower than maximum grade');
+					return false;
+				}
+			}
+			//selects all students during program edit and creation
+			function selectAll() {
+				options = document.getElementsByName("studentOption");
+				for (let i = 0; i < options.length; i++) {
+					options[i].selected = "true";
+				}
+			}
+			//filters students by name 
+			function filterStudents(element) {
+				let filter = element.value;
+				let studentRows = document.getElementsByName('studentOption');
+
+				for (let i = 0; i < studentRows.length; i++) {
+					if (studentRows[i].id.substring(0, 8) == "student-") {
+						let studentName = studentRows[i].id.toLowerCase().substring(8)
+
+						if (studentName.includes(filter.toLowerCase())) {
+							document.getElementById(studentRows[i].id).hidden = false
 						} else {
-							if (elementChildren[i].className == 'eligible:false') {
-								elementChildren[i].style = 'background-color: eed202;';
-							} else {
-								elementChildren[i].style = 'background-color: white;';
-							}
+							document.getElementById(studentRows[i].id).hidden = true
 						}
 					}
 				}
-    </script>
-	<% if (!view)  { %> 
-	<script>
-		window.onload = function() {
+			}
+			//changes color of outline of student based on if they are selected, not eligible, or not selected 
+			function changeColor(element) {
+				console.log(element.children)
+				elementChildren = element.children;
+				for (let i = 0; i < elementChildren.length; i++) {
+					if (elementChildren[i].selected) {
+						elementChildren[i].style = 'background-color: light-grey;'
+					} else {
+						if (elementChildren[i].className == 'eligible:false') {
+							elementChildren[i].style = 'background-color: eed202;';
+						} else {
+							elementChildren[i].style = 'background-color: white;';
+						}
+					}
+				}
+			}
+		</script>
+		<% if (!view) { %>
+			<script>
+				//changes colors of students on load
+				window.onload = function () {
 					changeColor(document.getElementById('student_list'))
 				}
-	</script>
-	<% } %> 
-	<body>
-<% if (add || program) { %>
-	<% if (view) { %>
-		<a href="/program_edit/<%= program.id %>" class="btn btn-sm btn-success">Edit</a>
-		<a href="/program_delete/<%= program.id %>" class="btn btn-sm btn-danger">Delete</a>
-	<% } %>
-	<form method="post" action="/<%=add ? 'program_add' : `program_edit/${program.id}`%>" onsubmit="return validateForm()">
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="title">Title</label>
-				<input type="text" class="form-control" name="title" maxlength = "50" value="<%=program.title%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="description">Description</label>
-				<input type="text" class="form-control" name="description" maxlength = "50" value="<%=program.description%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="start_date">Start Date</label>
-				<input type="datetime-local" class="form-control" name="start_date" value="<%=program.start_date_formatted%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="end_date">End Date</label>
-				<input type="datetime-local" class="form-control" name="end_date" value="<%=program.end_date_formatted%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="min_grade_level">Minimum Grade Level</label>
-				<select name="min_grade_level" class="form-control" id="min_grade_level" required <% if (view) { %> readonly <% } %>>
-					<% for (let i = 0; i < grades.length; i++) { %>
-						<option value="<%= grades[i] %>" <% if (program.min_grade_level == grades[i]) { %> selected <% } %>><%= grades[i] %></option>
-					<% } %>
-				</select>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="location">Location</label>
-				<input type="text" class="form-control" name="location" maxlength = "50" value="<%=program.location%>" required <% if (view) { %> readonly <% } %>>
-			</div>
-			
-		</div>
-		<div class="form-row">
-			<div class="form-group col-md-6">
-				<label for="max_grade_level">Maximum Grade Level</label>
-				<select name="max_grade_level" class="form-control" id="max_grade_level" required <% if (view) { %> readonly <% } %>>
-					<% for (let i = 0; i < grades.length; i++) { %>
-						<option value="<%= grades[i] %>" <% if ((add && grades[i] == 'Out of School') || (program.max_grade_level == grades[i])) { %> selected <% } %>><%= grades[i] %></option>
-					<% } %>
-				</select>
-			</div>
-			<div class="form-group col-md-6">
-				<label for="student_list">Students Involved</label>
-				<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll(); changeColor(document.getElementById('student_list'))">Select All</button>
-				<select onchange="changeColor(this)" class="form-control" name="student_list" id="student_list" multiple <% if (view) { %> readonly <% } %>>
-					<% for (let i = 0; i < students.length; i++) { %>
-						<% let match = false, eligible = true %>
-						<% for (let j = 0; j < registrations.length; j++) { %>
-							<% if(registrations[j].student == students[i].id && registrations[j].program == program.id) {match = true;}  %> 
-						<% } %>
-						<% let studentGrade = grades.indexOf(students[i].grade), minGrade = grades.indexOf(program.min_grade_level), maxGrade = grades.indexOf(program.max_grade_level) %>
-						<% if((studentGrade < minGrade || studentGrade > maxGrade) && !view) { eligible = false } %>
-						<% if (add) { eligible = true } %> 
-						<option name="studentOption" class="eligible:<%= eligible %>" id="student-<%= students[i].first_name %>" value="<%= students[i].id %>" <% if(!add && !view) { if (match) { %> selected <% } } if(!eligible) { %> style="background-color:eed202" <% } %>  > <% if(!eligible) { %> &#9888; <% } %> <%= students[i].first_name %> <% if(!eligible) { %> &#9888; <% } %> </option>
-					<% } %>
-				</select>
-				<input type="text" id="student-filter" oninput="filterStudents(this)" class="float-right form-control" placeholder="Filter by name" <% if (view) { %>hidden<% } %> >
-			</div>
-			<div class="form-group col-md-6">
-				<label for="registration_required">Registration Required</label>
-				<input type="checkbox" class="form-control" name="registration_required" <% if (program.registration_required) { %>checked<% } %>  <% if (view) { %> onclick="return false" <% } %>>
-			</div>
-		</div>
-		<div class="form-row">
-			<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%> >
-				<label for="program_id">Program ID</label>
-				<input type="text" class="form-control" name="program_id" value="<%=program.program_id%>" readonly required>
-			</div>
-		</div>
-		<% if (!view) { %>
-			<button type="submit" class="btn btn-success float-right"><%= add ? 'Add' : 'Update' %> Program</button>
-		<% } %>
-	</form>
-	<% if (program.status == "inactive") { %>
-		<a href="/program_reactivate/<%= program.id %>" class="btn btn-info float-left">Reactivate</a>
-	<% } %>
-<% } else { %>
-	<p class="text-center">Program Not Found.</p>
-<% } %>
-</div>
-</div>
-</body>
-</html>
+			</script>
+			<% } %>
+
+				<body>
+					<% if (add || program) { %>
+						<% if (view) { %>
+							<a href="/program_edit/<%= program.id %>" class="btn btn-sm btn-success">Edit</a>
+							<a href="/program_delete/<%= program.id %>" class="btn btn-sm btn-danger">Delete</a>
+							<% } %>
+								<form method="post" action="/<%=add ? 'program_add' : `program_edit/${program.id}`%>"
+									onsubmit="return validateForm()">
+									<div class="form-row">
+
+										
+
+										<div class="form-group col-md-6">
+											<label for="title">Title</label>
+											<input type="text" class="form-control" name="title" maxlength="50"
+												value="<%=program.title%>" required <% if (view) { %> readonly <% } %>>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="description">Description</label>
+											<input type="text" class="form-control" name="description" maxlength="50"
+												value="<%=program.description%>" required <% if (view) { %> readonly <%
+												} %>>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="start_date">Start Date</label>
+											<input type="datetime-local" class="form-control" name="start_date"
+												value="<%=program.start_date_formatted%>" required <% if (view) { %>
+											readonly <% } %>>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="end_date">End Date</label>
+											<input type="datetime-local" class="form-control" name="end_date"
+												value="<%=program.end_date_formatted%>" required <% if (view) { %>
+											readonly <% } %>>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6">
+											<label for="min_grade_level">Minimum Grade Level</label>
+											<select name="min_grade_level" class="form-control" id="min_grade_level"
+												required <% if (view) { %> readonly <% } %>>
+													<% for (let i=0; i < grades.length; i++) { %>
+														<option value="<%= grades[i] %>" <% if
+															(program.min_grade_level==grades[i]) { %> selected <% } %>>
+																<%= grades[i] %>
+														</option>
+														<% } %>
+											</select>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="max_grade_level">Maximum Grade Level</label>
+											<select name="max_grade_level" class="form-control" id="max_grade_level"
+												required <% if (view) { %> readonly <% } %>>
+													<% for (let i=0; i < grades.length; i++) { %>
+														<option value="<%= grades[i] %>" <% if ((add &&
+															grades[i]=='Out of School' ) ||
+															(program.max_grade_level==grades[i])) { %> selected <% } %>>
+																<%= grades[i] %>
+														</option>
+														<% } %>
+											</select>
+										</div>
+										<div class="form-group col-md-6">
+											<label for="location">Location</label>
+											<input type="text" class="form-control" name="location" maxlength="50"
+												value="<%=program.location%>" required <% if (view) { %> readonly <% }
+												%>>
+										</div>
+
+									</div>
+									<div class="form-row">
+										
+										<div class="form-group col-md-6">
+											<label for="student_list">Students Involved</label>
+											<button <% if (view) { %>hidden<% } %> type='button' onClick="selectAll();
+													changeColor(document.getElementById('student_list'))">Select
+													All</button>
+											<select onchange="changeColor(this)" class="form-control"
+												name="student_list" id="student_list" multiple <% if (view) { %>
+												readonly <% } %>>
+													<% for (let i=0; i < students.length; i++) { %>
+														<% let match=false, eligible=true %>
+															<% for (let j=0; j < registrations.length; j++) { %>
+																<% if(registrations[j].student==students[i].id &&
+																	registrations[j].program==program.id) {match=true;}
+																	%>
+																	<% } %>
+																		<% let
+																			studentGrade=grades.indexOf(students[i].grade),
+																			minGrade=grades.indexOf(program.min_grade_level),
+																			maxGrade=grades.indexOf(program.max_grade_level)
+																			%>
+																			<% if((studentGrade < minGrade ||
+																				studentGrade> maxGrade) && !view) {
+																				eligible = false } %>
+																				<% if (add) { eligible=true } %>
+																					<option name="studentOption"
+																						class="eligible:<%= eligible %>"
+																						id="student-<%= students[i].first_name %>"
+																						value="<%= students[i].id %>" <%
+																						if(!add && !view) { if (match) {
+																						%> selected <% } } if(!eligible)
+																							{ %>
+																							style="background-color:eed202"
+																							<% } %> > <% if(!eligible) {
+																									%> &#9888; <% } %>
+																										<%= students[i].first_name
+																											%>
+																											<% if(!eligible)
+																												{ %>
+																												&#9888;
+																												<% } %>
+																					</option>
+																					<% } %>
+											</select>
+											<input type="text" id="student-filter" oninput="filterStudents(this)"
+												class="float-right form-control" placeholder="Filter by name" <% if
+												(view) { %>hidden<% } %> >
+										</div>
+										<div class="form-group col-md-6">
+											<label for="registration_required">Registration Required</label>
+											<input type="checkbox" class="form-control" name="registration_required" <%
+												if (program.registration_required) { %>checked<% } %>
+												<% if (view) { %> onclick="return false" <% } %>>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-6" <% if (add) { %> style="display: none" <%}%> >
+												<label for="program_id">Program ID</label>
+												<input type="text" class="form-control" name="program_id"
+													value="<%=program.program_id%>" readonly required>
+										</div>
+									</div>
+									<% if (!view) { %>
+										<button type="submit" class="btn btn-success float-right">
+											<%= add ? 'Add' : 'Update' %> Program
+										</button>
+										<% } %>
+								</form>
+								<% if (program.status=="inactive" ) { %>
+									<a href="/program_reactivate/<%= program.id %>"
+										class="btn btn-info float-left">Reactivate</a>
+									<% } %>
+										<% } else { %>
+											<p class="text-center">Program Not Found.</p>
+											<% } %>
+	</div>
+	</div>
+	</body>
+
+	</html>

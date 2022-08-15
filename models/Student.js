@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const Schema = mongoose.Schema
 const constants = require("../routes/constants")
-
+//if you add somthing to db.js to be sent to the db, you must also add it here
 const StudentSchema = new Schema({
   first_name: {
     type: String,
@@ -11,7 +11,7 @@ const StudentSchema = new Schema({
     type: String,
     required: true
   },
-  guardian_Name:{
+  guardian_Name: {
     type: String,
     required: true
   },
