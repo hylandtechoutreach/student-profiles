@@ -17,7 +17,7 @@ module.exports = {
         guardianPhoneDeformated = guardianPhoneDeformated.replaceAll(replace_chars[i], "");
         studentPhoneDeformated = studentPhoneDeformated.replaceAll(replace_chars[i], "");
       }
-      
+
       const newStudent = new Student({
         //studentObj data to be stored in db
         first_name: studentObj.first_name,
@@ -57,7 +57,7 @@ module.exports = {
 
       return newStudent
     } else {
-      consol.log('Invalid Student');
+      console.log('Invalid Student');
     }
   },
   getLastNameCount: async function (lastName) {
