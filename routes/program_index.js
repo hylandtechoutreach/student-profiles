@@ -13,18 +13,18 @@ module.exports = {
 	getProgramPage: async function (request, response) {
 		let programList = await db.getProgramsList()
 		let activePrograms = studentFile.activePrograms(programList)
-		activePrograms.sort((a, b) => a.title.localeCompare(b.title, 'en', {
+		activePrograms.sort( (a, b) => a.title.localeCompare(b.title, 'en', {
 			ignorePunctuation: true
 		}));
 		let activeRegistrations = await registrationFile.activeRegistrations()
 		let studentNames = []
 		for (let i = 0; i < activePrograms.length; i++) {
-			for (let j = 0; j < activeRegistrations.length; j++) {
-				if (activeRegistrations[j].program == activePrograms[i].id) {
-					let studentObj = await student_db.getStudentById(activeRegistrations[j].student)
+			for (let j = 0; j < activeRegistrations.length; j++) { 
+				if (activeRegistrations[j].program == activePrograms[i].id) { 
+					let studentObj =  await student_db.getStudentById(activeRegistrations[j].student)
 					studentNames.push(studentObj.first_name)
-				}
-			}
+				} 
+			} 
 		}
 
 		for (let i = 0; i < activePrograms.length; i++) {
@@ -45,7 +45,7 @@ module.exports = {
 		if (!token) {
 			let renderData = {
 				message: ""
-			}
+			  }
 			return res.render('signin', renderData)
 		}
 
@@ -54,7 +54,7 @@ module.exports = {
 			if (err) {
 				let renderData = {
 					message: ""
-				}
+				  }
 				return res.render('signin', renderData)
 			}
 			let user = User.findById(decoded.id).exec((err, user) => {
@@ -67,7 +67,7 @@ module.exports = {
 						registrations: activeRegistrations,
 						first_names: studentNames,
 					}
-
+			
 					return response.render('program_index', renderData);
 				} else if (user.userType == 'student') {
 					let renderData = {
@@ -79,7 +79,7 @@ module.exports = {
 						registrations: activeRegistrations,
 						first_names: studentNames,
 					}
-
+			
 					return response.render('program_index', renderData);
 				} else {
 					let renderData = {
@@ -94,7 +94,7 @@ module.exports = {
 				}
 			});
 		});
-
+		
 	},
-
+	
 };
